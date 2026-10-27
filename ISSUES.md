@@ -6,6 +6,16 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **New record types this build can't read yet.** Found by
+  `TestTodaysLogsAreRead` on 2026-10-27, after the harnesses' latest releases:
+  Claude Code 2.1.310 `tools-used`; Codex 0.164.0 `response_item:additional_tools`;
+  Copilot CLI 1.0.98 `session.usage_record` (per-call tokens, cost and model),
+  `subagent.configured` (a subagent's model and effort) and
+  `skill.context_delivered_ref`. They show as generic events with a note
+  pointing at `agentlog doctor`. Some carry data a view should use
+  (`session.usage_record` for `--usage`), so each needs reading, not a blanket
+  ignore.
+
 - **`agentlog-usage` is not wired into agentlog.** It's a second program with
   its own log reader, built only from source; the releases, install.sh and
   agentlog's help leave it out. It will likely become a subcommand, but folding
