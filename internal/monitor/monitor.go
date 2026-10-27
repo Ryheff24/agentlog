@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/private"
 )
 
 // Run is one agentlog invocation.
@@ -89,13 +91,13 @@ func Finish(exit int, out, err int64) {
 const maxBytes = 8 << 20
 
 func write(path string, line []byte) bool {
-	if os.MkdirAll(filepath.Dir(path), 0o755) != nil {
+	if private.Dir(filepath.Dir(path)) != nil {
 		return false
 	}
 	if st, err := os.Stat(path); err == nil && st.Size()+int64(len(line)) > maxBytes {
 		_ = os.Rename(path, path+".1")
 	}
-	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	f, err := private.Open(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY)
 	if err != nil {
 		return false
 	}

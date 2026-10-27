@@ -274,6 +274,12 @@ or `/tmp/agentlog-runs-<uid>/runs.jsonl` that can be written: an agent's
 sandbox usually allows only its temp directory. Each file stays under 8MB.
 `AGENTLOG_RUNS=path` sets the file; `AGENTLOG_NO_MONITOR=1` turns it off.
 
+Like the CPU claims and the feedback store, the record goes through
+`internal/private`: its directory must be a real directory owned by the
+person running agentlog and is narrowed to `0700`, the file is `0600`, and it
+is never opened through a link. A directory in a shared `/tmp` that someone
+else made first is skipped, not written into.
+
 **`agentlog-usage`**, a separate command, reads the harnesses' session logs
 itself, not through agentlog's readers, for every shell call an agent made to
 agentlog:

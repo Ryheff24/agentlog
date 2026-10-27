@@ -17,6 +17,7 @@ import (
 
 	"github.com/Ryheff24/agentlog/internal/catalog"
 	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/private"
 	"github.com/Ryheff24/agentlog/internal/render"
 	"github.com/Ryheff24/agentlog/internal/scan"
 	"github.com/Ryheff24/agentlog/internal/transcript"
@@ -131,7 +132,7 @@ func feedbackPath() (string, error) {
 }
 
 func appendFeedback(path string, entry feedbackEntry) error {
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+	if err := private.Dir(filepath.Dir(path)); err != nil {
 		return fmt.Errorf("create feedback directory: %w", err)
 	}
 	b, err := json.Marshal(entry)
@@ -139,7 +140,7 @@ func appendFeedback(path string, entry feedbackEntry) error {
 		return fmt.Errorf("encode feedback: %w", err)
 	}
 	b = append(b, '\n')
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o600)
+	f, err := private.Open(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND)
 	if err != nil {
 		return fmt.Errorf("open feedback store: %w", err)
 	}

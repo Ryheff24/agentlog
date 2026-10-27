@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/private"
 )
 
 // An agent does not run one agentlog. It runs four, in parallel, because it
@@ -33,7 +35,7 @@ func claimDirs() []string {
 	if dir, err := os.UserCacheDir(); err == nil {
 		out = append(out, filepath.Join(dir, "agentlog", "workers"))
 	}
-	return append(out, filepath.Join(os.TempDir(), "agentlog-workers"))
+	return append(out, filepath.Join(os.TempDir(), "agentlog-workers-"+strconv.Itoa(os.Getuid())))
 }
 
 // stale is how old a claim may be before it is ignored whatever its pid says.
@@ -48,13 +50,13 @@ func Share(want int) (got int, release func()) {
 		want = 1
 	}
 	for _, dir := range claimDirs() {
-		if os.MkdirAll(dir, 0o755) != nil {
+		if private.Dir(dir) != nil {
 			continue
 		}
 		unlock := lock(dir)
 		got = max(1, want-held(dir))
 		path := filepath.Join(dir, strconv.Itoa(os.Getpid()))
-		err := os.WriteFile(path, []byte(strconv.Itoa(got)), 0o644)
+		err := writeClaim(path, got)
 		unlock()
 		if err != nil {
 			continue
@@ -79,7 +81,7 @@ func Share(want int) (got int, release func()) {
 func lock(dir string) (unlock func()) {
 	path := filepath.Join(dir, "lock")
 	for range lockTries {
-		f, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+		f, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600)
 		if err == nil {
 			f.Close()
 			return func() { os.Remove(path) }
@@ -141,4 +143,18 @@ func held(dir string) int {
 		}
 	}
 	return total
+}
+
+// writeClaim records how many workers this process took, never through a
+// link someone planted under its pid.
+func writeClaim(path string, n int) error {
+	f, err := private.Open(path, os.O_CREATE|os.O_WRONLY|os.O_TRUNC)
+	if err != nil {
+		return err
+	}
+	_, err = f.WriteString(strconv.Itoa(n))
+	if cerr := f.Close(); err == nil {
+		err = cerr
+	}
+	return err
 }
