@@ -637,3 +637,22 @@ func TestEnrichTopLeavesOutBlankSessions(t *testing.T) {
 		t.Error("work2 moved up into the rows without being enriched")
 	}
 }
+
+// Two sessions with the same score and the same last write come out in the
+// same order however discovery happened to hand them over.
+func TestRankBreaksTiesTheSameWay(t *testing.T) {
+	at := time.Date(2026, 9, 24, 11, 0, 0, 0, time.UTC)
+	c := &Catalog{Now: at.Add(time.Hour)}
+	order := func(all []*transcript.Session) []string {
+		var ids []string
+		for _, m := range c.rank(all, Clues{}, &Result{}) {
+			ids = append(ids, m.Session.ID)
+		}
+		return ids
+	}
+	a := &transcript.Session{Provider: transcript.Claude, ID: "3007ed00", Updated: at}
+	b := &transcript.Session{Provider: transcript.Copilot, ID: "c0c0c0c0", Updated: at}
+	if one, other := order([]*transcript.Session{a, b}), order([]*transcript.Session{b, a}); !slices.Equal(one, other) {
+		t.Errorf("the same tie ranked %v one way and %v the other", one, other)
+	}
+}

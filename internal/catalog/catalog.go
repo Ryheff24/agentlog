@@ -437,7 +437,14 @@ func (c *Catalog) rank(all []*transcript.Session, cl Clues, res *Result) []Match
 		if out[i].Score != out[j].Score {
 			return out[i].Score > out[j].Score
 		}
-		return out[i].Session.Updated.After(out[j].Session.Updated)
+		a, b := out[i].Session, out[j].Session
+		if !a.Updated.Equal(b.Updated) {
+			return a.Updated.After(b.Updated)
+		}
+		// Discovery runs in parallel, so sessions arrive in no fixed order.
+		// A tie broken by arrival would list the same sessions differently
+		// from one call to the next.
+		return a.Provider+":"+a.ID < b.Provider+":"+b.ID
 	})
 	return out
 }
