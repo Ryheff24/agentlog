@@ -1,0 +1,695 @@
+claude/agent-name/1e8a7967                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/agent-setting/df660fdc                                    events=0  unread=0  ignored=0  hidden=0  sets note
+claude/ai-title/4e56cca5                                         events=0  unread=0  ignored=0  hidden=0  sets title
+claude/assistant:message/076a1bd2                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/1a048ff7                                events=1  unread=0  ignored=0  hidden=0  sets model+version+usage
+claude/assistant:message/2337f805                                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/assistant:message/5aff0fdc                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/5d6bdae0                                events=1  unread=0  ignored=0  hidden=0  sets model+version+usage
+claude/assistant:message/8f2960c6                                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/assistant:message/a33eee93                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/a883bbe4                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/baed3f49                                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/assistant:message/ceba01db                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/dc3e7062                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/e3b78fa0                                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/assistant:message:refusal/bb757091                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message:refusal/d2fc491d                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message:refusal/d54f5413                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message:refusal/f6763fd6                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message:reload/7b030a68                         events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/atis-latch/c3bca4ba                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/attachment:advisor_tool/3425ebb1                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:advisor_tool/c477a8ce                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:advisor_tool/e7a54be5                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:advisor_tool/f9d5e2b1                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/07e97b57                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:agent_listing_delta/0c979f88                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:agent_listing_delta/0cff4bdd                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:agent_listing_delta/33101ff9                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/5716b8a1                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/8e450cba                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/a6674b4b                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:agent_listing_delta/b1c10a4a                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/db6779be                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_mention/5d8aab96                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:already_read_file:file_unchanged/dcfcba82      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/1edb05d5                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/675bc13e                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/9f0e61ee                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:auto_mode/a688e831                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/aa9a4abc                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/b0673c4e                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:auto_mode/d85323b0                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/da0f7300                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/f2317b6a                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:auto_mode_exit/1ca1b8e2                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode_exit/8fbd94a6                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode_exit/ceb7ed1f                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:bash_output_audience_note/49af47d2             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:bash_output_audience_note/a5be56ae             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:bash_output_audience_note/a62000c0             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:bash_output_audience_note/b44bfe9b             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:bash_output_audience_note/d42af79c             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:bash_output_audience_note/e037ae47             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/067ea051                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/08d3f835                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/1a8feb75                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:batching_reminder_sent/1e988c63                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/8d074623                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/8db603b0                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/a47a9381                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/a4fd8ddb                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:batching_reminder_sent/e9e4a1bc                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:command_permissions/117d848d                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:command_permissions/6325a51c                   events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:command_permissions/6fc11ffc                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:command_permissions/840bcc2b                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:command_permissions/8f65aae5                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:command_permissions/ba05c8d5                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:command_permissions/ef11288d                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/1d1c8ce4                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/1e9ec8e8                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:compact_file_reference/6457de02                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/7ab947f1                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/7ae62dcb                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/bb9e8c4c                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/c4fc5cfd                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:compact_file_reference/f4dd2225                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:credential_org/046f4253                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:credential_org/174fb067                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:credential_org/7986ba8b                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:credential_org/f57d01bc                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/0c972f12                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/6712088d                                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:date/698d553a                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/ac434247                                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:date/cf109d14                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/d756743e                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/e2045f2a                                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:date/e2ab7127                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/efb3a29f                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/f9bdf5dc                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date_change/266dce2d                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:date_change/2ac3261b                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date_change/d82e302f                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date_change/df03a4ff                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/0420991d                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/2ad57b76                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/7a8e5a3a                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/9979cfc0                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/a628ea4f                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/c2650f51                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/c55ae350                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/c6aeb05e                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_delta/f8886ef9                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/fcd72bb9                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/fd38fb85                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_record/0daeac89                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/154ec532                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/37fc891f                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/57a81fff                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/71a7a44f                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/87a7450f                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_record/924c762b                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/ce85c861                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_record/d5bcf47c                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_record/f1c85847                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:diagnostics/011c2e2d                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/1a9dfd8a                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/1ddce0d3                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/1ed52f3f                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/77a9761a                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/799a3493                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/7edb3e20                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/83a0b5c0                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/8d003a9f                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:diagnostics/bfa28132                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:directory/013ddea1                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:directory/422fe5fd                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:directory/4b0d4512                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:directory/c3a7bd23                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:directory/e70dfeae                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/110d42bb                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:edited_text_file/12719121                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/1535bb3b                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/447d8030                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/4aa450ca                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/8425989c                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/911f735c                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:edited_text_file/c0509c47                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/cfba888f                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/d9415d0b                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:environment/0b6ec550                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:environment/5fb35dfb                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:environment/7095b6ad                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/8913ec7f                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/a6173894                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/ba298bbb                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/bb2175c3                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/cde50ad3                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/e68bc00b                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:environment/f580051b                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:environment/fc02e0b6                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:file:image/da1c4886                            events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:pdf/8cac2b35                              events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:pdf/f122046f                              events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/16fda5a2                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/187dfbe6                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/317a76e9                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/3af6f42f                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:file:text/460c087c                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:file:text/9b220cb5                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/cb1d2df1                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/e8358849                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_additional_context/76edf482               events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:hook_additional_context/e061cb9c               events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_system_message/26c766ca                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_system_message/c3a5f6dd                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/13e36688                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:instructions/17c15cd0                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/23818a26                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/3edb8ee6                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:instructions/6fc82a9c                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/a1d0a820                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/a4419814                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:instructions/b1908033                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:instructions/b31cff8e                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:instructions/f6a315c7                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:invoked_skills/12cad7f7                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:invoked_skills/186ebba6                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:invoked_skills/341122e1                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:invoked_skills/3c426a24                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:invoked_skills/48f553da                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:invoked_skills/52d86b6c                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/07d23ad9                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:mcp_instructions_delta/1c25ec0d                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/238af6d5                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/34cb2b43                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:mcp_instructions_delta/6cc81e9f                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/757f91cf                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:mcp_instructions_delta/8b54b574                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/92cf0c39                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/9bbd6374                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/d0232711                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:mcp_instructions_delta/fab3b918                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:model/1da6f06c                                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:model/20c6013e                                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:model/34c33cc5                                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:model/6ce7ca4e                                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:model/78c5131d                                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:model/7ffeefa9                                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:model/b11ef6fc                                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:model/d4b9ea61                                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:model/e088f5b0                                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:nested_memory:Project/061ba143                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:nested_memory:Project/198fffd5                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:nested_memory:Project/2199efae                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:nested_memory:Project/6f2a6d7b                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:nested_memory:Project/a284036c                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:nested_memory:Project/b8d7fb00                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:opened_file_in_ide/a0441710                    events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:opened_file_in_ide/b1e7119a                    events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:opened_file_in_ide/e35e5489                    events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:pdf_reference/2d5ca1b1                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_file_reference/f974cc2d                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode/0cca4bf0                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode/ec72ca81                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode_exit/02975e6c                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode_exit/4203fa20                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode_exit/6086bb12                        events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:plan_mode_exit/b0d77c83                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:plan_mode_reentry/8d69af91                     events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:prompt_snapshot/1bdb0721                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:prompt_snapshot/21bea065                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:prompt_snapshot/3572d9f5                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:prompt_snapshot/3a0ca119                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:prompt_snapshot/7a8cf1ed                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:prompt_snapshot/7d7bf4f1                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:prompt_snapshot/ba5a226f                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:prompt_snapshot/cbc72739                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:prompt_snapshot/d883f06c                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:prompt_snapshot/e161601e                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:queued_command/1b6acbcb                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:queued_command/468f3390                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/4fa676c2                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/562162c1                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:queued_command/67f1b7f2                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/682b555e                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:queued_command/87910c31                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/b6c5715e                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/ba7c4b3d                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/c9ea0343                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/daf317cf                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/e1c453e9                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:read_truncation_notice/5cb594e0                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:read_truncation_notice/61eb1af5                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:read_truncation_notice/c1f0a20a                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:read_truncation_notice/d6b68839                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:read_truncation_notice/fb2c35b0                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:remote_session_change/0120482c                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:remote_session_change/1da9a019                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:remote_session_change/3f4727dd                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:remote_session_change/40cae7c9                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:remote_session_change/643fae3e                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:remote_session_change/9092b85e                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:remote_session_change/c90ec25d                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:remote_session_change/d174b032                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:remote_session_change/f25fe094                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/0b3bb441                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/1bda212b                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/264d9211                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/2e785c6b                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/36fb860a                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/3b566739                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/3cf9f532                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:sandbox_instructions/9ae6cdcb                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/a60353e8                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:sandbox_instructions/e05ef7b8                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:selected_lines_in_ide/984d1396                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:selected_lines_in_ide/f149deeb                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/1d6028c8                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/23602295                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/427ba8c3                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/5394d7e1                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:session_context/78944560                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/833357fb                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/83f6d710                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/96192125                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/c0986aa8                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/ce30c12a                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:silent_turn_reminder/25e17227                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/4498981c                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/906a7366                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/c467bf8a                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/d007abdf                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/d6b9e1b0                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:silent_turn_reminder/e22c1dcb                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/223f85a2                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/2354773c                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:skill_listing/28d4deed                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:skill_listing/34a1d32b                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/4585bf96                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/56dcc794                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/72e02c26                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/74545e16                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:skill_listing/96b3775e                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:skill_listing/b5f2a53e                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:task_reminder/553caaf4                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_reminder/67b34c06                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_reminder/87366a7b                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_reminder/edfc70aa                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_status/0fbc027f                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:task_status/19b2798b                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_status/2de7cb40                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_status/3723b010                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:task_status/718049e3                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_status/dd5ef428                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:task_status/f1b0d40d                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:team_context/9f765a7c                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:thinking_drop/27b61666                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:thinking_drop/31db7298                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:thinking_drop/53f50ffa                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:thinking_drop/7f1206ee                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:thinking_drop/846e04a1                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:thinking_stripped/0c050b79                     events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:thinking_stripped/7aaa4cb2                     events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/09923879                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/2d304ace                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:total_tokens_reminder/4498981c                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/78b63c61                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/906a7366                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/c467bf8a                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/d007abdf                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/d6b9e1b0                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/e22c1dcb                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:total_tokens_reminder/f8aa61b7                 events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:ultrathink_effort/9bcaa049                     events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:unknown_command_fallback/b8bccb91              events=0  unread=0  ignored=1  hidden=0  sets version
+claude/bridge-session/20a9ada0                                   events=0  unread=0  ignored=1  hidden=0  -
+claude/bridge-session/4d0b44f6                                   events=0  unread=0  ignored=1  hidden=0  -
+claude/bridge-session/64478d3a                                   events=0  unread=0  ignored=1  hidden=0  -
+claude/continued-in/e22d09b1                                     events=0  unread=0  ignored=0  hidden=0  sets ending
+claude/cost-state/08c5345f                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/179c5aeb                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/cost-state/80776d85                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/86d82cf9                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/9904c9b7                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/a6501e77                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/b87378c9                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/bade1823                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/cost-state/e2d68fc1                                       events=0  unread=0  ignored=1  hidden=0  sets usage
+claude/custom-title/e7226bab                                     events=0  unread=0  ignored=0  hidden=0  sets title
+claude/deferred_tools_delta/52330587                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/deferred_tools_delta/8123d9ab                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/deferred_tools_delta/c6849aa3                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/deferred_tools_record/020ccf4b                            events=0  unread=0  ignored=1  hidden=0  sets version
+claude/deferred_tools_record/8fa4dbc7                            events=0  unread=0  ignored=1  hidden=0  sets version
+claude/file-history-delta/fe189503                               events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/0efe36da                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/2aece3ee                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/2c097574                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/37fd5a82                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/3f2f7a26                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/424a11f5                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/7237a223                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/a739f2db                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/eb280609                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/fe20832b                            events=0  unread=0  ignored=1  hidden=0  -
+claude/frame-link/cb995b88                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/frame-link/fa1b8208                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/last-prompt/4791eacf                                      events=0  unread=0  ignored=1  hidden=0  -
+claude/last-prompt/838e9d35                                      events=0  unread=0  ignored=1  hidden=0  -
+claude/mode/b4b85c41                                             events=0  unread=0  ignored=1  hidden=0  -
+claude/permission-mode/115f2e4e                                  events=0  unread=0  ignored=1  hidden=0  -
+claude/pr-link/2e98ee2f                                          events=1  unread=0  ignored=0  hidden=0  record
+claude/prompt_snapshot/324664b4                                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/prompt_snapshot/5e05c1e1                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/prompt_snapshot/d0ee22b2                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/queue-operation/1266aa2a                                  events=0  unread=0  ignored=1  hidden=0  -
+claude/queue-operation/1eba5c90                                  events=0  unread=0  ignored=1  hidden=0  -
+claude/queue-operation/276049a5                                  events=0  unread=0  ignored=1  hidden=0  -
+claude/queue-operation/44a17e0c                                  events=1  unread=0  ignored=1  hidden=0  sets ending+note
+claude/queue-operation/84475e6f                                  events=0  unread=0  ignored=1  hidden=0  -
+claude/relocated/bc3bdb5a                                        events=0  unread=0  ignored=0  hidden=0  sets note
+claude/system/0d6dec6a                                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/system/333f5c1e                                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/system/44ad75fb                                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/system/524e5ed9                                           events=1  unread=0  ignored=0  hidden=0  sets version
+claude/system/75387ff5                                           events=1  unread=0  ignored=0  hidden=0  sets version
+claude/system/b43a125f                                           events=0  unread=0  ignored=1  hidden=1  sets version
+claude/system/bde61cc7                                           events=1  unread=0  ignored=0  hidden=0  sets version
+claude/system/c7ad0557                                           events=0  unread=0  ignored=1  hidden=0  sets version
+claude/system/cf84e38f                                           events=1  unread=0  ignored=0  hidden=0  sets version
+claude/system/e30deae3                                           events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/02395c3b                                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/user/06a92237                                             events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/user/26447ba1                                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/40ff90f7                                             events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/user/95cc7663                                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user/9e9c1f9b                                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/a0a6aa13                                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user/a145ee8d                                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user/b8674d75                                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/d413b4c0                                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/ee34a304                                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user/fecbd0eb                                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/user:create/46cb8186                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:create/7b64c923                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/88137681                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/a57847e1                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/c7235a99                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:create/cb9b07b4                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/f0bde345                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/fd5456f5                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:file_unchanged/188c808e                              events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:file_unchanged/304df870                              events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:image:image/jpeg/52db81e2                            events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/jpeg/7fac42d6                            events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/jpeg/815aed94                            events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/jpeg/f7dfec7c                            events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:image:image/png/3b92c52c                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:image:image/png/52db81e2                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/png/7fac42d6                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/png/815aed94                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/png/f7dfec7c                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:parts/3414aa8b                                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:parts/8605832c                                       events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:parts/fac7cf57                                       events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/3759ff9d                                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:text/442bfe2e                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/4d282349                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/4f08929d                                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:text/b112b100                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/fb442193                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/fe8572c6                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/00b6b29e                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:update/04173b98                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:update/06e94175                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/08fb377d                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:update/16b97add                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/450ee988                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:update/55a6d4c5                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/59a94ea2                                      events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:update/5cde141a                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/afcc62b2                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/bab0e57e                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/d52fbf14                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/worktree-state/403d042d                                   events=0  unread=0  ignored=0  hidden=0  sets note
+claude/worktree-state/9cbfb7e5                                   events=0  unread=0  ignored=1  hidden=0  -
+codex/compacted/11695c0c                                         events=1  unread=0  ignored=1  hidden=0  notice
+codex/compacted/4610ee6a                                         events=1  unread=0  ignored=1  hidden=0  notice
+codex/compacted/4772c13b                                         events=1  unread=0  ignored=1  hidden=0  notice
+codex/compacted/4e1d9b3b                                         events=1  unread=0  ignored=1  hidden=0  notice
+codex/compacted/a4e7ee74                                         events=1  unread=0  ignored=1  hidden=0  notice
+codex/event_msg:agent_message/9241054a                           events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:item_completed:AgentMessage/163e3e8e             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:AgentMessage/66e5088c             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:AgentMessage/bce66560             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:CollabAgentToolCall/4f0a03b2      events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:item_completed:CommandExecution/0fbf21ee         events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:CommandExecution/158dd2a2         events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:CommandExecution/1a28eb44         events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:CommandExecution/b55be9ac         events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:CommandExecution/d2497e46         events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:ContextCompaction/1ac0d7a9        events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:item_completed:ContextCompaction/c22e8788        events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:item_completed:Extension/34542239                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/422efa53                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/485b8d4c                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/49295d12                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/55fcaf18                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/8eb96bfd                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/d31cfdd8                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Extension/dcf2d62f                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/16fbcfed               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/5a002183               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/8c9b96ea               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/97648891               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/a2769be2               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/b55812a0               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/b7b871cf               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/bf6da0f7               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:FileChange/e982c218               events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:ImageView/dc7c9c1e                events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/0c1c0ea5              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/148b9e54              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/1ea6421c              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/71dc172e              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/84c8d003              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/94f6baa8              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:McpToolCall/ddf05321              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:Reasoning/25b99485                events=1  unread=0  ignored=1  hidden=0  reasoning
+codex/event_msg:item_completed:Reasoning/84efa230                events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:item_completed:SubAgentActivity/0d637544         events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:item_completed:UserMessage/2b83bfc3              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:UserMessage/53de3661              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:UserMessage/5f10e13c              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:item_completed:UserMessage/908f2bc7              events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:task_complete/299b98b3                           events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:task_complete/c48cd646                           events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:task_complete/d5ea7a71                           events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:task_complete/ead6d156                           events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:task_complete/fabaa7f5                           events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:task_started/22e0d105                            events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:task_started/78d790bb                            events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:task_started/ebc4901f                            events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_goal_updated/69741de3                     events=1  unread=0  ignored=1  hidden=0  plan
+codex/event_msg:thread_settings_applied/003c819f                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/1c666bff                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/2d43c9e0                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/8e336a81                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/9121606f                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/959a1b10                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/9e141f6c                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/c3062a5b                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:thread_settings_applied/d0247238                 events=0  unread=0  ignored=2  hidden=0  -
+codex/event_msg:token_count/0ed53911                             events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:token_count/1b228662                             events=0  unread=0  ignored=1  hidden=0  sets usage
+codex/event_msg:token_count/247cd205                             events=0  unread=0  ignored=1  hidden=0  sets usage
+codex/event_msg:token_count/4bf9d5a7                             events=0  unread=0  ignored=1  hidden=0  sets usage
+codex/event_msg:token_count/af8a3d7d                             events=0  unread=0  ignored=1  hidden=0  -
+codex/event_msg:token_count/e42a974c                             events=0  unread=0  ignored=1  hidden=0  sets usage
+codex/event_msg:turn_aborted/37985900                            events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/event_msg:user_message/84fc640f                            events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/inter_agent_communication_metadata/d45d0dbd                events=0  unread=0  ignored=2  hidden=0  -
+codex/response_item:agent_message/17e1bb0e                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:agent_message/791d7315                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:agent_message/871961a3                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:agent_message/abeae099                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:agent_message/c9462bde                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:agent_message/e1fdfa99                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:compaction/c56243b5                          events=0  unread=0  ignored=2  hidden=0  -
+codex/response_item:custom_tool_call/0656dd26                    events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:custom_tool_call_output/05b1350b             events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:custom_tool_call_output/1b9c44fc             events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:custom_tool_call_output/485011ff             events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:custom_tool_call_output/9cde115a             events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:custom_tool_call_output/fda7399f             events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call/271d8ba3                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:function_call/45dcce14                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:function_call/96869c07                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:function_call/d0797fe0                       events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:function_call_output/034773f8                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/05b1350b                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/1b9c44fc                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/485011ff                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/919e29c4                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/b551b005                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:function_call_output/fda7399f                events=1  unread=0  ignored=1  hidden=0  record
+codex/response_item:message/2089a291                             events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:message/2e05ced9                             events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:message/749cdd33                             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:message/7e30b466                             events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:message/a14b609d                             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:message/aa1c12d1                             events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:message/bddf0f1a                             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:message/c7d715f2                             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:message/d7db6778                             events=1  unread=0  ignored=1  hidden=0  sets ending
+codex/response_item:reasoning/83c89407                           events=1  unread=0  ignored=1  hidden=0  reasoning
+codex/response_item:reasoning/8e073025                           events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:reasoning/a0ef3047                           events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:reasoning/bcc8a8a2                           events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:reasoning/df2d2df5                           events=0  unread=0  ignored=1  hidden=0  -
+codex/response_item:reasoning/fdf6d191                           events=1  unread=0  ignored=1  hidden=0  reasoning
+codex/session_meta/040e2671                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/07754e16                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/0b1ef1d3                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/1e502bac                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/23f6beb5                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/3192d25a                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/6557f983                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/69e2926d                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/8657b09c                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/92fbcf9f                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/996b1765                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/9e3601b2                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/token_usage_record/9cfd52e3                                events=0  unread=0  ignored=2  hidden=0  -
+codex/token_usage_record/adb2af8a                                events=0  unread=0  ignored=2  hidden=0  -
+codex/turn_context:disabled:danger-full-access/b7d532c1          events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/71dd7238                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/7ad2f403                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/8d5d4906                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/90e30080                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/9881078c                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/d7f0110a                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/d9c55e2b                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:read-only/e54a4c92                    events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/14b29ed2              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/1cac1ef4              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/3a087964              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/45bc1662              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/64b3626b              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/6aadd296              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/87306068              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/turn_context:managed:workspace-write/f27e75de              events=0  unread=0  ignored=1  hidden=0  sets model
+codex/world_state/3c070011                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/6a024cb7                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/867fcdc0                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/8bb34bf5                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/8f850375                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/93d227f9                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/a26eea14                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/b4ad8856                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/c5aa5519                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/da797594                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/e3a4d0dd                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/fab0cc6c                                       events=0  unread=0  ignored=2  hidden=0  -
+copilot/abort/52c8fa90                                           events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/assistant.message/00585321                               events=0  unread=0  ignored=1  hidden=0  -
+copilot/assistant.message/168c1975                               events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/assistant.message/521f5b50                               events=0  unread=0  ignored=1  hidden=0  -
+copilot/assistant.message/8605a661                               events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/assistant.message/9a9510f2                               events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/assistant.message/b05bbb39                               events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/assistant.message/d905bf54                               events=0  unread=0  ignored=1  hidden=0  -
+copilot/assistant.message/fa108873                               events=0  unread=0  ignored=1  hidden=0  -
+copilot/assistant.turn_end/ac50f6ac                              events=0  unread=0  ignored=1  hidden=0  -
+copilot/assistant.turn_start/09698653                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.end/140e1029                                        events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.end/8d33bf6d                                        events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/28f38b2f                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/2cc5f571                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/367a892b                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/38b92a0b                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/89630730                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/8fdbf9eb                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/a29428f6                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/hook.start/e4c12332                                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.completed/64f5adbd                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.requested/11accad4                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.requested/2b0aef54                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.requested/8600b0b3                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.requested/8b4a4688                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/permission.requested/c0dc3f7c                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.auto_mode_resolved/7d10fd17                      events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.compaction_complete/8c5d17c4                     events=1  unread=0  ignored=0  hidden=0  notice
+copilot/session.compaction_start/8862fa70                        events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.compaction_start/ff0774f3                        events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.error/6faf5f85                                   events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/session.error/9fc5ff02                                   events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/session.info/9cc38f81                                    events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.mode_changed/4f2ade69                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.model_change/137d8763                            events=0  unread=0  ignored=0  hidden=0  sets model
+copilot/session.model_change/c363aeb5                            events=0  unread=0  ignored=0  hidden=0  sets model
+copilot/session.model_change/c6bdbf8a                            events=0  unread=0  ignored=0  hidden=0  sets model
+copilot/session.model_change/e44a291c                            events=0  unread=0  ignored=0  hidden=0  sets model
+copilot/session.model_change/ffa24578                            events=0  unread=0  ignored=0  hidden=0  sets model
+copilot/session.plan_changed/e058a780                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.resume/1ca39cfd                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.resume/1ef91e74                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.resume/45cb9775                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.resume/84e599b4                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.shutdown/03f2130f                                events=0  unread=0  ignored=1  hidden=0  sets usage
+copilot/session.shutdown/5e92f3c4                                events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.shutdown/9f8fdf01                                events=0  unread=0  ignored=1  hidden=0  sets usage
+copilot/session.shutdown/aa1a7a3e                                events=0  unread=0  ignored=1  hidden=0  sets usage
+copilot/session.shutdown/b160161a                                events=0  unread=0  ignored=1  hidden=0  sets usage
+copilot/session.start/09be8936                                   events=0  unread=0  ignored=0  hidden=0  sets cwd+version
+copilot/session.start/12c13b75                                   events=0  unread=0  ignored=0  hidden=0  sets cwd+version
+copilot/session.start/590005af                                   events=0  unread=0  ignored=0  hidden=0  sets cwd+version
+copilot/session.start/987092de                                   events=0  unread=0  ignored=0  hidden=0  sets cwd+version
+copilot/session.start/ccdd6f3d                                   events=0  unread=0  ignored=0  hidden=0  sets cwd+version
+copilot/session.task_complete/7415f2a9                           events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.task_complete/9fcf41a2                           events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.usage_checkpoint/13cf7f17                        events=0  unread=0  ignored=1  hidden=0  -
+copilot/session.warning/dfd1c040                                 events=1  unread=0  ignored=0  hidden=0  notice
+copilot/skill.invoked/4b0e1016                                   events=0  unread=0  ignored=1  hidden=0  -
+copilot/skill.invoked/6efa4418                                   events=0  unread=0  ignored=1  hidden=0  -
+copilot/skill.invoked/866d778a                                   events=0  unread=0  ignored=1  hidden=0  -
+copilot/subagent.completed/45b16745                              events=1  unread=0  ignored=0  hidden=0  record
+copilot/subagent.completed/6dba185c                              events=1  unread=0  ignored=0  hidden=0  record
+copilot/subagent.failed/53979956                                 events=1  unread=0  ignored=0  hidden=0  record
+copilot/subagent.failed/865f45c4                                 events=1  unread=0  ignored=0  hidden=0  record
+copilot/subagent.selected/eb7a3af1                               events=0  unread=0  ignored=1  hidden=0  -
+copilot/subagent.started/9a3cb5cb                                events=0  unread=0  ignored=1  hidden=0  -
+copilot/system.message/49556dbc                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/system.message/556c2686                                  events=0  unread=0  ignored=1  hidden=0  -
+copilot/system.notification:agent_completed/fe543845             events=0  unread=0  ignored=1  hidden=0  -
+copilot/system.notification:shell_completed/7f34144a             events=0  unread=0  ignored=1  hidden=0  -
+copilot/tool.execution_complete/057a4f81                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/51219056                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/74ccc8fb                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/75cd4989                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/9b4ac504                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/c8fc7a0a                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_complete/f2060529                         events=1  unread=0  ignored=0  hidden=0  record
+copilot/tool.execution_start/187254ad                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start/1954e20b                            events=0  unread=0  ignored=1  hidden=0  -
+copilot/tool.execution_start/51c51cdc                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start/5ac57512                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start/a633a709                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start/cd017646                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start/cf85789e                            events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start:js,ts,py,sql,sh/53aa6dac            events=0  unread=0  ignored=0  hidden=1  -
+copilot/tool.execution_start:log/53aa6dac                        events=0  unread=0  ignored=0  hidden=1  -
+copilot/tool.execution_start:log/8e9dfd02                        events=0  unread=0  ignored=0  hidden=1  -
+copilot/tool.execution_start:py/b17c6969                         events=0  unread=0  ignored=0  hidden=1  -
+copilot/tool.execution_start:swift/4c5a350a                      events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start:swift/b879a6eb                      events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/tool.execution_start:txt/8e9dfd02                        events=0  unread=0  ignored=0  hidden=1  -
+copilot/user.message/07571fb4                                    events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/user.message/48d7f5d1                                    events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/user.message/5523ea82                                    events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/user.message/8df4eb27                                    events=1  unread=0  ignored=0  hidden=0  sets ending
+copilot/user.message/f8fa802c                                    events=1  unread=0  ignored=0  hidden=0  sets ending
