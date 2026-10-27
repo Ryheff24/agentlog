@@ -40,6 +40,10 @@ func (e Env) ctx() context.Context {
 
 // Run executes one invocation and returns the process exit code.
 func Run(env Env, args []string) int {
+	if len(args) == 1 && args[0] == "--version" {
+		fmt.Fprintln(env.Stdout, "agentlog", version())
+		return 0
+	}
 	if len(args) > 0 && args[0] == "feedback" {
 		if err := feedback(env, args[1:]); err != nil {
 			fmt.Fprintf(env.Stderr, "agentlog: %v\n", err)
