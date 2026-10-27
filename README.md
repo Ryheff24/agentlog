@@ -74,7 +74,7 @@ The Linux builds are reproducible: `scripts/release.sh` run on the tag with
 the same Go version (`go version -m agentlog` shows which) gives the same
 bytes.
 
-With Go 1.25 or later, you can instead run:
+With Go 1.26 or later, you can instead run:
 
 ```sh
 go install github.com/Ryheff24/agentlog/cmd/agentlog@latest
