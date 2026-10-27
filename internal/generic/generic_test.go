@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 var at = time.Date(2026, 9, 19, 10, 0, 0, 0, time.UTC)

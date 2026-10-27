@@ -1,8 +1,8 @@
 package codex
 
 import (
-	"agentlog/internal/spec"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // table is what this reader knows about Codex rollouts. Codex writes the same

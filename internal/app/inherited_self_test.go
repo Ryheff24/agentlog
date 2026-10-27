@@ -1,9 +1,10 @@
 package app
 
 import (
-	"agentlog/internal/engine"
 	"encoding/json"
 	"testing"
+
+	"github.com/Ryheff24/agentlog/internal/engine"
 )
 
 // Real atools-a has its parent's CLAUDE_CODE_SESSION_ID, while the log's

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Clues is everything an agent passed as free-form positional arguments.

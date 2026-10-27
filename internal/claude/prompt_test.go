@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // A user-role record is not always a person typing. The harness writes its

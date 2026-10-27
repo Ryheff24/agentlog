@@ -25,7 +25,7 @@ table=$(awk -F'[: ]' 'NR > 1 {
 	key = $1 ":" $2
 	stmts[key] = $3
 	if ($4 > 0) hit[key] = 1
-	pkg = $1; sub(/\/[^\/]*$/, "", pkg); sub(/^agentlog\//, "", pkg)
+	pkg = $1; sub(/\/[^\/]*$/, "", pkg); sub(/^github.com\/Ryheff24\/agentlog\//, "", pkg)
 	owner[key] = pkg
 }
 END {

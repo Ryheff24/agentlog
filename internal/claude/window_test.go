@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // tailFrom returns a TailBytes that cuts the log a few bytes before record

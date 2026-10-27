@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 const sessionID = "7c1e2bad-1111-4222-8333-444455556666"

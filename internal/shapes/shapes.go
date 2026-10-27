@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"agentlog/internal/flat"
+	"github.com/Ryheff24/agentlog/internal/flat"
 )
 
 // Shape identifies one record layout.

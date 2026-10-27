@@ -1,9 +1,10 @@
 package engine
 
 import (
-	"agentlog/internal/transcript"
 	"fmt"
 	"strings"
+
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Provenance describes recorded evidence, never the current checkout.

@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // noAgent clears the variables that mark a run as an agent's, including

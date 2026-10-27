@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
-	"agentlog/internal/render"
-	"agentlog/internal/scan"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/scan"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // touched answers "who worked on this file" — the question an agent asks

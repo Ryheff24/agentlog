@@ -1,9 +1,6 @@
 package app
 
 import (
-	"agentlog/internal/engine"
-	"agentlog/internal/render"
-	"agentlog/internal/transcript"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -12,6 +9,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestFeedbackFixCommands(t *testing.T) {

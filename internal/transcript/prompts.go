@@ -1,10 +1,11 @@
 package transcript
 
 import (
-	"agentlog/internal/clip"
 	"encoding/json"
 	"regexp"
 	"strings"
+
+	"github.com/Ryheff24/agentlog/internal/clip"
 )
 
 // PromptHints reads provenance flags without interpreting arbitrary nested

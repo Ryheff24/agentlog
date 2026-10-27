@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
 )
 
 // Harvest reads real logs and returns one redacted example of every record

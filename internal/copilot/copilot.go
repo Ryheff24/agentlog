@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/clip"
-	"agentlog/internal/generic"
-	"agentlog/internal/jsonl"
-	"agentlog/internal/patch"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/generic"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/patch"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Provider locates and parses Copilot CLI logs under Home (default ~/.copilot).

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // The drift footer is how a reader learns it is not looking at the whole

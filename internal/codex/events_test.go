@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func event(at float64, p map[string]any) rec { return rec{at: at, typ: "event_msg", payload: p} }

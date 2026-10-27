@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Preview prints the overview of one session: identity, how it ended, what

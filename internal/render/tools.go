@@ -5,9 +5,9 @@ import (
 	"io"
 	"strings"
 
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Tools prints the tool census: what a session actually did, in one screen,

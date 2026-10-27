@@ -5,9 +5,9 @@ import (
 	"io"
 	"strings"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/clip"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // projectSessions is how many of a project's sessions are shown in full.

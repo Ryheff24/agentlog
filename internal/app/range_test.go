@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/render"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // A range with --kind or --grep shows the events in it that match, not every

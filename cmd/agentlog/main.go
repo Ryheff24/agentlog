@@ -10,13 +10,13 @@ import (
 	"syscall"
 	"time"
 
-	"agentlog/internal/app"
-	"agentlog/internal/catalog"
-	"agentlog/internal/claude"
-	"agentlog/internal/codex"
-	"agentlog/internal/copilot"
-	"agentlog/internal/monitor"
-	"agentlog/internal/work"
+	"github.com/Ryheff24/agentlog/internal/app"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/claude"
+	"github.com/Ryheff24/agentlog/internal/codex"
+	"github.com/Ryheff24/agentlog/internal/copilot"
+	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/work"
 )
 
 func main() {

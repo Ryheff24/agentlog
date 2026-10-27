@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Project is the sessions that worked in one repository, or in one

@@ -1,8 +1,9 @@
 package copilot
 
 import (
-	"agentlog/internal/transcript"
 	"testing"
+
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func shutdown(model string, input, output, read, write int64, requests int, cumulative bool) map[string]any {

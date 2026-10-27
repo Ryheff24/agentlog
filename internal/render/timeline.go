@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Timeline prints a selection: one line per event, with the excerpts that

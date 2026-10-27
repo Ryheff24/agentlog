@@ -1,10 +1,11 @@
 package engine
 
 import (
-	"agentlog/internal/transcript"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestOwnerRefusalAndHandbackSelectors(t *testing.T) {

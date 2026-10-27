@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // loadLog writes entries as a session log and reads it back.

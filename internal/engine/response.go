@@ -3,8 +3,8 @@ package engine
 import (
 	"fmt"
 
-	"agentlog/internal/clip"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Response is what --json emits. It is never the raw transcript: a transcript

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // ParseEnvelope parses the "*** Begin Patch" format used by Codex and Copilot

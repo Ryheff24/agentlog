@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // loadRecs writes one rollout for the thread and reads it back.

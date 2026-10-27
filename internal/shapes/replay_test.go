@@ -10,12 +10,12 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/claude"
-	"agentlog/internal/codex"
-	"agentlog/internal/copilot"
-	"agentlog/internal/shapes"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/claude"
+	"github.com/Ryheff24/agentlog/internal/codex"
+	"github.com/Ryheff24/agentlog/internal/copilot"
+	"github.com/Ryheff24/agentlog/internal/shapes"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 var (

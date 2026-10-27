@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/clip"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Usage is the one-screen syntax reminder printed on the home screen and by

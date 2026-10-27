@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"agentlog/internal/monitor"
-	"agentlog/internal/transcript"
-	"agentlog/internal/work"
+	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/work"
 )
 
 // Provider is one agent harness's log reader.

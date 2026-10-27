@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"agentlog/internal/jsonl"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Provider locates and parses Claude Code logs under Home (default ~/.claude).

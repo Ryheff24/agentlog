@@ -15,8 +15,8 @@ import (
 	"strconv"
 	"time"
 
-	"agentlog/internal/monitor"
-	"agentlog/internal/usage"
+	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/usage"
 )
 
 func main() {

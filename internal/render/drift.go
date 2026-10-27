@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"agentlog/internal/engine"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Drift is the footer a view ends with when the log held records this build

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestParseClues(t *testing.T) {

@@ -15,11 +15,11 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/engine"
-	"agentlog/internal/render"
-	"agentlog/internal/scan"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/scan"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Feedback lives in two places. An agent's note is read back from its own

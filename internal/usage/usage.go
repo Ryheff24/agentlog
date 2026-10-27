@@ -8,7 +8,6 @@
 package usage
 
 import (
-	"agentlog/internal/shell"
 	"bufio"
 	"bytes"
 	"encoding/json"
@@ -20,6 +19,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/shell"
 )
 
 // Call is one tool call in which an agent ran agentlog.

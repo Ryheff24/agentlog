@@ -1,6 +1,6 @@
 package copilot
 
-import "agentlog/internal/transcript"
+import "github.com/Ryheff24/agentlog/internal/transcript"
 
 type modelMetric struct {
 	Usage struct {

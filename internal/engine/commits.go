@@ -1,6 +1,6 @@
 package engine
 
-import "agentlog/internal/transcript"
+import "github.com/Ryheff24/agentlog/internal/transcript"
 
 // Commit is a repository operation and the event that performed it, so a
 // reader can go from the sha back to the work that produced it.

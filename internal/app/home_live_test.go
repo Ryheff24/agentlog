@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestHomeKeepsCrossProjectRunningWorkVisible(t *testing.T) {

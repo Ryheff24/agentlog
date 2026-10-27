@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Running Claude Code processes each keep ~/.claude/sessions/<pid>.json with

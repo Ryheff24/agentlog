@@ -12,7 +12,7 @@ import (
 	"regexp"
 	"strings"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Filter is the question a view asks of a transcript.

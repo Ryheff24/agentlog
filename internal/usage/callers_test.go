@@ -15,7 +15,7 @@ func TestDeduplicatedCallersAndDevelopment(t *testing.T) {
 	dev["cwd"] = "/work/dashboard/agentlog"
 	writeLines(t, filepath.Join(root, "dev.jsonl"), dev, claudeResult(3, "development-call", "read"))
 	edit := claudeUse(4, "edited-call", "agentlog --usage")
-	writeLines(t, filepath.Join(root, "edit.jsonl"), edit, claudeResult(5, "edited-call", "read"), map[string]any{"type": "assistant", "message": map[string]any{"content": []any{map[string]any{"type": "tool_use", "name": "Edit", "input": map[string]any{"file_path": "agentlog/internal/a.go"}}}}})
+	writeLines(t, filepath.Join(root, "edit.jsonl"), edit, claudeResult(5, "edited-call", "read"), map[string]any{"type": "assistant", "message": map[string]any{"content": []any{map[string]any{"type": "tool_use", "name": "Edit", "input": map[string]any{"file_path": "github.com/Ryheff24/agentlog/internal/a.go"}}}}})
 	cs, ss := Scan(root, "", time.Time{})
 	if len(cs) != 3 {
 		t.Fatalf("dedup: %+v", cs)

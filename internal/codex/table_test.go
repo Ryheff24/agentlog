@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/spec"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // See the note on the same test for Claude. Codex writes three families of

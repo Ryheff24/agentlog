@@ -1,9 +1,10 @@
 package app
 
 import (
-	"agentlog/internal/shell"
 	"path/filepath"
 	"strings"
+
+	"github.com/Ryheff24/agentlog/internal/shell"
 )
 
 // feedbackCalls returns the message of every `agentlog feedback add` that a

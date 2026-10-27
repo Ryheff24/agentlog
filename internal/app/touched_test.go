@@ -3,8 +3,8 @@ package app
 import (
 	"testing"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // A clue that narrows the field is not a clue that names a session: opening
@@ -41,7 +41,7 @@ func TestMatchesPathAcrossCheckouts(t *testing.T) {
 	}{
 		{"/w/shop/src/internal/analytics/reportdata.go", true},
 		{"/w/shop-raids/src/internal/analytics/reportdata.go", true}, // another worktree
-		{"/elsewhere/analytics/reportdata.go", true},               // same dir and file
+		{"/elsewhere/analytics/reportdata.go", true},                 // same dir and file
 		{"/w/shop/src/internal/reportdata.go", false},                // different directory
 		{"/w/shop/src/internal/analytics/reportdata_test.go", false}, // different file
 		{"/w/shop/src/internal/analytics/reportdata.go.orig", false}, //

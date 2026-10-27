@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/monitor"
 )
 
 // Run is agentlog's record of one of its own runs.

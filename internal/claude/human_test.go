@@ -1,8 +1,9 @@
 package claude
 
 import (
-	"agentlog/internal/transcript"
 	"testing"
+
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestQueuedHumanAndSyntheticPrompts(t *testing.T) {

@@ -6,13 +6,13 @@ import (
 	"sort"
 	"strings"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
-	"agentlog/internal/render"
-	"agentlog/internal/spec"
-	"agentlog/internal/transcript"
-	"agentlog/internal/work"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/work"
 )
 
 // doctor reports how much of each harness's logs this build can still read.

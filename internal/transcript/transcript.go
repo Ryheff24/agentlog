@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/spec"
 )
 
 // Provider names.

@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"agentlog/internal/spec"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // The table is a second statement of what the reader knows, and two statements

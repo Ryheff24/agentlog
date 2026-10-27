@@ -13,9 +13,9 @@ import (
 	"strings"
 	"sync"
 
-	"agentlog/internal/monitor"
-	"agentlog/internal/transcript"
-	"agentlog/internal/work"
+	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/work"
 )
 
 // Match is one session whose log contains the pattern.

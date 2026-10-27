@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/flat"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/flat"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Event builds the best event that can be made of a record without knowing

@@ -1,11 +1,12 @@
 package claude
 
 import (
-	"agentlog/internal/transcript"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Whole histories are replayed with restamped cwd/version/branch metadata.

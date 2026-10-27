@@ -1,9 +1,6 @@
 package app
 
 import (
-	"agentlog/internal/catalog"
-	"agentlog/internal/claude"
-	"agentlog/internal/transcript"
 	"encoding/json"
 	"io"
 	"os"
@@ -11,6 +8,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/claude"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func TestImagesExportEverySelectedSessionAndChild(t *testing.T) {

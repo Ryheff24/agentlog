@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/clip"
-	"agentlog/internal/generic"
-	"agentlog/internal/jsonl"
-	"agentlog/internal/patch"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/generic"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/patch"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // record is one rollout line, lazily decoded.
@@ -195,9 +195,9 @@ const pairWindow = 64
 
 type builder struct {
 	userRecords map[string]record
-	current record
-	t       *transcript.Transcript
-	meta    sessionMeta
+	current     record
+	t           *transcript.Transcript
+	meta        sessionMeta
 
 	origins  []origin        // parallel to t.Events
 	calls    map[string]int  // call_id -> index in t.Events
@@ -216,7 +216,7 @@ type builder struct {
 
 func newBuilder(t *transcript.Transcript, meta sessionMeta) *builder {
 	t.Session.Version = meta.CLIVersion
-	return &builder{userRecords:map[string]record{},t: t, meta: meta, calls: map[string]int{}, agents: map[string]int{},
+	return &builder{userRecords: map[string]record{}, t: t, meta: meta, calls: map[string]int{}, agents: map[string]int{},
 		answered: map[int]bool{}, skipped: map[string]bool{}, items: map[string]bool{}}
 }
 
@@ -336,7 +336,7 @@ func (b *builder) merge(i int, e transcript.Event, src source) {
 	b.origins[i].paired = true
 	b.answered[i] = true
 	dst := &b.t.Events[i]
-	originalSource:=dst.Source
+	originalSource := dst.Source
 	if src == fromItem {
 		preferItem(dst, e)
 	} else {
@@ -345,8 +345,10 @@ func (b *builder) merge(i int, e transcript.Event, src source) {
 		merged.Time, merged.Line = dst.Time, dst.Line
 		*dst = merged
 	}
-	dst.Source=originalSource
-	if e.Line>0 { dst.ResultLine,dst.ResultSource=e.Line,b.current.file }
+	dst.Source = originalSource
+	if e.Line > 0 {
+		dst.ResultLine, dst.ResultSource = e.Line, b.current.file
+	}
 	if dst.CallID == "" && e.CallID != "" {
 		dst.CallID = e.CallID
 		b.calls[e.CallID] = i
@@ -569,8 +571,11 @@ func (b *builder) eventMsg(r record) {
 			text = strings.TrimSpace(text + fmt.Sprintf(" [%d image(s)]", len(m.Images)))
 		}
 		if text != "" {
-			i:=b.addPaired(transcript.Event{Time: r.ts, Kind: transcript.KindUser, Text: text, Line: r.line}, fromLegacy, textKey("user", text), "")
-			if other,ok:=b.userRecords[textKey("user",text)]; ok { b.t.Events[i].ResultSource,b.t.Events[i].ResultLine=other.file,other.line; delete(b.userRecords,textKey("user",text)) }
+			i := b.addPaired(transcript.Event{Time: r.ts, Kind: transcript.KindUser, Text: text, Line: r.line}, fromLegacy, textKey("user", text), "")
+			if other, ok := b.userRecords[textKey("user", text)]; ok {
+				b.t.Events[i].ResultSource, b.t.Events[i].ResultLine = other.file, other.line
+				delete(b.userRecords, textKey("user", text))
+			}
 		}
 	case "exec_command_end":
 		var m struct {
@@ -762,9 +767,16 @@ func (b *builder) responseItem(r record) {
 			}
 		case "user":
 			if b.hasUserEvts {
-				key:=textKey("user",clip.StripInjected(text))
-				b.userRecords[key]=r
-				for i:=len(b.t.Events)-1; i>=0 && i>=len(b.t.Events)-pairWindow; i-- { e:=&b.t.Events[i]; if e.Kind==transcript.KindUser && textKey("user",e.Text)==key { e.ResultSource,e.ResultLine=r.file,r.line; delete(b.userRecords,key); break } }
+				key := textKey("user", clip.StripInjected(text))
+				b.userRecords[key] = r
+				for i := len(b.t.Events) - 1; i >= 0 && i >= len(b.t.Events)-pairWindow; i-- {
+					e := &b.t.Events[i]
+					if e.Kind == transcript.KindUser && textKey("user", e.Text) == key {
+						e.ResultSource, e.ResultLine = r.file, r.line
+						delete(b.userRecords, key)
+						break
+					}
+				}
 				return
 			}
 			if text = clip.StripInjected(text); text != "" {

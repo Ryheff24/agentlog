@@ -1,13 +1,14 @@
 package app
 
 import (
-	"agentlog/internal/clip"
-	"agentlog/internal/engine"
 	"encoding/json"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
 )
 
 func TestJSONAndTextShareMax(t *testing.T) {

@@ -1,13 +1,14 @@
 package app
 
 import (
-	"agentlog/internal/engine"
-	"agentlog/internal/shell"
 	"encoding/json"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/shell"
 )
 
 func TestFollowingHintsContinuesSelection(t *testing.T) {

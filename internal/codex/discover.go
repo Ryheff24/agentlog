@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/jsonl"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Provider locates and parses Codex logs under Home (default ~/.codex).

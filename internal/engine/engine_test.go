@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func transcriptOf(events ...transcript.Event) *transcript.Transcript {

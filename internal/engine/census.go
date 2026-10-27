@@ -3,7 +3,7 @@ package engine
 import (
 	"sort"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // ToolUse is one tool's share of a session: how often it was called, how often

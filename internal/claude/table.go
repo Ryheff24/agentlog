@@ -1,8 +1,8 @@
 package claude
 
 import (
-	"agentlog/internal/spec"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/spec"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // table is everything this reader knows about Claude Code's log format,

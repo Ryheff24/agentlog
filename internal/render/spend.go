@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Spend prints what sessions cost: tokens, money, and how close the account

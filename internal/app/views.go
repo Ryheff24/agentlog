@@ -9,11 +9,11 @@ import (
 	"sort"
 	"strings"
 
-	"agentlog/internal/catalog"
-	"agentlog/internal/engine"
-	"agentlog/internal/jsonl"
-	"agentlog/internal/render"
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/catalog"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/jsonl"
+	"github.com/Ryheff24/agentlog/internal/render"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 func boolInt(b bool) int {

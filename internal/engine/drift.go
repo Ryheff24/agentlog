@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
 // Drift says what this build could not read, in one line, or nothing when it
