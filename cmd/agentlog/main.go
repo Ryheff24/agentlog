@@ -16,6 +16,7 @@ import (
 	"github.com/Ryheff24/agentlog/internal/codex"
 	"github.com/Ryheff24/agentlog/internal/copilot"
 	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/work"
 )
 
@@ -36,7 +37,10 @@ func main() {
 		CWD:       cwd,
 		Now:       time.Now(),
 	}
-	out, errOut := &counter{w: os.Stdout}, &counter{w: os.Stderr}
+	// Log text can carry terminal escape sequences; a person's terminal gets
+	// them made visible, an agent's pipe gets the bytes.
+	out := &counter{w: term.Safe(os.Stdout, os.Stdout)}
+	errOut := &counter{w: term.Safe(os.Stderr, os.Stderr)}
 	code := app.Run(app.Env{Catalog: cat, Stdout: out, Stderr: errOut, Ctx: ctx}, os.Args[1:])
 	monitor.Finish(code, out.n, errOut.n)
 	os.Exit(code)
