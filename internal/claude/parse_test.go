@@ -667,3 +667,33 @@ func TestLoadNotesWhereTheSessionRan(t *testing.T) {
 		t.Fatalf("notes %q, %d events, unknown %v", tr.Notes, len(tr.Events), tr.Unknowns)
 	}
 }
+
+// Since 2.1.300 Claude Code keeps a copy of every request it sent the model.
+// The conversation is already in the log, so the copies add no events; they
+// are counted, and never reported as records this build cannot read.
+func TestLoadIgnoresRequestCopies(t *testing.T) {
+	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
+	writeJSONL(t, path, []map[string]any{
+		user("do it"),
+		{"type": "api-request-shape", "shapeHash": "a1", "shape": map[string]any{"system": []any{map[string]any{"type": "text", "text": "system prompt"}}}},
+		{"type": "api-request-blob", "hash": "b1", "message": map[string]any{"role": "user", "content": "do it"}},
+		{"type": "api-request-blob", "hash": "b2", "agentId": "a2", "message": map[string]any{"role": "system", "content": []any{map[string]any{"type": "text", "text": "reminder"}}}},
+		{"type": "api-request", "id": "r1", "shapeHash": "a1", "tail": []any{"b1", "b2"}},
+	})
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := kinds(tr); got != "user" {
+		t.Errorf("kinds = %q, want only the prompt", got)
+	}
+	if len(tr.Unknowns) != 0 {
+		t.Errorf("Unknowns = %v, want none", tr.Unknowns)
+	}
+	want := map[string]int{"api-request": 1, "api-request-shape": 1, "api-request-blob": 2}
+	for k, n := range want {
+		if tr.Ignored[k] != n {
+			t.Errorf("Ignored[%q] = %d, want %d (all: %v)", k, tr.Ignored[k], n, tr.Ignored)
+		}
+	}
+}

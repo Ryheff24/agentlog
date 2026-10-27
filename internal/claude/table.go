@@ -38,6 +38,9 @@ func init() {
 			{"file-history-snapshot", spec.Ignore, "the harness's own file store"},
 			{"file-history-delta", spec.Ignore, "the harness's own file store"},
 			{"frame-link", spec.Ignore, "internal linkage"},
+			{"api-request", spec.Ignore, "a copy of one request sent to the model, by reference"},
+			{"api-request-shape", spec.Ignore, "the system prompt and tool definitions those requests used"},
+			{"api-request-blob", spec.Ignore, "one piece of a request's content, stored once"},
 
 			{"summary", spec.Ignore, "compaction summary, shown via the compaction notice"},
 		},

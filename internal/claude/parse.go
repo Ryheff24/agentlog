@@ -350,6 +350,10 @@ var ignoredTypes = map[string]bool{
 	"last-prompt": true, "mode": true, "permission-mode": true, "atis-latch": true,
 	"bridge-session": true, "agent-name": true, "file-history-snapshot": true,
 	"file-history-delta": true, "frame-link": true, "summary": true,
+	// Since 2.1.300 the harness also keeps a copy of every request it sent to
+	// the model. The conversation is already in the log; what only the copy
+	// holds (system prompt, tool definitions) is not a step anyone took.
+	"api-request": true, "api-request-shape": true, "api-request-blob": true,
 }
 
 // modelUsage is one model's share of a cost-state record.
