@@ -36,7 +36,9 @@ agent already has (a project name, "it was Codex", "two hours ago") narrows the
 search, so the tool should take all of it at once.
 
 **In practice.** Agents should almost never run it bare or start with
-`--help`. The snippet in the README exists so they don't have to. When several
+`--help`. The snippet in the README exists so they don't have to. When one
+does, it isn't wasted: `--help` prints the same screen as a bare call, the
+running sessions and every flag, so it never needs both. When several
 sessions match a naming clue equally well, the answer is the list, not the
 newest one previewed as though it were the one meant.
 

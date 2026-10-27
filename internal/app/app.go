@@ -56,9 +56,10 @@ func Run(env Env, args []string) int {
 		fmt.Fprintf(env.Stderr, "agentlog: %v\n\n%s\n", err, render.Usage)
 		return 2
 	}
+	// --help is the home screen: the sessions an agent is most likely to ask
+	// about, then the usage, so it never has to make both calls.
 	if opts.help {
-		fmt.Fprintln(env.Stdout, render.Usage)
-		return 0
+		opts, clueArgs = options{jobs: opts.jobs}, nil
 	}
 	printed := &byteWriter{Writer: env.Stdout}
 	env.Stdout = printed

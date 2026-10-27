@@ -13,38 +13,56 @@ import (
 
 // Usage is the one-screen syntax reminder printed on the home screen and by
 // --help. Keep it short: agents read it on every bare call.
-const Usage = `usage: agentlog [clues...] [view flags]
-clues (any order, all optional, combine freely):
-  codex | claude | copilot        harness
-  . | ~/path | project-name       working dir or project (exact dir, subdir, or name substring)
-  01a0a5c3 | codex://threads/ID   session id prefix or link → opens that session directly
-  2h | 3d | today | all           recency (default: last 7 days; widening is announced)
-  2026-09-09 | sep9 | 9/9         one day: sessions that were running on it
-  any other word                  matched against project, title, prompts, subagent names
-  <ref>#N  <ref>#N-M  <ref>#N-    one event / a range / from there to the end
-  src/App.tsx | /abs/path.go      a file: which sessions changed or mentioned it
-  doctor                          how much of each harness's logs this build can still read
-views on the best match (default: preview):
-  --tail N  --head N  --kind user,assistant,tool,edit,agent,plan,error,notice,reasoning
-	--user | --kind owner           human turns only; composes with ranges, grep, head/tail and JSON
-	--kind refusal                  refusal errors with category and explanation
-	--content                       search word clues in event content instead of session metadata
-	--count                         matching event and session counts only
-	--brief                         one line per event, at most 160 characters
-	--images                        save inline images to temp files, or list local paths/URLs
-	--tree                          sourced parent and descendant sessions
-	--include-handbacks             include historical agentlog output and agent messages in grep
-  --grep REGEX   --edits [--files]   --usage   --tools   --subagents   --json   --full   --max BYTES
-  --list [--limit N]              every match, not only the best (default 20 rows)
-  --projects                      one entry per repository: last work, its sessions, where each left off
-  --branches                      also show turns that were rewound or edited away
-output size:
-  --max BYTES                     clip each expanded message/output/diff (default 6000)
-  --full                          do not clip individual expanded blocks
+const Usage = `usage: agentlog [clues...] [flags]   (--help prints this same screen)
+clues (any order, all optional):
+  claude | codex | copilot           harness
+  . | here | ~/path | project        dir (exact, subdir or parent) or project name
+  3f9c2e1a | codex://threads/ID      session id prefix or link: opens that session
+  agent-ID                           a subagent, by the id its ref prints
+  2h | 3d | today | yesterday | all  recency (default 7 days; widening is announced)
+  2026-09-09 | sep9 | 9/9            one day: sessions running on it
+  src/App.tsx | /abs/path.go         a file: sessions that changed or mentioned it
+  path/to/log.jsonl                  read that log file
+  <ref>#N  <ref>#N-M  <ref>#N-       one event, a range, or to the end, in full
+  any other word                     matches project, title, prompts, subagent names
+  doctor                             what this build can't read in each harness's logs
+which sessions:
+  --list, -l  --limit N, -n N  every match, not just the best (20 rows; home 12)
+  --projects                   per repository: last work, its sessions, where each stopped
+  --tree                       the match's parent and subagent sessions
+what happened (default: a preview of the best match):
+  --head N  --tail N   first or last N events
+  --kind K,K           user assistant reasoning tool edit agent plan error notice record
+                       owner (what the person typed)  refusal (with category and reason)
+  --user               same as --kind owner
+  --grep RE            regex over events; across all matches when no id is given
+  --content            search word clues in what was said, not session metadata
+  --count              only how many events and sessions match
+  --subagents          add the subagents' own events
+  --branches           add turns that were rewound or edited away
+  --reasoning          add reasoning, left out by default
+  --include-handbacks  let --grep match earlier agentlog output
+what it changed, used and cost:
+  --edits, --diff  the diffs it made
+  --files          changed files and who last wrote each
+  --path RE        only paths matching RE (with --edits or --files)
+  --tools          every tool called: count, failures, output size
+  --usage          tokens, cost, models, rate limits at the time
+  --images         save inline images to private temp files; list paths and URLs
+output:
+  --brief              one line per event, at most 160 characters
+  --json               typed JSON, never the raw log
+  --max BYTES  --full  clip each expanded block at BYTES (default 6000), or never
+  --width N            clip one-line summaries at N characters (default 150)
+  --flag=VALUE         for a value starting with -, e.g. --grep=--help
+  --                   every argument after it is a clue
 how much of the machine it takes:
-  --jobs N | AGENTLOG_JOBS        workers, shared by everything this run does
-                                  (default: half the cores, at most 4, at low priority)
-                                  agents: do NOT raise this unless the person asks for more speed`
+  --jobs N | AGENTLOG_JOBS=N  workers for this run (default half the cores, at most 4, low priority)
+                              agents: do NOT raise this unless the person asks for more speed
+the tool itself:
+  agentlog feedback add MESSAGE    leave a note about using agentlog
+  agentlog feedback list [--json]  read the notes
+  --version  --help, -h`
 
 // Home prints harnesses and recent sessions for a bare invocation.
 func Home(w io.Writer, res *catalog.Result, o Options, limit int) {

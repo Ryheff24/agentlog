@@ -44,7 +44,9 @@ parents with running subagents. Its default 12-row preview expands to include
 all of that running work, followed by completed sessions in the current
 directory and then elsewhere. An explicit `--limit N` still caps the output.
 Named lookups keep their relevance ranking; `.` explicitly scopes a lookup to
-the current directory.
+the current directory. `--help` prints this same screen, sessions and usage
+together, and the usage names every flag and `--kind` the parser accepts (a
+test fails otherwise).
 
 The preview includes the following:
 
@@ -260,6 +262,21 @@ A cross-session search reads every candidate; one matching session never
 crowds later matches out of the answer.
 
     all --grep pgvector    1980MB read, 5.7 CPU-s  ->  272MB, 3.3 CPU-s
+
+## Settings
+
+These are for the person who runs agentlog, not for agents: an agent never
+needs them, and they are left out of the help so it never thinks it does.
+The home screen already says where each harness's logs were read from.
+
+| Variable | What it changes |
+|---|---|
+| `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, `COPILOT_HOME` | where each harness's logs are read from (default `~/.claude`, `~/.codex`, `~/.copilot`), the same variables the harnesses use |
+| `AGENTLOG_JOBS=N` | the same as `--jobs N` |
+| `AGENTLOG_NO_MONITOR=1` | no run log |
+| `AGENTLOG_RUNS=FILE` | where the run log goes (default `~/.config/agentlog/runs.jsonl`) |
+| `AGENTLOG_FEEDBACK_FILE=FILE` | where `agentlog feedback` notes go |
+| `AGENTLOG_CONFIG=DIR` | where `types.json` is read from (default `~/.config/agentlog`) |
 
 ## Measuring what it costs
 

@@ -22,15 +22,7 @@ type options struct {
 func parseArgs(args []string) (options, []string, error) {
 	var o options
 	var clues []string
-	boolFlags := map[string]*bool{
-		"list": &o.list, "l": &o.list, "edits": &o.edits, "diff": &o.edits, "files": &o.files,
-		"subagents": &o.subagents, "json": &o.json, "full": &o.full, "reasoning": &o.reasoning,
-		"branches": &o.branches, "help": &o.help, "h": &o.help, "usage": &o.usage, "tools": &o.tools,
-		"projects": &o.projects, "user": &o.user, "count": &o.count, "brief": &o.brief,
-		"content": &o.content, "images": &o.images, "tree": &o.tree, "include-handbacks": &o.includeHandbacks,
-	}
-	intFlags := map[string]*int{"tail": &o.tail, "head": &o.head, "max": &o.max, "width": &o.width, "limit": &o.limit, "n": &o.limit, "jobs": &o.jobs}
-	strFlags := map[string]*string{"kind": &o.kinds, "grep": &o.grep, "path": &o.path}
+	boolFlags, intFlags, strFlags := flagTables(&o)
 
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -80,6 +72,21 @@ func parseArgs(args []string) (options, []string, error) {
 		return o, nil, fmt.Errorf("unknown flag %s", a)
 	}
 	return o, clues, nil
+}
+
+// flagTables names every flag the parser accepts, bound to o. The usage text
+// is tested against it, so a flag cannot be added without being documented.
+func flagTables(o *options) (map[string]*bool, map[string]*int, map[string]*string) {
+	boolFlags := map[string]*bool{
+		"list": &o.list, "l": &o.list, "edits": &o.edits, "diff": &o.edits, "files": &o.files,
+		"subagents": &o.subagents, "json": &o.json, "full": &o.full, "reasoning": &o.reasoning,
+		"branches": &o.branches, "help": &o.help, "h": &o.help, "usage": &o.usage, "tools": &o.tools,
+		"projects": &o.projects, "user": &o.user, "count": &o.count, "brief": &o.brief,
+		"content": &o.content, "images": &o.images, "tree": &o.tree, "include-handbacks": &o.includeHandbacks,
+	}
+	intFlags := map[string]*int{"tail": &o.tail, "head": &o.head, "max": &o.max, "width": &o.width, "limit": &o.limit, "n": &o.limit, "jobs": &o.jobs}
+	strFlags := map[string]*string{"kind": &o.kinds, "grep": &o.grep, "path": &o.path}
+	return boolFlags, intFlags, strFlags
 }
 
 // wantsView reports whether a flag asks for something other than the preview.
