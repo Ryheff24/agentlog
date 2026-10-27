@@ -223,4 +223,8 @@ Apple's ANE is what im working on for this. it keeps the CPU and GPU mostly free
 - Lower level parser implementation logic, pre-load and fetching strategies. A lot of slow down
 is I/O based, reading old transcripts and such from cold storage, 
 - Rework the tools surface. I've had plans in the pipeline to change what currently exists in some form, i have many plans that reduce the total number of tools surfaces exposed in favor for denser
-interactions in each surface. But I've held off because I think it will reduce some rather niche and less used functionalies. Things agents might have learned from use and rememebered through memory for example, but aren't exact specified use cases. 
+interactions in each surface. But I've held off because I think it will reduce some rather niche and less used functionalies. Things agents might have learned from use and rememebered through memory for example, but aren't exact specified use cases.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).
