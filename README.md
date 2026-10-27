@@ -78,8 +78,14 @@ With Go 1.26 or later, you can instead run:
 
 ```sh
 go install github.com/Ryheff24/agentlog/cmd/agentlog@latest
-go install github.com/Ryheff24/agentlog/cmd/agentlog-usage@latest   # optional: measures agents' calls to agentlog
 ```
+
+The repository also holds `agentlog-usage`, a maintainer's tool that measures
+how agents call agentlog. It is not wired into agentlog: it's a separate
+program with its own log reader, it isn't in the releases or installed by
+install.sh, and agentlog's help doesn't mention it. It will likely become an
+agentlog subcommand, so its interface may change. See
+[docs/reference.md](docs/reference.md#measuring-what-it-costs).
 
 Pure Go, no dependencies. Developed and used on macOS. The Linux builds pass
 the test suite but haven't been used on real Linux logs yet. If something

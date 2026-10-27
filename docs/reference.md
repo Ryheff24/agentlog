@@ -282,7 +282,11 @@ else made first is skipped, not written into.
 
 **`agentlog-usage`**, a separate command, reads the harnesses' session logs
 itself, not through agentlog's readers, for every shell call an agent made to
-agentlog:
+agentlog. It is a maintainer's tool and not wired into agentlog: it isn't in
+the releases, install.sh doesn't install it, and agentlog's help doesn't name
+it. It will likely be folded in as a subcommand, keeping its own reader so a
+bug in agentlog's readers can't skew the numbers used to judge them; until
+then its interface may change.
 
     go build -o bin/agentlog-usage ./cmd/agentlog-usage
     agentlog-usage [7d | 24h | all] [--top N] [--json]

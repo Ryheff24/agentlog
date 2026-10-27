@@ -6,6 +6,16 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **`agentlog-usage` is not wired into agentlog.** It's a second program with
+  its own log reader, built only from source; the releases, install.sh and
+  agentlog's help leave it out. It will likely become a subcommand, but folding
+  it in has to keep its reader separate from agentlog's (see
+  [docs/reference.md](docs/reference.md#measuring-what-it-costs)), so it waits
+  for that to be done properly. Its check for a session working on agentlog
+  itself still looks for `module agentlog` in `go.mod`, which the module
+  rename to `github.com/Ryheff24/agentlog` broke; the path-name fallbacks still
+  catch a checkout named `agentlog`.
+
 - **Compressed Codex history is not read.** Codex compresses rollouts older
   than about a week to `.jsonl.zst`, and agentlog only reads plain `.jsonl`.
   On the machine this was reproduced on, 1,257 compressed rollouts (nearly a

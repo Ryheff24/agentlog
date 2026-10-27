@@ -30,7 +30,9 @@ test it the way one would use it.
 Order: bugs come before features. A feature is worth building when it makes
 agents' work cheaper: fewer calls, fewer bytes into context, less waiting, or
 no need for a one-off script. `agentlog-usage` measures the first three; see
-"Measuring what it costs" in docs/reference.md. Check it before and after a change
+"Measuring what it costs" in docs/reference.md. It is a separate maintainer's
+program, not wired into agentlog (see ISSUES.md): don't add it to agentlog's
+help or the releases until it is folded in as a subcommand. Check it before and after a change
 that should move those numbers, and say what it showed.
 
 Don't drop an issue because it's hard. Fix it.
