@@ -1,0 +1,41 @@
+name: release
+
+# Push a tag to build a draft release: git tag v0.1.0 && git push origin v0.1.0
+# The macOS binary is then signed and notarized on the maintainer's Mac, and
+# the draft published, by scripts/sign-macos.sh. No signing key ever reaches
+# GitHub.
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: macos-latest
+    permissions:
+      contents: write # create the draft release
+      id-token: write # sign the provenance attestation
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false # nothing another workflow wrote goes into a release
+      - name: test
+        run: go test -count=1 ./...
+      - name: build
+        run: scripts/release.sh "$GITHUB_REF_NAME"
+      # Anyone can check that an archive was built here, from this tag:
+      #   gh attestation verify <archive> -R Ryheff24/agentlog
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: dist/*.tar.gz
+      - name: draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* -R "$GITHUB_REPOSITORY" --draft --verify-tag --title "$GITHUB_REF_NAME" --generate-notes

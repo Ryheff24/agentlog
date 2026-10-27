@@ -5,3 +5,4 @@
 # Real logs never go in this repo. Only the redacted shapes are committed.
 *.jsonl
 !/internal/shapes/testdata/shapes/*.jsonl
+/dist/
