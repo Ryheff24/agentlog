@@ -16,9 +16,9 @@
 set -eu
 
 repo=Ryheff24/agentlog
-# The Apple Team ID the macOS binary must be signed by. Empty until releases
-# are signed; once set, an unsigned or differently signed binary is refused.
-team_id=""
+# The Apple Team ID the macOS binary must be signed by. An unsigned or
+# differently signed binary is refused.
+team_id="M2DUW2UUKH"
 
 fail() {
 	echo "agentlog install: $*" >&2
