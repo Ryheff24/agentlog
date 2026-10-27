@@ -18,16 +18,73 @@ see it isn't made for a person to read; that's on purpose. I tried it
 and found it too dense. Every change is judged by one question: how little
 context and time can an agent spend finding out what another agent did?
 
+## It only reads
+
+agentlog never writes to, moves or deletes the harness logs, makes no network
+connections and runs no other programs: nothing it reads leaves your machine.
+A test fails the build if either binary ever links networking or process
+code. The only files it writes are its own, readable by you alone (`0600` in
+`0700` directories), and never through a link someone else placed:
+
+- **A run log.** One JSON line per call (arguments, working directory, the
+  calling session's id, duration, bytes printed) in
+  `~/.config/agentlog/runs.jsonl`, or a temp directory when a sandbox blocks
+  that. It stays local; `agentlog-usage` reads it. `AGENTLOG_NO_MONITOR=1`
+  turns it off.
+- **CPU claims.** While it runs, one small file per process in your user
+  cache directory, so parallel runs share one limit. Removed on exit.
+- **Images, only with `--images`.** Written to temp files instead of printed.
+
+**What it prints is not safe to trust.** Session logs hold everything that
+passed through a session: secrets someone pasted or a command printed, and
+text from web pages, files and tool output that anyone could have written.
+agentlog prints that into whatever reads it. If an agent reads it, the agent
+should treat it as data, not instructions, and the output shouldn't go
+anywhere you wouldn't put the logs themselves. In a terminal, control
+characters are shown as `\x1b` and the like instead of being acted on; through
+a pipe, an agent gets the bytes as they are.
+
 ## Install
 
-Needs Go 1.25 or later. Pure Go, no dependencies. Developed and used on macOS.
-
 ```sh
-go build -o bin/agentlog ./cmd/agentlog
-go build -o bin/agentlog-usage ./cmd/agentlog-usage   # optional: measures agents' calls to agentlog
+curl -fsSL https://raw.githubusercontent.com/Ryheff24/agentlog/main/install.sh | sh
 ```
 
-Put `bin/` on your `PATH`, or link the binaries into a directory that is.
+That downloads the prebuilt binary for your machine from the latest
+[release](https://github.com/Ryheff24/agentlog/releases) (macOS universal,
+Linux amd64 or arm64), checks it against the release's checksums, and puts it
+in `~/.local/bin`. On macOS it also requires the binary to be signed with the
+maintainer's Developer ID and notarized by Apple. That signature is made on
+the maintainer's Mac, not on GitHub, so a compromised repository can't fake
+it. `AGENTLOG_INSTALL_DIR` changes where it installs, and
+`AGENTLOG_VERSION=v0.1.0` pins a version. `agentlog --version` says what you
+have. Read [install.sh](install.sh) first if you'd rather not pipe a script
+into `sh`; it's short.
+
+To check a download by hand, every archive comes with a signed record of the
+commit and workflow run that built it (on macOS, the record covers the
+unsigned build; the signature covers the rest):
+
+```sh
+gh attestation verify agentlog-linux-amd64.tar.gz -R Ryheff24/agentlog
+codesign -dv --verbose=2 ~/.local/bin/agentlog   # macOS: look for the TeamIdentifier
+```
+
+The Linux builds are reproducible: `scripts/release.sh` run on the tag with
+the same Go version (`go version -m agentlog` shows which) gives the same
+bytes.
+
+With Go 1.25 or later, you can instead run:
+
+```sh
+go install github.com/Ryheff24/agentlog/cmd/agentlog@latest
+go install github.com/Ryheff24/agentlog/cmd/agentlog-usage@latest   # optional: measures agents' calls to agentlog
+```
+
+Pure Go, no dependencies. Developed and used on macOS. The Linux builds pass
+the test suite but haven't been used on real Linux logs yet. If something
+looks off there, run `agentlog doctor` first, then open an issue.
+
 Then add the snippet below to your agent instructions.
 
 ## Tell your agents about it

@@ -89,8 +89,36 @@ GOCACHE=$TMPDIR/gocache go build -o bin/agentlog ./cmd/agentlog
 GOCACHE=$TMPDIR/gocache go build -o bin/agentlog-usage ./cmd/agentlog-usage
 ```
 
-`~/bin/agentlog` and `~/bin/agentlog-usage` are symlinks to `bin/` here, so
-rebuilding here is installing. Never copy a binary into `~/bin`.
+Link the binaries on your `PATH` to `bin/` here, so rebuilding is installing.
+Never copy a binary in place of the link.
+
+CI (`.github/workflows/ci.yml`) runs gofmt, `go vet -composites=false` (the
+record tables are positional on purpose), the tests and govulncheck on macOS
+and Linux. Runners have no harness logs, so the coverage baseline is checked
+locally.
+
+### Releases
+
+1. Push a `vX.Y.Z` tag. `.github/workflows/release.yml` tests, runs
+   `scripts/release.sh`, attests each archive and creates a draft release.
+2. On the maintainer's Mac: `scripts/sign-macos.sh vX.Y.Z` signs and
+   notarizes the macOS binary and publishes the release. Agents don't run it;
+   it uses the maintainer's keychain.
+
+One-time setup for step 2, done by the maintainer:
+
+- Xcode → Settings → Accounts → Manage Certificates → + → **Developer ID
+  Application**. The key stays in the login keychain; never export it.
+- `xcrun notarytool store-credentials agentlog --apple-id <apple id> --team-id
+  <team id>`, with an app-specific password from account.apple.com.
+- Set `team_id` in `install.sh` to that team id and push it before the first
+  signed release. `sign-macos.sh` refuses to run until it matches.
+
+Never weaken what `install.sh` checks, `internal/private` (agentlog's own
+files are private and never written through links) or `internal/term`
+(control characters are escaped in a terminal). `cmd/agentlog/deps_test.go`
+fails if a binary links networking or `os/exec`; that test is the README's
+"it only reads", so don't loosen it.
 
 Sandboxed agents can write only to the project and `$TMPDIR`. Anything
 agentlog writes on its own (run records) has to keep working under
