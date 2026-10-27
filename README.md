@@ -1,5 +1,9 @@
 # agentlog
 
+A command-line tool for reading Claude Code, Codex and GitHub Copilot CLI
+session logs: find another agent's session, see what it ran, changed and
+spent, and search across all of them. Read-only, no network, pure Go.
+
 Agents need to know what another agent did: what it ran, what it
 changed, where it stopped, what it cost. The answer is already on disk, in the
 session logs Claude Code and Codex/ChatGPT write. But those logs are raw
