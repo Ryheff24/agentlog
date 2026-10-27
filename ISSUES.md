@@ -54,6 +54,19 @@ commit that fixes it; that commit is the record.
 
 Reports that were read, checked, and deliberately left alone, with the reason.
 
+- **Skipping a home screen already printed in the same command.** Agents chain
+  `agentlog --help && agentlog`, and since `--help` is the home screen the
+  second call repeats it. Spotting that needs to know which calls belong to
+  one command line, and nothing says so reliably. The process session id
+  (`getsid`) grouped one Claude Code tool call on macOS, but that was the only
+  case checked: Codex, Copilot CLI, Linux, other shells and future harness
+  releases can each start commands differently and merge or split calls.
+  Harness session ids are per session, not per command, and subagents can
+  inherit the parent's. The logs don't hold the running call yet. A wrong
+  guess tells an agent it already saw help it never saw, silently; a repeat
+  only costs characters. Don't build it until every harness, OS and shell is
+  checked and can be re-checked when they change.
+
 - **Copilot caller self-exclusion.** No local Copilot CLI session-id variable
   could be reproduced in the logs. `COPILOT_AGENT_SESSION_ID` is cloud-agent
   configuration, not the local caller's identity. agentlog won't invent a
