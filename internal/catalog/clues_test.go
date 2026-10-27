@@ -249,7 +249,7 @@ func TestParseCluesExpandsHome(t *testing.T) {
 	if want := filepath.Join(home, "no-such-project-agentlog/app.go"); len(c.Paths) != 1 || c.Paths[0] != want {
 		t.Errorf("Paths = %v, want %s", c.Paths, want)
 	}
-	if c := ParseClues([]string{"~"}, "/", time.Now()); len(c.Dirs) != 1 || c.Dirs[0] != home {
+	if c := ParseClues([]string{"~"}, "/", time.Now()); len(c.Dirs) != 1 || c.Dirs[0] != filepath.Clean(home) {
 		t.Errorf("~ gave Dirs = %v, want %s", c.Dirs, home)
 	}
 }
