@@ -4,25 +4,36 @@ A command-line tool for reading Claude Code, Codex and GitHub Copilot CLI
 session logs: find another agent's session, see what it ran, changed and
 spent, and search across all of them. Read-only, no network, pure Go.
 
-Agents need to know what another agent did: what it ran, what it
-changed, where it stopped, what it cost. The answer is already on disk, in the
-session logs Claude Code and Codex/ChatGPT write. But those logs are raw
-JSONL, shaped differently by every harness and reshaped whenever one ships. So
-agents kept writing one-off heredocs and parsers to dig through them, paying
-context and time on every attempt. agentlog started when an agent had to
-recover a Codex thread that ran out of limits mid-fix.
+Agents keep needing to know what another agent did: what it ran, what it
+changed, where it stopped. The answer is in the session logs on disk, but each
+harness writes raw JSONL in its own shape, so agents wrote a new heredoc or
+parser at every handoff. agentlog is that parser, written once.
 
-agentlog is an attempt at a parser, written once. An agent hands it whatever it knows (a
-directory, a harness, a session id, a time, a word from the task) and gets back
-a bounded overview of the best match, with the follow-up commands to drill into
-events, edits, subagents or a grep.
+An agent hands it whatever it knows (a directory, a harness, an id, a time, a
+word from the task) and gets back a bounded overview of the best match, with
+the commands to drill further. Agents are the users: run it bare and you'll
+see it isn't made for a person. I tried it and found it too dense.
 
-Agents are the users, and agents build it too. Run `agentlog` bare and you'll
-see it isn't made for a person to read; that's on purpose. I tried it
-and found it too dense. Every change is judged by one question: how little
-context and time can an agent spend finding out what another agent did?
+## Use cases
 
-## It only reads
+- **Switching harnesses when one runs out of limits.** Codex's limits ran out
+  mid-fix; a Claude agent reads where it stopped and finishes it, or the other
+  way round.
+- **Picking up an old session without resuming it.** When the cache has
+  expired and another message or a compaction would cost too much, a fresh
+  agent told "look at what agents were doing earlier, and pick up where they
+  left off" reads it instead.
+- **"What do I want?"** An agent can quote your own turns back to you, across
+  sessions and harnesses, so you can tell whether it understood, missed the
+  point, or you underspecified it.
+- **Subagents and headless sessions.** What each one ran, changed and returned,
+  without opening their logs.
+- **Which session touched a file**, and **which sessions mention something**,
+  across every harness at once.
+
+Real cases from use: [docs/use-cases.md](docs/use-cases.md).
+
+## Safety
 
 agentlog never writes to, moves or deletes the harness logs, makes no network
 connections and runs no other programs: nothing it reads leaves your machine.
@@ -97,7 +108,7 @@ looks off there, run `agentlog doctor` first, then open an issue.
 
 Then add the snippet below to your agent instructions.
 
-## Tell your agents about it
+## Agent setup
 
 Put this in a `CLAUDE.md` or `AGENTS.md`, so agents call agentlog directly
 instead of starting with `--help`:
@@ -117,7 +128,7 @@ Do not pass `--jobs`: it decides how much of the person's machine to take,
 and the default is deliberate. Raise it only if they ask for more speed.
 ```
 
-## How to point an agent at it
+## Prompting
 
 The snippet teaches an agent how to call agentlog. It doesn't teach it what to
 look for, and that's what decides whether it finds anything useful. That part
@@ -181,7 +192,7 @@ Prompts that have worked:
 - "Use three small agents to read my turns and the agents' replies in these
   projects, then tell me where the work actually changed direction."
 
-## What a call looks like
+## Examples
 
 ```sh
 agentlog codex .                  # newest Codex session in this directory, previewed
@@ -204,9 +215,11 @@ step.
 The full list of clues, views and flags is in
 [docs/reference.md](docs/reference.md).
 
-## More
+## Docs
 
 - [DESIGN.md](DESIGN.md): the decisions behind agentlog and what led to each.
+- [docs/use-cases.md](docs/use-cases.md): real cases, from the sessions
+  themselves.
 - [docs/reference.md](docs/reference.md): every clue, view and flag; how
   format changes are handled; machine limits; cost measurement; package layout.
 - [ISSUES.md](ISSUES.md): what's reproduced and not fixed yet, and what was

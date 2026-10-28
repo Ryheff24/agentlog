@@ -39,6 +39,39 @@ is in scope; dropping tool calls entirely is not.
 
 ## A human interface
 
-agentlog is unusable for a person by design. A TUI over the same engine is
-wanted, so someone can, for example, open one of fifty subagents without
-copying ids around. It belongs to the owner to design; don't plan it.
+agentlog is built for agents, and a person will find it too dense. A view for
+people is still useful, for example to open one of fifty subagents or a
+headless session without copying ids around. Two things should hold for it:
+
+- **agentlog stays self-contained.** It remains one read-only binary for
+  agents. A human interface doesn't add a TUI, a server or state to it.
+- **The interface is separate.** It's its own program over the same logs. The
+  owner already uses one every day, a dashboard that runs on localhost and
+  isn't published yet. Anyone is welcome to build their own.
+
+## Feedback that becomes issues
+
+The feedback loop exists for agentlog's own development: finding where it
+fails, and debugging it. It isn't doing that. Too many notes say the tool
+worked, which helps nobody, and the notes that report a problem rarely carry
+enough to reproduce it. Problems happen in very specific settings, and the
+setting is what's missing.
+
+A note should be one of two things: a problem, or something that would make
+the tool better. Otherwise, nothing. The instruction agents get, and the help
+for `feedback add`, should say so.
+
+The setting is already on the machine: the agentlog calls the agent made
+before writing the note (in the same session's log), their durations and
+sizes (the run log), and the harness versions (`doctor`). Gathering those
+with the note would make a report someone else can act on, from a machine
+and logs they'll never see. That matters more now that other people use it.
+How that report reaches the repository, and what it must leave out, is still
+open.
+
+Why this matters more than a redesign: what has matured is the agentic use,
+not the code. Billions of tokens have gone through agentlog on one machine,
+and agents using it stochastically, with real objectives, is in effect the
+test suite. Golden prompts and simulations don't capture that, which is why
+large changes to the surface are held back. Real failure reports, with their
+setting, are the closest thing to a reproducible test.

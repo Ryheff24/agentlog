@@ -30,7 +30,10 @@ order, and agentlog finds the best match.
 
 **Why.** Watching agents look for another agent's log, the pattern repeated:
 locate the harness's log directory, find the recent session, get an overview,
-then dig. Each step was a separate guess. And an agent's first call to an
+then dig. Each step was a separate guess, and the digging was done the same
+way every time: a heredoc or a one-off parser, written from scratch, every
+day, at every handoff, for logs the last agent had already parsed its own
+way. And an agent's first call to an
 unfamiliar CLI is usually `--help`, which is a wasted call. Any detail the
 agent already has (a project name, "it was Codex", "two hours ago") narrows the
 search, so the tool should take all of it at once.
@@ -64,6 +67,22 @@ round trip.
 way too many tokens," check what the call was reading first. Bounded by
 default, unlimited on request: drill down with `#N`, ranges, `--full` and
 `--json --full`, never by default.
+
+Whether this is the optimal strategy is fair to argue. The defaults weren't
+derived from a model of token cost. They are where thousands of calls a day,
+asking the same kinds of questions over and over, settled: what an agent
+needed from its first call often enough that a smaller default only bought a
+second call. Change them on the same kind of evidence: `agentlog-usage`
+measures calls, bytes and waiting per question (see
+[docs/reference.md](docs/reference.md#measuring-what-it-costs)).
+
+There's also a recursive cost. Everything agentlog prints lands in the calling
+agent's own log, and that log is what later agentlog calls read. A larger
+default isn't paid for once, in tokens: it is read again, as bytes to scan and
+CPU to spend, by every later search that covers that session. The more agents
+use agentlog, the more of the logs is agentlog's own output. Marking it
+`[handback]` keeps it out of `--grep` matches, but not out of what has to be
+read. Bounded defaults keep that loop small.
 
 ## Formats change every day
 
