@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Ryheff24/agentlog/internal/transcript"
+	"github.com/Ryheff24/agentlog/internal/zstd/zstdtest"
 )
 
 // write lays down a log file and returns a session pointing at it.
@@ -256,5 +257,33 @@ func TestFileStopsBetweenChunks(t *testing.T) {
 	read, matched, err := file(ctx, s.Files[0], m)
 	if read != 0 || matched || err != nil {
 		t.Errorf("file() = %d, %v, %v; want nothing read", read, matched, err)
+	}
+}
+
+// A compressed log is searched for what it says, not for its compressed
+// bytes, and the bytes reported read are the decompressed ones. One that
+// cannot be decompressed is a failed file, never a log searched and found
+// empty.
+func TestSessionsSearchCompressedLogs(t *testing.T) {
+	dir := t.TempDir()
+	text := `{"text":"the PGVector migration"}` + "\n"
+	zst := filepath.Join(dir, "a.jsonl.zst")
+	if err := os.WriteFile(zst, zstdtest.Frame([]byte(text)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	res := Sessions(t.Context(), []*transcript.Session{{ID: "a", Files: []string{zst}}}, regexp.MustCompile(`(?i)pgvector`))
+	if got := strings.Join(matched(res), " "); got != "a" || res.Failed != 0 {
+		t.Errorf("matches %q, failed %d; want the compressed log matched", got, res.Failed)
+	}
+	if res.Bytes == 0 || res.Bytes > int64(len(text)) {
+		t.Errorf("read %d bytes, want at most the %d decompressed", res.Bytes, len(text))
+	}
+
+	if err := os.WriteFile(zst, []byte("not zstd"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	res = Sessions(t.Context(), []*transcript.Session{{ID: "a", Files: []string{zst}}}, regexp.MustCompile(`(?i)pgvector`))
+	if len(res.Matches) != 0 || res.Failed != 1 || res.Unread != 1 {
+		t.Errorf("damaged: %+v, want 1 failed file and the session unread", res)
 	}
 }

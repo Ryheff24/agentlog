@@ -1,9 +1,11 @@
 // Package codex reads OpenAI Codex rollout logs
-// (~/.codex/sessions/YYYY/MM/DD/rollout-<ts>-<thread>[_<page>].jsonl).
+// (~/.codex/sessions/YYYY/MM/DD/rollout-<ts>-<thread>[_<page>].jsonl). Codex
+// compresses a rollout to .jsonl.zst after about a week; both are read.
 package codex
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -132,7 +134,7 @@ func (p *Provider) Discover(q transcript.Query) ([]*transcript.Session, error) {
 				return nil
 			}
 			name := d.Name()
-			if !strings.HasPrefix(name, "rollout-") || !strings.HasSuffix(name, ".jsonl") {
+			if !strings.HasPrefix(name, "rollout-") || !jsonl.IsLog(name) {
 				return nil
 			}
 			if tid := threadIDFromName(name); q.MatchID(tid) {
@@ -146,7 +148,7 @@ func (p *Provider) Discover(q transcript.Query) ([]*transcript.Session, error) {
 	for _, paths := range files {
 		var group []*page
 		recent := false
-		for _, f := range paths {
+		for _, f := range onePerPage(paths) {
 			st, err := os.Stat(f)
 			if err != nil {
 				continue
@@ -158,7 +160,14 @@ func (p *Provider) Discover(q transcript.Query) ([]*transcript.Session, error) {
 			continue
 		}
 		for _, pg := range group {
-			if !readMeta(pg.path, &pg.meta) {
+			ok, err := readMeta(pg.path, &pg.meta)
+			switch {
+			case err != nil:
+				// The log is there but can't be read. Listing it from its
+				// name keeps it in sight: opening it reports the error, and
+				// doctor counts it, instead of the thread silently missing.
+				pg.meta = sessionMeta{ID: threadIDFromName(filepath.Base(pg.path)), Timestamp: startFromName(filepath.Base(pg.path), pg.modTime)}
+			case !ok:
 				continue
 			}
 			pg.src = parseSource(pg.meta.Source, &pg.meta)
@@ -172,27 +181,75 @@ func (p *Provider) Discover(q transcript.Query) ([]*transcript.Session, error) {
 	return ss, nil
 }
 
-// threadPages re-reads page headers for loading.
-func threadPages(s *transcript.Session) []*page {
-	var out []*page
+// threadPages re-reads page headers for loading. failed holds an error for
+// each page whose log could not be read.
+func threadPages(s *transcript.Session) (out []*page, failed []error) {
 	for _, f := range s.Files {
 		st, err := os.Stat(f)
 		if err != nil {
+			failed = append(failed, err)
 			continue
 		}
 		pg := &page{path: f, size: st.Size(), modTime: st.ModTime(), pageID: pageIDFromName(filepath.Base(f))}
-		if readMeta(f, &pg.meta) {
+		ok, err := readMeta(f, &pg.meta)
+		switch {
+		case err != nil:
+			failed = append(failed, fmt.Errorf("%s: %w", f, err))
+		case ok:
 			pg.src = parseSource(pg.meta.Source, &pg.meta)
 			out = append(out, pg)
 		}
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].meta.Timestamp.Before(out[j].meta.Timestamp) })
+	return out, failed
+}
+
+// reasons formats why pages could not be read, for an error that has to say.
+func reasons(failed []error) string {
+	var b strings.Builder
+	for _, err := range failed {
+		b.WriteString("; ")
+		b.WriteString(err.Error())
+	}
+	return b.String()
+}
+
+// onePerPage drops a compressed page whose plain copy is also there, as it is
+// for a moment while Codex compresses it, so no page is read twice. The plain
+// copy is the one Codex was still writing.
+func onePerPage(paths []string) []string {
+	plain := map[string]bool{}
+	for _, p := range paths {
+		if !strings.HasSuffix(p, jsonl.Compressed) {
+			plain[p] = true
+		}
+	}
+	out := paths[:0:0]
+	for _, p := range paths {
+		if !plain[strings.TrimSuffix(p, jsonl.Compressed)] || !strings.HasSuffix(p, jsonl.Compressed) {
+			out = append(out, p)
+		}
+	}
 	return out
+}
+
+// startFromName reads <ts> from rollout-<ts>-<thread>.jsonl, the local time
+// the thread started, or returns fallback.
+func startFromName(name string, fallback time.Time) time.Time {
+	ts, ok := strings.CutPrefix(name, "rollout-")
+	if !ok || len(ts) < len("2006-01-02T15-04-05") {
+		return fallback
+	}
+	t, err := time.ParseInLocation("2006-01-02T15-04-05", ts[:len("2006-01-02T15-04-05")], time.Local)
+	if err != nil {
+		return fallback
+	}
+	return t
 }
 
 // threadIDFromName extracts <thread> from rollout-<ts>-<thread>[_<page>].jsonl.
 func threadIDFromName(name string) string {
-	name = strings.TrimSuffix(name, ".jsonl")
+	name = jsonl.TrimLog(name)
 	if i := strings.IndexByte(name, '_'); i >= 0 {
 		name = name[:i]
 	}
@@ -202,9 +259,10 @@ func threadIDFromName(name string) string {
 	return name
 }
 
-func readMeta(path string, m *sessionMeta) bool {
-	ok := false
-	_ = jsonl.Each(path, func(line []byte, n int) error {
+// readMeta reads a page's session_meta header. ok is false for a log that has
+// none yet; err is set for one that could not be read.
+func readMeta(path string, m *sessionMeta) (ok bool, err error) {
+	err = jsonl.Each(path, func(line []byte, n int) error {
 		var rec struct {
 			Type    string      `json:"type"`
 			Payload sessionMeta `json:"payload"`
@@ -215,13 +273,13 @@ func readMeta(path string, m *sessionMeta) bool {
 		}
 		return jsonl.ErrStop
 	})
-	return ok
+	return ok, err
 }
 
 // pageIDFromName extracts <page> from rollout-<ts>-<thread>_<page>.jsonl, or
 // the thread id when the file is the thread's first page.
 func pageIDFromName(name string) string {
-	name = strings.TrimSuffix(name, ".jsonl")
+	name = jsonl.TrimLog(name)
 	if i := strings.LastIndexByte(name, '_'); i >= 0 {
 		return name[i+1:]
 	}

@@ -8,11 +8,11 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"os"
 	"regexp"
 	"strings"
 	"sync"
 
+	"github.com/Ryheff24/agentlog/internal/jsonl"
 	"github.com/Ryheff24/agentlog/internal/monitor"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 	"github.com/Ryheff24/agentlog/internal/work"
@@ -186,9 +186,10 @@ func lower(dst, src []byte) []byte {
 // file reports whether one log matches, reading it in chunks and stopping at
 // the first hit. Matching whole chunks rather than lines is what keeps the
 // per-byte cost down: the matcher is entered a few hundred times for a large
-// log instead of once per record.
+// log instead of once per record. A compressed log is searched decompressed,
+// and read counts the decompressed bytes.
 func file(ctx context.Context, path string, m *matcher) (read int64, matched bool, err error) {
-	f, err := os.Open(path)
+	f, err := jsonl.Open(path)
 	if err != nil {
 		return 0, false, err
 	}

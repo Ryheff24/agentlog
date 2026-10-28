@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Ryheff24/agentlog/internal/jsonl"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
@@ -132,7 +133,7 @@ func ParseClues(args []string, cwd string, now time.Time) Clues {
 			case err == nil && st.IsDir():
 				c.Dirs = append(c.Dirs, p)
 				continue
-			case err == nil && strings.HasSuffix(p, ".jsonl"):
+			case err == nil && jsonl.IsLog(p):
 				c.Files = append(c.Files, p)
 				continue
 			case err == nil:
@@ -232,7 +233,7 @@ func atoi(s string) int {
 }
 
 func looksLikePath(s string) bool {
-	return strings.ContainsRune(s, '/') || strings.HasPrefix(s, "~") || strings.HasSuffix(s, ".jsonl")
+	return strings.ContainsRune(s, '/') || strings.HasPrefix(s, "~") || jsonl.IsLog(s)
 }
 
 func expandPath(p, cwd string) string {

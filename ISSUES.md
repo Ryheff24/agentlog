@@ -26,18 +26,6 @@ commit that fixes it; that commit is the record.
   rename to `github.com/Ryheff24/agentlog` broke; the path-name fallbacks still
   catch a checkout named `agentlog`.
 
-- **Compressed Codex history is not read.** Codex compresses rollouts older
-  than about a week to `.jsonl.zst`, and agentlog only reads plain `.jsonl`.
-  On the machine this was reproduced on, 1,257 compressed rollouts (nearly a
-  year of work) sat next to 335 plain ones, and `agentlog codex all --list`
-  found 85 sessions, none older than three weeks. Every Codex session older than a week is
-  outside every view, the file lookup, `--grep` and `doctor`, and nothing says
-  so. Go's standard library carries a pure-Go zstd decoder
-  (`$GOROOT/src/internal/zstd`, BSD) that can be copied in without adding a
-  dependency. The raw-byte prefilter (`internal/scan`) cannot run over
-  compressed bytes, so search over that history either decompresses every
-  candidate or needs an index.
-
 - **A Claude subagent can hide its parent.** Claude Code subagents inherit the
   parent's `CLAUDE_CODE_SESSION_ID`, so when a subagent runs agentlog, the
   parent is treated as the caller's own session: left out of lists and marked

@@ -35,13 +35,19 @@ type record struct {
 
 // Load parses the pages on the thread's current branch into a transcript.
 func (p *Provider) Load(s *transcript.Session, o transcript.Load) (*transcript.Transcript, error) {
-	pages := threadPages(s)
+	pages, failed := threadPages(s)
 	if len(pages) == 0 {
-		return nil, fmt.Errorf("codex thread %s: no readable rollout files", s.ID)
+		return nil, fmt.Errorf("codex thread %s: no readable rollout files%s", s.ID, reasons(failed))
 	}
 	chain, limits, abandoned := branchChain(pages)
 
 	t := &transcript.Transcript{Session: *s}
+	for _, err := range failed {
+		// The rest of the thread is still worth reading, but not as though
+		// it were all of it.
+		t.Unknown("unreadable-page")
+		t.Notes = append(t.Notes, fmt.Sprintf("a page of this thread could not be read: %v", err))
+	}
 	if abandoned > 0 {
 		t.Notes = append(t.Notes, fmt.Sprintf("%d abandoned branch page(s) skipped (edited or rolled-back turns)", abandoned))
 	}
