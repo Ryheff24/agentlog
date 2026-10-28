@@ -354,6 +354,8 @@ var ignoredTypes = map[string]bool{
 	// the model. The conversation is already in the log; what only the copy
 	// holds (system prompt, tool definitions) is not a step anyone took.
 	"api-request": true, "api-request-shape": true, "api-request-blob": true,
+	// The tool calls are already events. The artifact records are the harness's own watch state.
+	"tools-used": true, "artifact-comment-monitor": true, "artifact-autoreact-ledger": true,
 }
 
 // modelUsage is one model's share of a cost-state record.

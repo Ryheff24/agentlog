@@ -53,12 +53,11 @@ commit that fixes it; that commit is the record.
 - **The live-format test fails when the harnesses ship new record types.**
   `go test ./internal/shapes -run TestTodaysLogsAreRead` reads today's logs on
   the machine running it and fails on any record shape this build has never
-  seen. At the time of writing that is Claude Code's `api-request-blob` and
-  Copilot CLI's `session.usage_record`, `skill.context_delivered_ref` and
-  `subagent.configured`. Those records still become generic events, so nothing
-  is lost in a view, but the gate is red until each is named. This one will
-  never stay fixed: it is the alarm described in DESIGN.md, "Formats change
-  every day".
+  seen. At the time of writing that is Copilot CLI's `session.usage_record`,
+  `skill.context_delivered_ref` and `subagent.configured`. Those records still
+  become generic events, so nothing is lost in a view, but the gate is red
+  until each is named. This one will never stay fixed: it is the alarm
+  described in DESIGN.md, "Formats change every day".
 
 ## Not acting on
 
