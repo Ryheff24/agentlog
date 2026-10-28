@@ -41,6 +41,9 @@ func init() {
 			{"api-request", spec.Ignore, "a copy of one request sent to the model, by reference"},
 			{"api-request-shape", spec.Ignore, "the system prompt and tool definitions those requests used"},
 			{"api-request-blob", spec.Ignore, "one piece of a request's content, stored once"},
+			{"tools-used", spec.Ignore, "the tools the session used, already read from its tool calls"},
+			{"artifact-comment-monitor", spec.Ignore, "the artifacts the session watches for comments"},
+			{"artifact-autoreact-ledger", spec.Ignore, "the harness's record of artifact comment threads it reacted to"},
 
 			{"summary", spec.Ignore, "compaction summary, shown via the compaction notice"},
 		},

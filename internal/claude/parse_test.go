@@ -697,3 +697,32 @@ func TestLoadIgnoresRequestCopies(t *testing.T) {
 		}
 	}
 }
+
+// Recent Claude Code versions write which artifacts a session watches, its artifact reactions, and the tools it used.
+// The log already holds those tool calls as events, so these records add none.
+func TestLoadIgnoresArtifactAndToolBookkeeping(t *testing.T) {
+	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
+	writeJSONL(t, path, []map[string]any{
+		user("do it"),
+		{"type": "artifact-comment-monitor", "v": 1, "sessionId": sessionID, "artifacts": map[string]any{"a1": map[string]any{"state": "armed", "writtenAtMs": 1, "title": "plan"}}},
+		{"type": "artifact-autoreact-ledger", "v": 1, "sessionId": sessionID, "accountUuid": "u1", "artifacts": map[string]any{"a1": map[string]any{"savedAt": 1, "everBaselined": true, "threads": []any{}}}},
+		{"type": "artifact-autoreact-ledger", "v": 1, "sessionId": sessionID, "accountUuid": "u1", "artifacts": map[string]any{}},
+		{"type": "tools-used", "sessionId": sessionID, "tools": []any{"Bash", "Read"}},
+	})
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := kinds(tr); got != "user" {
+		t.Errorf("kinds = %q, want only the prompt", got)
+	}
+	if len(tr.Unknowns) != 0 {
+		t.Errorf("Unknowns = %v, want none", tr.Unknowns)
+	}
+	want := map[string]int{"artifact-comment-monitor": 1, "artifact-autoreact-ledger": 2, "tools-used": 1}
+	for k, n := range want {
+		if tr.Ignored[k] != n {
+			t.Errorf("Ignored[%q] = %d, want %d (all: %v)", k, tr.Ignored[k], n, tr.Ignored)
+		}
+	}
+}
