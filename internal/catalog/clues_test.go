@@ -171,6 +171,12 @@ func TestParseCluesFilePaths(t *testing.T) {
 	if c = ParseClues([]string{log}, dir, now); len(c.Files) != 1 || len(c.Paths) != 0 {
 		t.Errorf("a .jsonl gave Files=%v Paths=%v, want it read as a log", c.Files, c.Paths)
 	}
+	if err := os.WriteFile(log+".zst", nil, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if c = ParseClues([]string{log + ".zst"}, dir, now); len(c.Files) != 1 || len(c.Paths) != 0 {
+		t.Errorf("a .jsonl.zst gave Files=%v Paths=%v, want it read as a log", c.Files, c.Paths)
+	}
 	if c = ParseClues([]string{dir}, dir, now); len(c.Dirs) != 1 || len(c.Paths) != 0 {
 		t.Errorf("a directory gave Dirs=%v Paths=%v", c.Dirs, c.Paths)
 	}

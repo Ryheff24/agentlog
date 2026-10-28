@@ -263,6 +263,16 @@ crowds later matches out of the answer.
 
     all --grep pgvector    1980MB read, 5.7 CPU-s  ->  272MB, 3.3 CPU-s
 
+Codex compresses a rollout to `.jsonl.zst` about a week after its last write,
+so most Codex history is compressed. A compressed rollout is read like a plain
+one everywhere: lists, views, `--grep`, the file lookup and `doctor`. The
+sizes lists show are bytes on disk, and a compressed rollout holds about two
+and a half times its size, which a search reads in full: searching all
+harnesses with a year of Codex history went from 13 to 24 seconds when that
+history began to be read. A rollout that cannot be decompressed is not
+skipped: its thread is still listed, opening it names the file that failed,
+and a thread with one damaged page shows the rest with a note naming it.
+
 ## Settings
 
 These are for the person who runs agentlog, not for agents: an agent never

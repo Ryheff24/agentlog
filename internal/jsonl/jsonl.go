@@ -1,5 +1,6 @@
 // Package jsonl reads newline-delimited JSON logs whose lines can be many
 // megabytes long, including cheap head and tail windows for discovery.
+// A log whose name ends in .zst is read decompressed, wherever it is read.
 package jsonl
 
 import (
@@ -9,15 +10,52 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
+
+	"github.com/Ryheff24/agentlog/internal/zstd"
 )
 
 // ErrStop can be returned by a callback to end iteration early without error.
 var ErrStop = errors.New("stop")
 
+// Compressed is the suffix of a log stored zstd-compressed. Codex compresses
+// its rollouts after about a week, so most of its history has it.
+const Compressed = ".zst"
+
+// IsLog reports whether name is a JSONL log, plain or compressed.
+func IsLog(name string) bool {
+	return strings.HasSuffix(name, ".jsonl") || strings.HasSuffix(name, ".jsonl"+Compressed)
+}
+
+// TrimLog removes the .jsonl or .jsonl.zst suffix from name.
+func TrimLog(name string) string {
+	return strings.TrimSuffix(strings.TrimSuffix(name, Compressed), ".jsonl")
+}
+
+// Open opens a log for reading its records, decompressing it when its name
+// says it is compressed.
+func Open(path string) (io.ReadCloser, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	if !strings.HasSuffix(path, Compressed) {
+		return f, nil
+	}
+	return decompressed{zstd.NewReader(f), f}, nil
+}
+
+type decompressed struct {
+	*zstd.Reader
+	f *os.File
+}
+
+func (d decompressed) Close() error { return d.f.Close() }
+
 // Each calls fn for every non-empty line of the file with its 1-based line
 // number. The line slice is only valid during the call.
 func Each(path string, fn func(line []byte, n int) error) error {
-	f, err := os.Open(path)
+	f, err := Open(path)
 	if err != nil {
 		return err
 	}
@@ -31,7 +69,7 @@ func Each(path string, fn func(line []byte, n int) error) error {
 // decode. A last line with no newline where the file itself ends is still
 // handed over, as Each does.
 func Head(path string, maxBytes int64, fn func(line []byte, n int) error) error {
-	f, err := os.Open(path)
+	f, err := Open(path)
 	if err != nil {
 		return err
 	}
@@ -51,6 +89,9 @@ func Head(path string, maxBytes int64, fn func(line []byte, n int) error) error 
 // Tail calls fn for each complete line within the last maxBytes of the file.
 // Line numbers are unknown and passed as 0.
 func Tail(path string, maxBytes int64, fn func(line []byte, n int) error) error {
+	if strings.HasSuffix(path, Compressed) {
+		return tailStream(path, maxBytes, fn)
+	}
 	f, err := os.Open(path)
 	if err != nil {
 		return err
@@ -79,6 +120,46 @@ func Tail(path string, maxBytes int64, fn func(line []byte, n int) error) error 
 				return nil // window is inside one giant line
 			}
 			return err
+		}
+	}
+	return each(r, 0, fn, nil)
+}
+
+// tailStream is Tail for a log that can only be read from its start, as a
+// compressed one can: it reads all of it and keeps the window Tail would have
+// seeked to, the last maxBytes and the byte before them.
+func tailStream(path string, maxBytes int64, fn func(line []byte, n int) error) error {
+	f, err := Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	window := int(maxBytes) + 1
+	var keep []byte
+	var total int64
+	buf := make([]byte, 1<<16)
+	for {
+		n, err := f.Read(buf)
+		total += int64(n)
+		keep = append(keep, buf[:n]...)
+		if len(keep) > 2*window {
+			keep = keep[:copy(keep, keep[len(keep)-window:])]
+		}
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+	}
+	skipPartial := total > maxBytes
+	if len(keep) > window {
+		keep = keep[len(keep)-window:]
+	}
+	r := bufio.NewReaderSize(bytes.NewReader(keep), 1<<16)
+	if skipPartial {
+		if _, err := r.ReadBytes('\n'); err != nil {
+			return nil // the window is inside one giant line
 		}
 	}
 	return each(r, 0, fn, nil)
