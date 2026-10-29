@@ -225,6 +225,7 @@ The full list of clues, views and flags is in
 - [ISSUES.md](ISSUES.md): what's reproduced and not fixed yet, and what was
   deliberately left alone.
 - [CLAUDE.md](CLAUDE.md): how agents work on agentlog itself.
+- [CONTRIBUTING.md](CONTRIBUTING.md): opening an issue or a pull request.
 
 ## Notes from the owner
 This tool I've been iterating on over roughly the past 6-9 months. Expanding the functionality more in
