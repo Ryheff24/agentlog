@@ -771,3 +771,26 @@ func TestLoadIgnoresArtifactAndToolBookkeeping(t *testing.T) {
 		}
 	}
 }
+
+// A forked subagent's log opens with a link to the parent record it forked from.
+// The parent is already known from the folder the log sits in, so the link adds no event.
+func TestLoadIgnoresForkContextRef(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "agent-f1.jsonl")
+	writeJSONL(t, path, []map[string]any{
+		{"type": "fork-context-ref", "agentId": "f1", "parentSessionId": sessionID, "parentLastUuid": "p9", "contextLength": 10},
+		user("do the one directive"),
+	})
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: "f1", ParentID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := kinds(tr); got != "user" {
+		t.Errorf("kinds = %q, want only the prompt", got)
+	}
+	if len(tr.Unknowns) != 0 {
+		t.Errorf("Unknowns = %v, want none", tr.Unknowns)
+	}
+	if tr.Ignored["fork-context-ref"] != 1 {
+		t.Errorf("Ignored = %v, want fork-context-ref counted once", tr.Ignored)
+	}
+}

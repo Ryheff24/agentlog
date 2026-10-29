@@ -377,6 +377,8 @@ var ignoredTypes = map[string]bool{
 	"api-request": true, "api-request-shape": true, "api-request-blob": true,
 	// The tool calls are already events. The artifact records are the harness's own watch state.
 	"tools-used": true, "artifact-comment-monitor": true, "artifact-autoreact-ledger": true,
+	// A forked subagent's first record names its parent, which the log's folder already gives.
+	"fork-context-ref": true,
 }
 
 // modelUsage is one model's share of a cost-state record.
