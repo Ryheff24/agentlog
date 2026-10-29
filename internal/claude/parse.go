@@ -83,7 +83,7 @@ type block struct {
 // Load parses a session or subagent transcript.
 func (p *Provider) Load(s *transcript.Session, o transcript.Load) (*transcript.Transcript, error) {
 	t := &transcript.Transcript{Session: *s}
-	b := &builder{t: t, calls: map[string]int{}, answered: map[int]bool{}, parent: map[string]string{},
+	b := &builder{t: t, calls: map[string]int{}, answered: map[int]bool{}, parent: map[string]string{}, message: map[string]string{},
 		counted: map[string]bool{}, subagent: s.ParentID != ""}
 	if s.ParentID == "" {
 		b.children = map[string]string{}
@@ -244,8 +244,10 @@ type builder struct {
 	// and starts a new branch from their shared parent.
 	parent map[string]string // uuid -> parent uuid (logical parent across a compaction)
 	head   string            // uuid of the newest record, the tip of the live branch
-	source []string          // record uuid per event, parallel to t.Events
-	cur    string            // uuid of the record being decoded
+	// Claude Code writes one model message with several tool calls as several chained records with one message id.
+	message map[string]string // uuid -> message id, for assistant records
+	source  []string          // record uuid per event, parallel to t.Events
+	cur     string            // uuid of the record being decoded
 
 	file      string // the log file being read
 	raw       []byte // the record being decoded, for the stand-in event
@@ -302,18 +304,26 @@ func (b *builder) selectBranch(keepAll bool) {
 	for u := b.head; u != "" && !live[u]; u = b.parent[u] {
 		live[u] = true
 	}
-	// A branch root is an off-chain record whose own parent is on the chain
-	// (or is gone), which makes it the point the session walked away from.
-	branches := 0
-	for u, p := range b.parent {
-		if !live[u] && (p == "" || live[p]) {
-			branches++
+	// The next turn continues from one call of a parallel group, so every record of a live message is live.
+	liveMessages := map[string]bool{}
+	for u := range live {
+		if m := b.message[u]; m != "" {
+			liveMessages[m] = true
 		}
 	}
+	for u, m := range b.message {
+		if liveMessages[m] {
+			live[u] = true
+		}
+	}
+	// A branch is the off-chain record that a hidden event descends from, whose own parent is live or gone.
+	// Counting only branches that hide an event keeps a result record, which owns no event, out of the count.
+	roots := map[string]bool{}
 	dropped := 0
 	kept := b.t.Events[:0]
 	for i, e := range b.t.Events {
 		if u := b.source[i]; u != "" && !live[u] {
+			roots[b.branchRoot(u, live)] = true
 			dropped++
 			if !keepAll {
 				continue
@@ -325,6 +335,7 @@ func (b *builder) selectBranch(keepAll bool) {
 	if dropped == 0 {
 		return
 	}
+	branches := len(roots)
 	b.t.Events = kept
 	if keepAll {
 		b.t.Notes = append(b.t.Notes, fmt.Sprintf("%d of these events are on %s the session abandoned (marked)",
@@ -334,6 +345,16 @@ func (b *builder) selectBranch(keepAll bool) {
 	b.t.Hidden += dropped
 	b.t.Notes = append(b.t.Notes, fmt.Sprintf("%d events on %s hidden: rewound, edited or restarted turns (--branches to include them); %d rewound turns not counted (--branches)",
 		dropped, plural(branches, "branch", "branches"), dropped))
+}
+
+// branchRoot walks up from an off-chain record to the first one whose parent is live or missing.
+func (b *builder) branchRoot(u string, live map[string]bool) string {
+	seen := map[string]bool{}
+	for p := b.parent[u]; p != "" && !live[p] && !seen[p]; p = b.parent[u] {
+		seen[u] = true
+		u = p
+	}
+	return u
 }
 
 func plural(n int, one, many string) string {
@@ -471,6 +492,9 @@ func (b *builder) entry(e entry, line int) {
 		b.cwd = e.CWD
 	}
 	b.link(e.UUID, e.ParentUUID, e.LogicalParentUUID)
+	if e.Type == "assistant" && e.UUID != "" && e.Message.ID != "" {
+		b.message[e.UUID] = e.Message.ID
+	}
 	if e.IsSidechain && !b.subagent {
 		// Old versions inlined subagent turns into the parent log.
 		b.t.Hidden++

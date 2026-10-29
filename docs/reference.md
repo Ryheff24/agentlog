@@ -160,7 +160,9 @@ says "no tokens recorded".
 Codex, and for Copilot CLI the steps it logs inline in the parent's file, each
 marked with the subagent that ran it. Without it their step count is reported
 in a note. `--branches` adds the turns a session rewound, edited or restarted;
-without it they are hidden and counted. Timeline, tool census, usage and edit
+without it they are hidden and counted. Parallel tool calls from one model
+message are never counted as rewound, whichever call's result the next turn
+continues from. Timeline, tool census, usage and edit
 views all report the rewound turns they left out. Lifetime cost records remain
 the harness's own accounting, including work it later rewound.
 

@@ -244,7 +244,7 @@ func TestCommands(t *testing.T) {
 				"Bash ×1 (1 failed)",
 				"a0b1c2d3e4f5a6b7c  reviewer",
 				"src/checkout.ts                               +1 -1",
-				"2 events on 2 branches hidden",
+				"2 events on 1 branch hidden",
 				"team-lead → me",
 				"last assistant message #15",
 			},
