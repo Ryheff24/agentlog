@@ -1,0 +1,23 @@
+name: Feature
+description: Something agentlog should let an agent find out, or find out more cheaply.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What you were trying to find out
+      description: The question about another agent's session, in plain words.
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: What it takes today
+      description: The commands you ran, or the one-off script you wrote instead, and roughly what it cost (calls, bytes into context, seconds).
+    validations:
+      required: true
+  - type: textarea
+    id: want
+    attributes:
+      label: What would make it cheaper
+      description: A flag, a view or a change to an answer. Say why the existing drill-downs (#N, ranges, --full) don't get there.

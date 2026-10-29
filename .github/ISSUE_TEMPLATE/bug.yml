@@ -1,0 +1,58 @@
+name: Bug
+description: agentlog gave a wrong, missing or broken answer.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Session logs hold prompts, file contents, paths and sometimes secrets. Don't paste a raw log. Cut an excerpt down to the record shape that matters and replace the values. Security problems go through SECURITY.md, not an issue.
+  - type: textarea
+    id: ran
+    attributes:
+      label: What you ran
+      description: The exact agentlog command line.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What came back
+      description: The output, trimmed to the part that's wrong.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What it should have said, and how you know
+      description: The ground truth you checked against, such as the raw log, file times or git history.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: agentlog doctor
+      description: The summary line for each harness (version, records, % read). Leave out the sample records under it.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: agentlog version
+      description: Output of `agentlog --version`.
+    validations:
+      required: true
+  - type: input
+    id: harness
+    attributes:
+      label: Harness and version
+      description: For example Claude Code 2.1.310, Codex 0.164.0.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: For example macOS 26.1 (arm64), Ubuntu 24.04 (amd64).
+    validations:
+      required: true
