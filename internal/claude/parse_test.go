@@ -244,6 +244,51 @@ func withUUID(e map[string]any, uuid, parent string) map[string]any {
 	return e
 }
 
+// withMessageID gives an assistant record the id of the model message it is one part of.
+func withMessageID(e map[string]any, id string) map[string]any {
+	e["message"].(map[string]any)["id"] = id
+	return e
+}
+
+// Claude Code writes one message with three tool calls as three chained records that share a message id.
+// Each result points at its own call, and the next turn continues from the result written last.
+// Here that is the first call's result, so a walk back from the newest record skips the other two calls.
+// They are not a rewound turn: the session did not walk away from them.
+func TestLoadKeepsParallelToolCalls(t *testing.T) {
+	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
+	call := func(uuid, parent, id string) map[string]any {
+		return withUUID(withMessageID(assistant(toolUse(id, "WebFetch", map[string]any{"url": "https://example.com/" + id})), "m1"), uuid, parent)
+	}
+	writeJSONL(t, path, []map[string]any{
+		withUUID(user("fetch three pages"), "u1", ""),
+		call("c1", "u1", "t1"),
+		call("c2", "c1", "t2"),
+		call("c3", "c2", "t3"),
+		withUUID(toolResult("t3", "page three", nil), "r3", "c3"),
+		withUUID(toolResult("t2", "page two", nil), "r2", "c2"),
+		withUUID(toolResult("t1", "page one", nil), "r1", "c1"),
+		// A real rewind from the same turn, which must stay hidden.
+		withUUID(withMessageID(assistant(map[string]any{"type": "text", "text": "rewound answer"}), "m2"), "x1", "r1"),
+		withUUID(withMessageID(assistant(map[string]any{"type": "text", "text": "all three fetched"}), "m3"), "a1", "r1"),
+	})
+
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, e := range tr.Events {
+		got = append(got, string(e.Kind)+":"+e.Output+e.Text)
+	}
+	want := "user:fetch three pages tool:page one tool:page two tool:page three assistant:all three fetched"
+	if s := strings.Join(got, " "); s != want {
+		t.Fatalf("events\n got %q\nwant %q", s, want)
+	}
+	if tr.Hidden != 1 || len(tr.Notes) != 1 || !strings.Contains(tr.Notes[0], "1 events on 1 branch") {
+		t.Errorf("hidden = %d notes = %v, want only the rewound answer hidden", tr.Hidden, tr.Notes)
+	}
+}
+
 func TestLoadHidesAbandonedBranches(t *testing.T) {
 	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
 	// The user asked twice from the same point: u2/a2 were rewound away, and

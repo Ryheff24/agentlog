@@ -2,7 +2,7 @@ TOTAL                   95.5%   7586 statements
 cmd/agentlog             0.0%     14 statements
 internal/app            94.6%   1228 statements
 internal/catalog        99.8%    441 statements
-internal/claude         98.3%    718 statements
+internal/claude         98.4%    731 statements
 internal/clip           99.2%    118 statements
 internal/codex          97.7%    830 statements
 internal/copilot        98.4%    310 statements
