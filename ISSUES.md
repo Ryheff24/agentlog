@@ -81,15 +81,6 @@ commit that fixes it; that commit is the record.
 - **`agentlog-usage all` prints the wrong start.** It prints "since Dec 31
   23:58", the zero time in local time, not the date of the oldest log.
 
-- **`--grep` with `--list` and no session id is ignored.** `agentlog
-  --grep 'feat/alltrack-lane' --list` prints the recent-session list, the
-  same as `agentlog --list`. A time clue (`7d`) changes nothing. In `run`
-  (`internal/app/app.go`), the `opts.list` branch returns before the call to
-  `searchAcross`. From 2 to 9 November 2026, 11 calls in 5 sessions hit this
-  while they asked which session owned a branch or a PR. Both notes in
-  `agentlog feedback list` came from this path. The agents read the list as
-  "no session mentions it".
-
 - **The word `branch` as a clue hides the sessions that worked on the
   branch.** Agents type `agentlog branch <name>`. `branch` becomes a word
   clue, and the search then looks only in sessions whose metadata holds that

@@ -34,6 +34,7 @@ agentlog all needle --content --count  # event-content matches and session count
 agentlog 8a1d0c77#42 --images     # extract inline images to writable temp files
 agentlog 8a1d0c77 --tree          # sourced spawn relationships
 agentlog claude my-project --list         # candidates instead of the best match
+agentlog all --grep feat/login --list  # which sessions mention a branch, with counts
 agentlog src/analytics/data.go all  # every session that touched that file
 ```
 
@@ -71,7 +72,9 @@ View flags apply to the best match: `--tail N`, `--head N`,
 `--grep REGEX`, `--edits [--files]`, `--usage`, `--tools`, `--subagents`,
 `--branches`, `--list`,
 `--json`, `--full` and `--max BYTES`. When several sessions match and no id
-was given, `--grep` searches across them.
+was given, `--grep` searches across them. With `--list`, the search prints one
+line for each matching session, with its count of matching events, in place of
+the events. `--limit N` caps those lines.
 
 `--user` (alias for `--kind owner`) selects human prompts for all three
 harnesses. It excludes subagent spawn prompts, peer and teammate messages,
