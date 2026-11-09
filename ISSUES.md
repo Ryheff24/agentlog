@@ -64,14 +64,18 @@ commit that fixes it; that commit is the record.
   carry `cli`. But 192 hook sessions have no `entrypoint`, so that field
   alone does not identify all of them.
 
-- **Workflow journals are not read.** The Workflow tool writes
-  `subagents/workflows/wf_*/journal.jsonl` with `launched`, `started` and
-  `result` records (`agentId`, `key`, `toolsUsed`, a structured `result`).
-  The shapes test reads them as `unread=1`. Opening one by path fails:
+- **Workflow journals can't be reached.** The Workflow tool writes
+  `subagents/workflows/wf_*/journal.jsonl`: a `started` record for each agent
+  it starts and a `result` record for what each one hands back (`agentId`,
+  `key`, `toolsUsed`, a structured `result`). The reader reads those records
+  now, but no view opens a journal. Discovery lists only `<session>.jsonl` and
+  `subagents/agent-*.jsonl`, so a journal is not shown under its session. A
+  path only matches a log that discovery found, so
   `agentlog …/journal.jsonl --tail 5` widens to all time and reports "no
-  session matches file=…", because the path goes to the file-clue search, not
-  to the log reader. Agents read these journals by hand in 8 episodes across
-  38 days, to follow a running workflow.
+  session matches file=…". Agents read these journals by hand in 8 episodes
+  across 38 days, to follow a running workflow. Listing a journal under its
+  session has to be checked against a real workflow folder, and the machine
+  the reading was written on has none.
 
 - **A wide subagent search is not bounded.** `agentlog <id> --subagents
   --grep '<a name>' --brief` returned 54.6KB: 74 hits, most from the parent
