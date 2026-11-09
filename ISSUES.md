@@ -47,6 +47,40 @@ commit that fixes it; that commit is the record.
   until each is named. This one will never stay fixed: it is the alarm
   described in DESIGN.md, "Formats change every day".
 
+- **`--content` ignores `--grep`.** With a word clue and `--content`, the
+  regex has no effect. `agentlog record --content --grep zzqqxx_nomatch
+  --count all` reports 195,022 events in 3,367 sessions. The same command
+  without `--content` reports 0. An agent that adds `--content` to narrow a
+  search gets every event that holds the word instead. Found on 2 November 2026.
+
+- **Prompts that a program wrote count as the person's.** On one Mac, 515 of
+  754 top-level Claude sessions came from a per-commit security-review hook
+  that starts Claude through the SDK. Their first prompt is "Review this
+  change for security vulnerabilities". `--user`, documented as "what the
+  person typed", returns those prompts. In `agentlog <project> --grep workbook
+  --user all`, every hit was one of them. The same sessions rank first in
+  lists, ahead of the session that worked on the branch. The log marks some
+  of them: 326 carry `entrypoint: sdk-py`, and sessions a person started
+  carry `cli`. But 192 hook sessions have no `entrypoint`, so that field
+  alone does not identify all of them.
+
+- **Workflow journals are not read.** The Workflow tool writes
+  `subagents/workflows/wf_*/journal.jsonl` with `launched`, `started` and
+  `result` records (`agentId`, `key`, `toolsUsed`, a structured `result`).
+  The shapes test reads them as `unread=1`. Opening one by path fails:
+  `agentlog …/journal.jsonl --tail 5` widens to all time and reports "no
+  session matches file=…", because the path goes to the file-clue search, not
+  to the log reader. Agents read these journals by hand in 8 episodes across
+  38 days, to follow a running workflow.
+
+- **A wide subagent search is not bounded.** `agentlog <id> --subagents
+  --grep '<a name>' --brief` returned 54.6KB: 74 hits, most from the parent
+  session. A count for each session first, with `#N` to drill down, would
+  keep it within an agent's context.
+
+- **`agentlog-usage all` prints the wrong start.** It prints "since Dec 31
+  23:58", the zero time in local time, not the date of the oldest log.
+
 ## Not acting on
 
 Reports that were read, checked, and deliberately left alone, with the reason.

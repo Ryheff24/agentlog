@@ -75,3 +75,12 @@ and agents using it stochastically, with real objectives, is in effect the
 test suite. Golden prompts and simulations don't capture that, which is why
 large changes to the surface are held back. Real failure reports, with their
 setting, are the closest thing to a reproducible test.
+
+## Usage totals across sessions
+
+Agents asked "which sessions used 440 M tokens", "how many sessions hit a
+rate limit yesterday" and "did the new hook run in every session after it
+went in". `--usage` answers for one session. To answer for many, agents
+wrote their own scripts: 7 episodes in 38 days on one Mac, 24 of 25 calls
+scripts, median 69 s each. A view of totals by session, model and day over a
+time clue would cover those questions.
