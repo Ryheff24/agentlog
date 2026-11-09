@@ -383,6 +383,8 @@ var ignoredTypes = map[string]bool{
 	"fork-context-ref": true,
 	// The signed-in account and organisation, written again through the session.
 	"session-owner": true,
+	// Which history the Remote Control bridge shows, not what the model saw.
+	"history-suppression": true,
 }
 
 // modelUsage is one model's share of a cost-state record.
