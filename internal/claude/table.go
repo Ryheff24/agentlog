@@ -49,6 +49,7 @@ func init() {
 			{"artifact-comment-monitor", spec.Ignore, "the artifacts the session watches for comments"},
 			{"artifact-autoreact-ledger", spec.Ignore, "the harness's record of artifact comment threads it reacted to"},
 			{"fork-context-ref", spec.Ignore, "a fork's link to its parent, already read from the log's folder"},
+			{"session-owner", spec.Ignore, "the signed-in account and organisation ids"},
 
 			{"summary", spec.Ignore, "compaction summary, shown via the compaction notice"},
 		},

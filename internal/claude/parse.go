@@ -381,6 +381,8 @@ var ignoredTypes = map[string]bool{
 	"tools-used": true, "artifact-comment-monitor": true, "artifact-autoreact-ledger": true,
 	// A forked subagent's first record names its parent, which the log's folder already gives.
 	"fork-context-ref": true,
+	// The signed-in account and organisation, written again through the session.
+	"session-owner": true,
 }
 
 // modelUsage is one model's share of a cost-state record.
