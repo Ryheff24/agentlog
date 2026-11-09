@@ -550,7 +550,7 @@ func (b *builder) entry(e entry, line int) {
 		if e.AITitle != "" && b.t.Session.Title == "" {
 			b.t.Session.Title = e.AITitle
 		}
-	case "launched", "started", "result":
+	case "launched", "started", "result", "failed":
 		b.journal(e, line)
 	default:
 		if ignoredTypes[e.Type] {
@@ -563,10 +563,15 @@ func (b *builder) entry(e entry, line int) {
 
 // journal reads a Workflow's journal (subagents/workflows/wf_*/journal.jsonl):
 // one record when the workflow is launched, one for each agent it starts, and
-// one for what each agent handed back. The records have no time, uuid or
-// session id. Their names are plain words another record could take, so only
-// a record shaped like a journal's is read as one; anything else under these
-// names is still stood up whole and counted as unread.
+// one for what each agent handed back or for its failing. The records have no
+// time, uuid or session id. Their names are plain words another record could
+// take, so only a record shaped like a journal's is read as one; anything else
+// under these names is still stood up whole and counted as unread.
+//
+// The four types and their fields are the ones Claude Code's own journal
+// reader accepts (read from the 2.1.319 build): launched with an optional
+// hash of the script, started, result, and failed. No log seen so far holds
+// a failed record; the harness's code is what says it exists.
 func (b *builder) journal(e entry, line int) {
 	var j struct {
 		AgentID   string          `json:"agentId"`
@@ -581,6 +586,10 @@ func (b *builder) journal(e entry, line int) {
 	_ = json.Unmarshal(b.raw, &fields)
 	delete(fields, "type")
 	delete(fields, "timestamp")
+	if e.Type == "launched" {
+		// A hash of the workflow's script: nothing a reader can show.
+		delete(fields, "hiddenScriptSha256")
+	}
 	switch {
 	case len(fields) == 0:
 		// The launch marker, or a record with nothing in it but its name.
@@ -595,14 +604,20 @@ func (b *builder) journal(e entry, line int) {
 	}
 	ev := transcript.Event{Kind: transcript.KindAgent, Tag: e.Type, AgentID: j.AgentID, Time: e.Timestamp, Line: line}
 	var input []string
-	if e.Type == "started" {
+	switch e.Type {
+	case "started":
 		b.workflow[j.AgentID] = j.Label
 		ev.Agent = j.Label
 		ev.Text = "started by a workflow"
 		if j.Phase != "" {
 			input = append(input, "phase: "+j.Phase)
 		}
-	} else {
+	case "failed":
+		// An agent that failed before it had an id is written with an empty one.
+		ev.Agent = firstNonEmpty(j.Label, b.workflow[j.AgentID])
+		ev.Text = "failed in a workflow"
+		ev.Failed = true
+	default:
 		ev.Agent = firstNonEmpty(j.Label, b.workflow[j.AgentID])
 		if used := strings.Join(stringList(j.ToolsUsed), ", "); used != "" {
 			input = append(input, "tools used: "+used)

@@ -23,6 +23,7 @@ func init() {
 			{"queue-operation", spec.Step, "prompts typed while the model was busy"},
 			{"started", spec.Step, "Workflow journal: an agent the workflow started"},
 			{"result", spec.Step, "Workflow journal: what an agent handed back"},
+			{"failed", spec.Step, "Workflow journal: an agent that failed"},
 			{"cost-state", spec.Meta, "the harness's own account of the thread"},
 			{"custom-title", spec.Meta, "title the person set"},
 			{"ai-title", spec.Meta, "title the harness generated"},

@@ -801,11 +801,13 @@ func TestLoadIgnoresForkContextRef(t *testing.T) {
 func TestLoadReadsAWorkflowJournal(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "journal.jsonl")
 	lines := []string{
-		`{"type":"launched"}`,
+		`{"type":"launched","hiddenScriptSha256":"0f0f"}`,
 		`{"type":"started","agentId":"a1b2c3d4e5f60718","key":"k-search","label":"search:auth","phase":"Search"}`,
 		`{"type":"started","agentId":"0f9e8d7c6b5a4321","key":"k-verify","label":"verify:auth"}`,
 		`{"type":"result","agentId":"a1b2c3d4e5f60718","key":"k-search","result":{"claims":[{"claim":"tokens expire","quote":"ttl = 3600"}],"sourceQuality":"high"},"toolsUsed":["Grep","Read"]}`,
 		`{"type":"result","agentId":"ffffffffffffffff","key":"k-orphan","result":"plain words"}`,
+		`{"type":"failed","agentId":"0f9e8d7c6b5a4321","key":"k-verify"}`,
+		`{"type":"failed","agentId":"","key":"k-never-started"}`,
 	}
 	if err := os.WriteFile(path, []byte(strings.Join(lines, "\n")+"\n"), 0o644); err != nil {
 		t.Fatal(err)
@@ -814,7 +816,7 @@ func TestLoadReadsAWorkflowJournal(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := kinds(tr), "agent agent agent agent"; got != want {
+	if got, want := kinds(tr), "agent agent agent agent agent agent"; got != want {
 		t.Fatalf("kinds = %q, want %q", got, want)
 	}
 	if len(tr.Unknowns) != 0 || tr.Ignored["launched"] != 1 {
@@ -843,6 +845,15 @@ func TestLoadReadsAWorkflowJournal(t *testing.T) {
 	if orphan.Agent != "" || orphan.AgentID != "ffffffffffffffff" || orphan.Output != "plain words" {
 		t.Errorf("orphan result = %+v", orphan)
 	}
+	// A failure names the agent that failed. One that failed before it had an
+	// id is written with an empty id, and is still an event.
+	failed, early := tr.Events[4], tr.Events[5]
+	if failed.Tag != "failed" || !failed.Failed || failed.Agent != "verify:auth" || failed.Input != "key: k-verify" {
+		t.Errorf("failed = %+v", failed)
+	}
+	if early.Tag != "failed" || !early.Failed || early.AgentID != "" || early.Input != "key: k-never-started" {
+		t.Errorf("a failure with no agent id = %+v", early)
+	}
 }
 
 // "result", "started" and "launched" are plain words. A record under one of
@@ -854,16 +865,17 @@ func TestLoadDoesNotTakeOtherRecordsForAJournal(t *testing.T) {
 		user("go"),
 		{"type": "result", "subtype": "success", "num_turns": 3},
 		{"type": "launched", "pid": 4242},
+		{"type": "failed", "reason": "no key and no agent"},
 		{"type": "started"},
 	})
 	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := kinds(tr), "user record record"; got != want {
+	if got, want := kinds(tr), "user record record record"; got != want {
 		t.Fatalf("kinds = %q, want %q", got, want)
 	}
-	if tr.Unknowns["result"] != 1 || tr.Unknowns["launched"] != 1 || tr.Ignored["started"] != 1 {
+	if tr.Unknowns["result"] != 1 || tr.Unknowns["launched"] != 1 || tr.Unknowns["failed"] != 1 || tr.Ignored["started"] != 1 {
 		t.Errorf("Unknowns = %v, Ignored = %v", tr.Unknowns, tr.Ignored)
 	}
 	if e := tr.Events[1]; !strings.Contains(e.Text, "num_turns") {
