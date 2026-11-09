@@ -81,6 +81,31 @@ commit that fixes it; that commit is the record.
 - **`agentlog-usage all` prints the wrong start.** It prints "since Dec 31
   23:58", the zero time in local time, not the date of the oldest log.
 
+- **`--grep` with `--list` and no session id is ignored.** `agentlog
+  --grep 'feat/alltrack-lane' --list` prints the recent-session list, the
+  same as `agentlog --list`. A time clue (`7d`) changes nothing. In `run`
+  (`internal/app/app.go`), the `opts.list` branch returns before the call to
+  `searchAcross`. From 2 to 9 November 2026, 11 calls in 5 sessions hit this
+  while they asked which session owned a branch or a PR. Both notes in
+  `agentlog feedback list` came from this path. The agents read the list as
+  "no session mentions it".
+
+- **The word `branch` as a clue hides the sessions that worked on the
+  branch.** Agents type `agentlog branch <name>`. `branch` becomes a word
+  clue, and the search then looks only in sessions whose metadata holds that
+  word. `agentlog branch refactor/delete-dead-code --list` names 2 subagents
+  with 1 or 2 mentions. `agentlog refactor/delete-dead-code --list` names
+  `b67ff331` with 29 mentions. 19 logs hold the branch name (6 top-level).
+  Seen in 3 sessions on 5 to 7 November 2026.
+
+- **A word clue that matches only your own session does not offer
+  `--grep`.** `agentlog all <a TSV file name>` reports "no sessions but
+  your own" and stops. 16 logs hold the file name (`rg -l -F`). In `run`, the
+  `render.OnlyOwn` message returns before the hint that says words match
+  metadata and gives the `--grep` command. With no match at all, the hint
+  prints. Seen in 4 sessions from 2 to 9 November 2026. One of them then
+  read the JSONL by hand.
+
 ## Not acting on
 
 Reports that were read, checked, and deliberately left alone, with the reason.
