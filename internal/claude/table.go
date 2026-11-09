@@ -21,6 +21,9 @@ func init() {
 			{"system", spec.Step, "hooks, slash commands, notices"},
 			{"attachment", spec.Step, "queued prompts and pasted content"},
 			{"queue-operation", spec.Step, "prompts typed while the model was busy"},
+			{"started", spec.Step, "Workflow journal: an agent the workflow started"},
+			{"result", spec.Step, "Workflow journal: what an agent handed back"},
+			{"failed", spec.Step, "Workflow journal: an agent that failed"},
 			{"cost-state", spec.Meta, "the harness's own account of the thread"},
 			{"custom-title", spec.Meta, "title the person set"},
 			{"ai-title", spec.Meta, "title the harness generated"},
@@ -30,6 +33,7 @@ func init() {
 			{"agent-setting", spec.Meta, "the agent definition the session runs as"},
 
 			{"last-prompt", spec.Ignore, "duplicate of the last user record"},
+			{"launched", spec.Ignore, "Workflow journal: the marker a journal opens with"},
 			{"mode", spec.Ignore, "posture flag"},
 			{"permission-mode", spec.Ignore, "posture flag"},
 			{"atis-latch", spec.Ignore, "internal latch"},

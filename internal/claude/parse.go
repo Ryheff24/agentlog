@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/flat"
 	"github.com/Ryheff24/agentlog/internal/generic"
 	"github.com/Ryheff24/agentlog/internal/jsonl"
 	"github.com/Ryheff24/agentlog/internal/patch"
@@ -249,14 +250,15 @@ type builder struct {
 	source  []string          // record uuid per event, parallel to t.Events
 	cur     string            // uuid of the record being decoded
 
-	file      string // the log file being read
-	raw       []byte // the record being decoded, for the stand-in event
-	generic   int    // record (by count) already given a stand-in, so one record gives one
-	cwd       string // the directory the current record ran in
-	sidechain int    // inlined subagent records skipped
-	talked    bool   // a user or assistant record has been read
-	midway    bool   // the read starts partway through the log (a tail window)
-	carried   string // logical parent of a compaction this log opens on
+	file      string            // the log file being read
+	raw       []byte            // the record being decoded, for the stand-in event
+	generic   int               // record (by count) already given a stand-in, so one record gives one
+	cwd       string            // the directory the current record ran in
+	sidechain int               // inlined subagent records skipped
+	talked    bool              // a user or assistant record has been read
+	midway    bool              // the read starts partway through the log (a tail window)
+	carried   string            // logical parent of a compaction this log opens on
+	workflow  map[string]string // agent id -> label, from a Workflow journal's started records
 
 	// Prompts typed while the model was busy. Each enqueue adds an event and a
 	// pending entry; a delivery removes the entry, and the event with it.
@@ -548,6 +550,8 @@ func (b *builder) entry(e entry, line int) {
 		if e.AITitle != "" && b.t.Session.Title == "" {
 			b.t.Session.Title = e.AITitle
 		}
+	case "launched", "started", "result", "failed":
+		b.journal(e, line)
 	default:
 		if ignoredTypes[e.Type] {
 			b.t.Ignore(e.Type)
@@ -555,6 +559,87 @@ func (b *builder) entry(e entry, line int) {
 		}
 		b.unknown(e.Type, e.Timestamp, line)
 	}
+}
+
+// journal reads a Workflow's journal (subagents/workflows/wf_*/journal.jsonl):
+// one record when the workflow is launched, one for each agent it starts, and
+// one for what each agent handed back or for its failing. The records have no
+// time, uuid or session id. Their names are plain words another record could
+// take, so only a record shaped like a journal's is read as one; anything else
+// under these names is still stood up whole and counted as unread.
+//
+// The four types and their fields are the ones Claude Code's own journal
+// reader accepts (read from the 2.1.319 build): launched with an optional
+// hash of the script, started, result, and failed. No log seen so far holds
+// a failed record; the harness's code is what says it exists.
+func (b *builder) journal(e entry, line int) {
+	var j struct {
+		AgentID   string          `json:"agentId"`
+		Key       string          `json:"key"`
+		Label     string          `json:"label"`
+		Phase     string          `json:"phase"`
+		Result    json.RawMessage `json:"result"`
+		ToolsUsed json.RawMessage `json:"toolsUsed"`
+	}
+	_ = json.Unmarshal(b.raw, &j)
+	var fields map[string]json.RawMessage
+	_ = json.Unmarshal(b.raw, &fields)
+	delete(fields, "type")
+	delete(fields, "timestamp")
+	if e.Type == "launched" {
+		// A hash of the workflow's script: nothing a reader can show.
+		delete(fields, "hiddenScriptSha256")
+	}
+	switch {
+	case len(fields) == 0:
+		// The launch marker, or a record with nothing in it but its name.
+		b.t.Ignore(e.Type)
+		return
+	case e.Type == "launched" || j.AgentID == "" && j.Key == "":
+		b.unknown(e.Type, e.Timestamp, line)
+		return
+	}
+	if b.workflow == nil {
+		b.workflow = map[string]string{}
+	}
+	ev := transcript.Event{Kind: transcript.KindAgent, Tag: e.Type, AgentID: j.AgentID, Time: e.Timestamp, Line: line}
+	var input []string
+	switch e.Type {
+	case "started":
+		b.workflow[j.AgentID] = j.Label
+		ev.Agent = j.Label
+		ev.Text = "started by a workflow"
+		if j.Phase != "" {
+			input = append(input, "phase: "+j.Phase)
+		}
+	case "failed":
+		// An agent that failed before it had an id is written with an empty one.
+		ev.Agent = firstNonEmpty(j.Label, b.workflow[j.AgentID])
+		ev.Text = "failed in a workflow"
+		ev.Failed = true
+	default:
+		ev.Agent = firstNonEmpty(j.Label, b.workflow[j.AgentID])
+		if used := strings.Join(stringList(j.ToolsUsed), ", "); used != "" {
+			input = append(input, "tools used: "+used)
+		}
+		// The result is whatever the workflow's script asked the agent for:
+		// usually an object, sometimes plain words.
+		if json.Unmarshal(j.Result, &ev.Output) != nil {
+			ev.Output = strings.TrimRight(flat.Text(j.Result, flat.Options{}), "\n")
+		}
+	}
+	if j.Key != "" {
+		input = append(input, "key: "+j.Key)
+	}
+	ev.Input = strings.Join(input, "\n")
+	b.add(ev)
+}
+
+// stringList reads a JSON array of strings, and is empty for anything else.
+func stringList(raw json.RawMessage) []string {
+	var out []string
+	_ = json.Unmarshal(raw, &out)
+	return out
 }
 
 // note adds a transcript note once, however often the harness repeats the

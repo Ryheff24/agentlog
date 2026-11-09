@@ -794,3 +794,94 @@ func TestLoadIgnoresForkContextRef(t *testing.T) {
 		t.Errorf("Ignored = %v, want fork-context-ref counted once", tr.Ignored)
 	}
 }
+
+// A Workflow journal has its own three record types, with no time, uuid or
+// session id. The agents it started and what each handed back are events;
+// the marker it opens with carries nothing.
+func TestLoadReadsAWorkflowJournal(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "journal.jsonl")
+	lines := []string{
+		`{"type":"launched","hiddenScriptSha256":"0f0f"}`,
+		`{"type":"started","agentId":"a1b2c3d4e5f60718","key":"k-search","label":"search:auth","phase":"Search"}`,
+		`{"type":"started","agentId":"0f9e8d7c6b5a4321","key":"k-verify","label":"verify:auth"}`,
+		`{"type":"result","agentId":"a1b2c3d4e5f60718","key":"k-search","result":{"claims":[{"claim":"tokens expire","quote":"ttl = 3600"}],"sourceQuality":"high"},"toolsUsed":["Grep","Read"]}`,
+		`{"type":"result","agentId":"ffffffffffffffff","key":"k-orphan","result":"plain words"}`,
+		`{"type":"failed","agentId":"0f9e8d7c6b5a4321","key":"k-verify"}`,
+		`{"type":"failed","agentId":"","key":"k-never-started"}`,
+	}
+	if err := os.WriteFile(path, []byte(strings.Join(lines, "\n")+"\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := kinds(tr), "agent agent agent agent agent agent"; got != want {
+		t.Fatalf("kinds = %q, want %q", got, want)
+	}
+	if len(tr.Unknowns) != 0 || tr.Ignored["launched"] != 1 {
+		t.Errorf("Unknowns = %v, Ignored = %v; want nothing unread and the marker counted", tr.Unknowns, tr.Ignored)
+	}
+	started, quiet, result, orphan := tr.Events[0], tr.Events[1], tr.Events[2], tr.Events[3]
+	if started.Tag != "started" || started.Agent != "search:auth" || started.AgentID != "a1b2c3d4e5f60718" ||
+		started.Input != "phase: Search\nkey: k-search" || started.Line != 2 {
+		t.Errorf("started = %+v", started)
+	}
+	if quiet.Agent != "verify:auth" || quiet.Input != "key: k-verify" {
+		t.Errorf("a started record with no phase = %+v", quiet)
+	}
+	// The result names the agent by the label its started record gave.
+	if result.Tag != "result" || result.Agent != "search:auth" || result.AgentID != "a1b2c3d4e5f60718" ||
+		result.Input != "tools used: Grep, Read\nkey: k-search" {
+		t.Errorf("result = %+v", result)
+	}
+	for _, want := range []string{"tokens expire", "ttl = 3600", "sourceQuality: high"} {
+		if !strings.Contains(result.Output, want) {
+			t.Errorf("result output %q does not hold %q", result.Output, want)
+		}
+	}
+	// A result whose agent never had a started record, and whose result is
+	// not an object, still shows whose it is and what came back.
+	if orphan.Agent != "" || orphan.AgentID != "ffffffffffffffff" || orphan.Output != "plain words" {
+		t.Errorf("orphan result = %+v", orphan)
+	}
+	// A failure names the agent that failed. One that failed before it had an
+	// id is written with an empty id, and is still an event.
+	failed, early := tr.Events[4], tr.Events[5]
+	if failed.Tag != "failed" || !failed.Failed || failed.Agent != "verify:auth" || failed.Input != "key: k-verify" {
+		t.Errorf("failed = %+v", failed)
+	}
+	if early.Tag != "failed" || !early.Failed || early.AgentID != "" || early.Input != "key: k-never-started" {
+		t.Errorf("a failure with no agent id = %+v", early)
+	}
+}
+
+// "result", "started" and "launched" are plain words. A record under one of
+// those names that is not shaped like a journal's is not a journal record:
+// it is shown whole and counted as unread, like any type nobody has heard of.
+func TestLoadDoesNotTakeOtherRecordsForAJournal(t *testing.T) {
+	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
+	writeJSONL(t, path, []map[string]any{
+		user("go"),
+		{"type": "result", "subtype": "success", "num_turns": 3},
+		{"type": "launched", "pid": 4242},
+		{"type": "failed", "reason": "no key and no agent"},
+		{"type": "started"},
+	})
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := kinds(tr), "user record record record"; got != want {
+		t.Fatalf("kinds = %q, want %q", got, want)
+	}
+	if tr.Unknowns["result"] != 1 || tr.Unknowns["launched"] != 1 || tr.Unknowns["failed"] != 1 || tr.Ignored["started"] != 1 {
+		t.Errorf("Unknowns = %v, Ignored = %v", tr.Unknowns, tr.Ignored)
+	}
+	if e := tr.Events[1]; !strings.Contains(e.Text, "num_turns") {
+		t.Errorf("stand-in for a foreign result = %+v, want the record's own fields", e)
+	}
+	if e := tr.Events[2]; !strings.Contains(e.Text, "4242") {
+		t.Errorf("stand-in for a foreign launched = %+v, want the record's own fields", e)
+	}
+}
