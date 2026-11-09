@@ -493,6 +493,27 @@ func TestCommands(t *testing.T) {
 			want: []string{"5a1e0000", "#6"},
 		},
 		{
+			// --list dropped the grep and printed every recent session, which agents read as "nothing mentions it".
+			name: "all --grep --list names only the sessions that match, with their counts",
+			cwd:  "/work/blog",
+			args: []string{"all", "--grep", "expected 10.8", "--list"},
+			want: []string{"5a1e0000", "1 matching event"},
+			not:  []string{"catalog: persisted harness logs", "d4af0000", "#6 "},
+		},
+		{
+			name: "--grep --list stops at --limit and says how many more matched",
+			cwd:  "/work/shop",
+			args: []string{"all", "--grep", "checkout", "--list", "--limit", "1"},
+			want: []string{"matching event", "more (--limit N)"},
+		},
+		{
+			name: "--grep --list with no time clue still searches",
+			cwd:  "/work/blog",
+			args: []string{"--grep", "expected 10.8", "--list"},
+			want: []string{"5a1e0000", "1 matching event"},
+			not:  []string{"catalog: persisted harness logs"},
+		},
+		{
 			// A search for something rewound found nothing
 			// and gave no hint.
 			name: "all --grep says it skipped rewound turns",

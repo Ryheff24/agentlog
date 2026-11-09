@@ -190,7 +190,9 @@ func run(env Env, opts options, clueArgs []string) error {
 	// A file lookup is already a list of sessions, the ones that touched the
 	// file; --list with a file clue used to list every recent session instead.
 	fileLookup := len(clues.Paths) > 0 && len(clues.IDs) == 0
-	if opts.list && !fileLookup {
+	// A grep is the question, so --list lists the sessions that match it.
+	grepAcross := opts.grep != "" && len(clues.IDs) == 0 && len(clues.Files) == 0
+	if opts.list && !fileLookup && !grepAcross {
 		if !opts.json {
 			fmt.Fprintln(w, "catalog: persisted harness logs; ephemeral jobs without rollouts and logs outside harness roots are not catalogued")
 		}
@@ -489,6 +491,7 @@ func searchAcross(env Env, res *catalog.Result, opts options, ro render.Options)
 	// the match was instead.
 	unshown := map[string]int{}
 	var responses []*engine.Response
+	var listed []engine.Selection
 	var found scan.Result
 
 	// Output is not a cumulative allowance: every candidate is scanned and one
@@ -516,6 +519,8 @@ func searchAcross(env Env, res *catalog.Result, opts options, ro render.Options)
 				r := engine.FromSelection(hit.sel, render.Ref(hit.sel.Session), opts.grep, hit.t)
 				if opts.json {
 					responses = append(responses, r)
+				} else if opts.list {
+					listed = append(listed, hit.sel)
 				} else if !opts.count {
 					render.Timeline(env.Stdout, hit.sel, ro)
 					render.TranscriptNotes(env.Stdout, hit.t)
@@ -542,10 +547,26 @@ func searchAcross(env Env, res *catalog.Result, opts options, ro render.Options)
 		}
 		return writeJSON(env.Stdout, r)
 	}
+	listMatches(env.Stdout, listed, orDefault(opts.limit, 20))
 	for _, n := range notices {
 		fmt.Fprintln(env.Stdout, n)
 	}
 	return nil
+}
+
+// listMatches prints one line for each session that matched, with its count, so that --list stays a list.
+func listMatches(w io.Writer, sels []engine.Selection, limit int) {
+	for i, sel := range sels {
+		if i == limit {
+			fmt.Fprintf(w, "  … %d more (--limit N)\n", len(sels)-limit)
+			break
+		}
+		s := sel.Session
+		fmt.Fprintf(w, "  %s  %-7s %s  %s\n", render.Ref(s), s.Provider, plural(sel.Matched, "matching event"), clip.Line(pick(s.Title, s.FirstPrompt, s.CWD), 80))
+	}
+	if len(sels) > 0 {
+		fmt.Fprintln(w)
+	}
 }
 
 // Where a match was, in a session whose log matched but whose events as
