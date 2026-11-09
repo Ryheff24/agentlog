@@ -6,15 +6,6 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
-- **The `--jobs` test depends on other agentlog runs.** The test case
-  "--jobs says what it took" in `internal/app/cli_test.go` runs `5a1e --jobs
-  2` and expects "reading with 2 workers". `newWorld` gives the test its own
-  harness folders, but not the folder where `work.Reserve` records CPU claims
-  (`os.UserCacheDir()/agentlog/workers`). When real agentlog runs on the same
-  machine hold workers, the test gets 1 worker and fails. On 9 November 2026
-  it failed in 4 runs on two branches while other sessions ran agentlog, and
-  it passed earlier the same day.
-
 - **New record types this build can't read yet.** Found by
   `TestTodaysLogsAreRead` on 2026-10-27, after the harnesses' latest releases:
   Codex 0.164.0 `response_item:additional_tools`; Copilot CLI 1.0.98
