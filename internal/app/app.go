@@ -56,13 +56,14 @@ func Run(env Env, args []string) int {
 		fmt.Fprintf(env.Stderr, "agentlog: %v\n\n%s\n", err, render.Usage)
 		return 2
 	}
-	// --help is the home screen: the sessions an agent is most likely to ask
-	// about, then the usage, so it never has to make both calls.
-	if opts.help {
-		opts, clueArgs = options{jobs: opts.jobs}, nil
-	}
+	// --help is the home screen with the usage first, because agents read it through `head`.
+	// It keeps the sessions, so an agent never has to make both calls.
 	printed := &byteWriter{Writer: env.Stdout}
 	env.Stdout = printed
+	if opts.help {
+		opts, clueArgs = options{jobs: opts.jobs, help: true}, nil
+		fmt.Fprintf(printed, "%s\n\n", render.Usage)
+	}
 	defer func() {
 		if !opts.json {
 			fmt.Fprintf(env.Stderr, "returned %d bytes\n", printed.n)
@@ -141,6 +142,9 @@ func run(env Env, opts options, clueArgs []string) error {
 			return writeJSON(w, r)
 		}
 		render.Home(w, res, ro, limit)
+		if !opts.help {
+			fmt.Fprintf(w, "\n%s\n", render.Usage)
+		}
 		return nil
 	}
 

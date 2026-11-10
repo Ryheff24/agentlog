@@ -64,7 +64,7 @@ the tool itself:
   agentlog feedback list [--json]  read the notes
   --version  --help, -h`
 
-// Home prints harnesses and recent sessions for a bare invocation.
+// Home prints harnesses and recent sessions. The caller places the usage before or after them.
 func Home(w io.Writer, res *catalog.Result, o Options, limit int) {
 	fmt.Fprintln(w, "harnesses:")
 	for _, h := range res.Harnesses {
@@ -90,8 +90,6 @@ func Home(w io.Writer, res *catalog.Result, o Options, limit int) {
 		fmt.Fprintf(w, "recent sessions (running across projects first, then this dir and newest):\n")
 		List(w, res, o, limit)
 	}
-	fmt.Fprintln(w)
-	fmt.Fprintln(w, Usage)
 }
 
 // List prints ranked matches, two lines each.
