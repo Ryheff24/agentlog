@@ -55,8 +55,26 @@ func touched(env Env, res *catalog.Result, opts options, clues catalog.Clues, ro
 		return uses[i].Session.Updated.After(uses[j].Session.Updated)
 	})
 
+	// Words narrow the sessions searched to those whose metadata holds them, which a reader does not expect of a file lookup.
+	narrowed := ""
+	if len(clues.Words) > 0 {
+		window := "" // the same default window the lookup used
+		if res.Widened {
+			window = "all"
+		}
+		cmd := scope(clues, ro.Now, window)
+		for _, p := range shortPaths(paths, ro.CWD) {
+			cmd = append(cmd, shellWord(p))
+		}
+		narrowed = fmt.Sprintf("word=%s narrowed the search to sessions whose project, title, prompts or subagent names hold it. To search every session: %s",
+			strings.Join(clues.Words, " "), strings.Join(cmd, " "))
+	}
 	if opts.json {
-		return writeJSON(env.Stdout, fileResponse(uses, found, paths))
+		r := fileResponse(uses, found, paths)
+		if narrowed != "" {
+			r.Notices = append(r.Notices, narrowed)
+		}
+		return writeJSON(env.Stdout, r)
 	}
 	w := env.Stdout
 	fmt.Fprintf(w, "%s\n\n", strings.Join(shortPaths(paths, ro.CWD), ", "))
@@ -84,6 +102,9 @@ func touched(env Env, res *catalog.Result, opts options, clues catalog.Clues, ro
 		fmt.Fprintln(w)
 	}
 	fmt.Fprintln(w, fileOutcome(found, len(uses), shown, paths))
+	if narrowed != "" {
+		fmt.Fprintln(w, narrowed)
+	}
 	if shown > 0 {
 		fmt.Fprintf(w, "next: %s\n", nextFor(uses[0], paths))
 	}

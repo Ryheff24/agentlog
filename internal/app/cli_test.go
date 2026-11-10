@@ -178,6 +178,20 @@ func TestCommands(t *testing.T) {
 			not:  []string{"d4af0000"},
 		},
 		{
+			// Agents type `agentlog branch <name>`, and the word then narrows the lookup without a word about it.
+			name: "a word in a file lookup says it narrowed the search",
+			cwd:  "/work/shop",
+			args: []string{"tax", "src/checkout.ts"},
+			want: []string{"3c3c0000", "word=tax narrowed", "To search every session: agentlog src/checkout.ts\n"},
+			not:  []string{"5a1e0000"},
+		},
+		{
+			name: "the command without the words keeps the time clue",
+			cwd:  "/work/shop",
+			args: []string{"all", "tax", "src/checkout.ts"},
+			want: []string{"To search every session: agentlog all src/checkout.ts\n"},
+		},
+		{
 			name: "a file lookup with --list lists only those sessions",
 			cwd:  "/work/shop",
 			args: []string{"src/checkout.ts", "--list"},

@@ -888,6 +888,13 @@ func describe(c catalog.Clues) string {
 // contentSearch is the command that looks for the words in what the
 // sessions said, keeping the other clues and the time they covered.
 func contentSearch(c catalog.Clues, now time.Time) string {
+	args := append(scope(c, now, "all"), "--grep", shellWord(regexp.QuoteMeta(strings.Join(c.Words, " "))))
+	return strings.Join(args, " ")
+}
+
+// scope is the start of a command that keeps the harness, dir and time clues, and leaves out the rest.
+// With no time clue, it adds dflt, if dflt is not empty.
+func scope(c catalog.Clues, now time.Time, dflt string) []string {
 	args := []string{"agentlog"}
 	args = append(args, c.Providers...)
 	for _, d := range c.Dirs {
@@ -898,11 +905,12 @@ func contentSearch(c catalog.Clues, now time.Time) string {
 		args = append(args, c.Since.Local().Format(time.DateOnly))
 	case !c.Since.IsZero() && !c.AllTime:
 		args = append(args, fmt.Sprintf("%dh", int(math.Ceil(now.Sub(c.Since).Hours()))))
-	default:
+	case c.AllTime:
 		args = append(args, "all")
+	case dflt != "":
+		args = append(args, dflt)
 	}
-	args = append(args, "--grep", shellWord(regexp.QuoteMeta(strings.Join(c.Words, " "))))
-	return strings.Join(args, " ")
+	return args
 }
 
 // shellWord quotes s for a POSIX shell when it needs it.
