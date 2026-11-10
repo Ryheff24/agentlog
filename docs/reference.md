@@ -188,7 +188,8 @@ reader's normalized representation rather than a raw JSON record.
 The calling agent's own session is left out unless it is named by id, using
 `CLAUDE_CODE_SESSION_ID` and `CODEX_THREAD_ID`. When it is the only session
 that matches, the output says "no sessions but your own" and gives the id that
-opens it. Wherever it is shown (opened, listed by id, `--tree`), it is marked
+opens it. With a word clue, it also gives the `--grep` command that searches
+what the other sessions said. Wherever it is shown (opened, listed by id, `--tree`), it is marked
 "(your own session)". Claude subagents can inherit the parent's id without
 an independent child-id environment signal; this known limitation is tracked
 in [ISSUES.md](../ISSUES.md). Name the parent explicitly to read it in that situation.
