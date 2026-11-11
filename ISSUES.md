@@ -95,14 +95,6 @@ commit that fixes it; that commit is the record.
 - **`agentlog-usage all` prints the wrong start.** It prints "since Dec 31
   23:58", the zero time in local time, not the date of the oldest log.
 
-- **The word `branch` as a clue hides the sessions that worked on the
-  branch.** Agents type `agentlog branch <name>`. `branch` becomes a word
-  clue, and the search then looks only in sessions whose metadata holds that
-  word. `agentlog branch refactor/delete-dead-code --list` names 2 subagents
-  with 1 or 2 mentions. `agentlog refactor/delete-dead-code --list` names
-  `b67ff331` with 29 mentions. 19 logs hold the branch name (6 top-level).
-  Seen in 3 sessions on 5 to 7 November 2026.
-
 ## Not acting on
 
 Reports that were read, checked, and deliberately left alone, with the reason.

@@ -139,7 +139,11 @@ other clue, the basename is scanned for over the raw bytes, and only the logs
 that contain it are parsed — 785 sessions and 2GB in about a second, with no
 index to build or keep fresh. A change outranks a mention, and a file found in
 another worktree is listed with the path that was actually touched. It works
-on a file that has since been deleted or renamed.
+on a file that has since been deleted or renamed. A word clue next to the file
+keeps only the candidates whose project, title, prompts or subagent names hold
+the word, so the answer then says so and gives the command without the words.
+Agents type `agentlog branch <name>`, and a branch name with a `/` is a file
+clue.
 
 `--tools` is the census: every tool the session called, how often, how often
 that failed, how much output it poured into the context, and the event range
