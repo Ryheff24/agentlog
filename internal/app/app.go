@@ -3,6 +3,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,6 +19,7 @@ import (
 	"github.com/Ryheff24/agentlog/internal/engine"
 	"github.com/Ryheff24/agentlog/internal/render"
 	"github.com/Ryheff24/agentlog/internal/scan"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 	"github.com/Ryheff24/agentlog/internal/work"
 )
@@ -40,6 +42,14 @@ func (e Env) ctx() context.Context {
 
 // Run executes one invocation and returns the process exit code.
 func Run(env Env, args []string) int {
+	// Logged text can hold control characters and binary, and what is printed
+	// lands in the caller's context: both streams show them as text. Only
+	// --bytes, asked for on purpose, prints logged text as it was logged.
+	raw := env.Stdout
+	out, errOut := &term.Shown{W: raw}, &term.Shown{W: env.Stderr}
+	defer errOut.Flush()
+	defer out.Flush()
+	env.Stdout, env.Stderr = out, errOut
 	if len(args) == 1 && args[0] == "--version" {
 		fmt.Fprintln(env.Stdout, "agentlog", version())
 		return 0
@@ -61,9 +71,14 @@ func Run(env Env, args []string) int {
 	if opts.help {
 		opts, clueArgs = options{jobs: opts.jobs}, nil
 	}
-	printed := &byteWriter{Writer: env.Stdout}
-	env.Stdout = printed
+	printed := &byteWriter{Writer: raw}
+	if opts.bytes {
+		env.Stdout = printed
+	} else {
+		out.W = printed
+	}
 	defer func() {
+		out.Flush()
 		if !opts.json {
 			fmt.Fprintf(env.Stderr, "returned %d bytes\n", printed.n)
 		}
@@ -94,7 +109,7 @@ func run(env Env, opts options, clueArgs []string) error {
 	}
 	cat := env.Catalog
 	w := env.Stdout
-	ro := render.Options{Now: cat.Now, CWD: cat.CWD, Width: opts.width, Max: opts.max, Full: opts.full, Reasoning: opts.reasoning}
+	ro := render.Options{Now: cat.Now, CWD: cat.CWD, Width: opts.width, Max: opts.max, Full: opts.full, Bytes: opts.bytes, Reasoning: opts.reasoning}
 	clues := catalog.ParseClues(clueArgs, cat.CWD, cat.Now)
 	clues.ReadPrompts = opts.list
 	if opts.content && len(clues.Words) > 0 {
@@ -105,7 +120,7 @@ func run(env Env, opts options, clueArgs []string) error {
 		ro.Brief, ro.Width = true, 160
 	}
 	if opts.json {
-		w = jsonWriter{Writer: w, Max: orDefault(opts.max, 6000), Full: opts.full}
+		w = jsonWriter{Writer: w, Max: orDefault(opts.max, 6000), Full: opts.full, Bytes: opts.bytes}
 		env.Stdout = w
 	}
 
@@ -921,31 +936,48 @@ func orDefault(v, d int) int {
 }
 
 // writeJSON writes the complete selected response. Individual long event
-// fields are clipped; there is no cumulative response cap.
+// fields are clipped; there is no cumulative response cap. A field that is
+// mostly binary becomes a stand-in, and control characters in any string are
+// named rather than escaped (term.JSON), unless --bytes asked for them.
 func writeJSON(w io.Writer, v any) error {
 	o, configured := w.(jsonWriter)
 	if !configured {
 		o.Max = 6000
 	}
-	if !o.Full {
-		switch r := v.(type) {
-		case *engine.Response:
+	var rs []*engine.Response
+	switch r := v.(type) {
+	case *engine.Response:
+		rs = []*engine.Response{r}
+	case []*engine.Response:
+		rs = r
+	}
+	clipAt := o.Max
+	if o.Full {
+		clipAt = 0
+	}
+	for _, r := range rs {
+		if !o.Bytes {
+			r.HideBinary(clipAt)
+		}
+		if !o.Full {
 			r.ClipLongFields(o.Max)
-		case []*engine.Response:
-			for _, one := range r {
-				one.ClipLongFields(o.Max)
-			}
 		}
 	}
-	enc := json.NewEncoder(w)
+	var b bytes.Buffer
+	enc := json.NewEncoder(&b)
 	enc.SetEscapeHTML(false)
-	return enc.Encode(v)
+	if err := enc.Encode(v); err != nil {
+		return err
+	}
+	_, err := w.Write(term.JSON(b.Bytes(), o.Bytes))
+	return err
 }
 
 type jsonWriter struct {
 	io.Writer
-	Max  int
-	Full bool
+	Max   int
+	Full  bool
+	Bytes bool // strings exactly as logged
 }
 
 type byteWriter struct {
@@ -1005,7 +1037,7 @@ func selectionFlags(o options) string {
 	for _, pair := range []struct {
 		name string
 		set  bool
-	}{{"branches", o.branches}, {"subagents", o.subagents}, {"include-handbacks", o.includeHandbacks}, {"reasoning", o.reasoning}, {"json", o.json}, {"full", o.full}, {"brief", o.brief}} {
+	}{{"branches", o.branches}, {"subagents", o.subagents}, {"include-handbacks", o.includeHandbacks}, {"reasoning", o.reasoning}, {"json", o.json}, {"full", o.full}, {"bytes", o.bytes}, {"brief", o.brief}} {
 		if pair.set {
 			flags = append(flags, "--"+pair.name)
 		}

@@ -127,6 +127,51 @@ func (w *world) feedbackWorld() string {
 	return id
 }
 
+// binaryWorld reproduces a session whose logged text holds control
+// characters: a tool result that is a binary file read as text (control
+// bytes and U+FFFD, the shape of a python read with errors='replace'),
+// coloured test output with CRLF line ends, a long base64 and hex run,
+// control characters in the title, a prompt, a tool input, a diff and a plan,
+// and a torn line of raw bytes that is not JSON. It returns the session id
+// and the binary result as logged.
+func (w *world) binaryWorld() (string, string) {
+	const id = "b1a40000-0000-4000-8000-000000000011"
+	var blob strings.Builder
+	for i := 0; i < 40; i++ {
+		blob.WriteString("\x00\x01ELF\x7f\ufffd\x1b\x02j\x10\ufffd")
+	}
+	binary := "hit 0: " + blob.String() + "\ntools-used\x0e\x0f\ufffd end of window"
+	l := w.claude(id, "/work/bytes", 50*time.Minute)
+	l.add("-", map[string]any{"type": "ai-title", "aiTitle": "Read the \x1b[1mfirmware\x1b[0m image"})
+	l.user("-", "find tools-used in the firmware\x07 dump\r\nplease")
+	l.assistant("", "tool_use", toolUse("toolu_bin", "Bash", map[string]any{"command": "python3 read.py --sep $'\x01'", "description": "Read the image"}))
+	l.result("toolu_bin", binary, false, nil)
+	l.assistant("", "tool_use", toolUse("toolu_test", "Bash", map[string]any{"command": "go test ./..."}))
+	l.result("toolu_test", "\x1b[32mok\x1b[0m  3 passed\r\nwarning\x07 日本語 é\r\n10%\r20%\r\n", false, nil)
+	l.assistant("", "tool_use", toolUse("toolu_sum", "Bash", map[string]any{"command": "sha256sum image; base64 image"}))
+	l.result("toolu_sum", strings.Repeat("0123456789abcdef", 4)+"  image\n"+strings.Repeat("QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVo", 9)+"==", false, nil)
+	l.assistant("", "tool_use", toolUse("toolu_edit", "Edit", map[string]any{
+		"file_path": "/work/bytes/term.go", "old_string": "\tesc := \"\x1b\"", "new_string": "\tesc := \"\x1b[0m\""}))
+	l.result("toolu_edit", "The file /work/bytes/term.go has been updated.", false, nil)
+	l.assistant("", "tool_use", toolUse("toolu_todo", "TodoWrite", map[string]any{"todos": []map[string]any{
+		{"content": "strip the \x1b codes", "status": "in_progress", "activeForm": "Stripping"}}}))
+	l.result("toolu_todo", "Todos have been modified successfully.", false, nil)
+	l.assistant("", "tool_use", toolUse("toolu_empty", "Bash", map[string]any{"command": "true"}))
+	l.result("toolu_empty", "", false, nil)
+	l.assistant("", "end_turn", text("Found it\x08 at offset 0x40."))
+	path := filepath.Join(w.claudeProject("/work/bytes"), id+".jsonl")
+	l.save(path, 40*time.Minute)
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0)
+	if err != nil {
+		w.t.Fatal(err)
+	}
+	f.WriteString("\xff\xfe\x00\x01torn\x1b[2J\n")
+	f.Close()
+	mt := w.now.Add(-40 * time.Minute)
+	os.Chtimes(path, mt, mt)
+	return id, binary
+}
+
 // at is a time relative to now.
 func (w *world) at(ago time.Duration) string {
 	return w.now.Add(-ago).UTC().Format(time.RFC3339Nano)

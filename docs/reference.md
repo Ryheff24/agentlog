@@ -185,6 +185,34 @@ to run next — never the raw transcript.
 `--json --full` also disables event-field clipping. Tool inputs remain the
 reader's normalized representation rather than a raw JSON record.
 
+Logged text can hold control characters and binary: a tool that printed a
+compiled file, a test run in colour, a CRLF file. Nothing agentlog prints
+carries them as bytes, whether stdout is a terminal or a pipe, in text or in
+JSON. Each control character is named by its Unicode control picture (ESC is
+`␛`, NUL `␀`, BEL `␇`, a lone CR `␍`, DEL `␡`); C1 controls, which have no
+picture, print as `\u0085`; a byte that is not UTF-8 prints as U+FFFD; a CR
+before a newline is dropped as a line ending. JSON strings decode to the same
+text rather than to `\u00NN` escapes. Everything else, any language, newlines
+and tabs, prints exactly as logged.
+
+A message, tool input, tool output or diff that is mostly binary — 16 or more
+control or U+FFFD characters, making up 2% or more of it (newlines, tabs, CR
+and ESC not counted), in the whole field or in what the clip keeps — is
+printed as one line instead:
+
+    [binary, not shown: 1012 bytes, 123 control and 53 U+FFFD characters; agentlog 3f9c2e1a#601 --bytes prints it as logged]
+
+The same holds for a `--grep` snippet. In JSON the field holds that line and
+`truncated` lists "binary fields not shown" with the count, the bytes and the
+command. `--bytes` prints logged text as it was logged: every view, every
+field, binary and control bytes included, through the same `--max` and
+`--full` clipping. A person's terminal still has them escaped. With `--json`,
+`--bytes` keeps each string's value exactly, as escapes (`\u0001`, and
+`\u0085` for C1 and DEL, which `encoding/json` would write raw), so a JSON
+decoder recovers every character; a byte that was never UTF-8 in the log
+arrives as U+FFFD there, as JSON requires. Long hex and base64 runs are not
+treated as binary: commit hashes, checksums and ids are ordinary output.
+
 The calling agent's own session is left out unless it is named by id, using
 `CLAUDE_CODE_SESSION_ID` and `CODEX_THREAD_ID`. When it is the only session
 that matches, the output says "no sessions but your own" and gives the id that
@@ -366,6 +394,7 @@ for deletion, not for a test written only to run it.
 | `internal/render` | home, list, preview, timeline, event and edit views |
 | `internal/app` | argument handling and view selection |
 | `internal/clip`, `internal/patch`, `internal/jsonl` | text shortening, edit normalisation, bounded JSONL reads |
+| `internal/term` | control characters made visible, binary stand-ins, escaping for a terminal |
 | `internal/monitor` | each run's record of its own time, phases and output |
 | `internal/usage` | `agentlog-usage`: agents' calls to agentlog, read from the harness logs |
 

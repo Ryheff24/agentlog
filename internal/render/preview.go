@@ -466,7 +466,7 @@ func finalMessage(w io.Writer, t *transcript.Transcript, o Options) {
 		}
 		fmt.Fprintln(w)
 		fmt.Fprintf(w, "last assistant message #%d (%s):\n", e.Index, stamp(o.Now, e.Time))
-		indent(w, clip.Block(e.Text, min(o.max(), 2500)), "  ")
+		indent(w, o.block(e.Text, min(o.max(), 2500), Ref(&t.Session), e.Index), "  ")
 		return
 	}
 }

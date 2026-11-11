@@ -10,7 +10,7 @@ import (
 type options struct {
 	user, count, brief, content, images, tree, includeHandbacks          bool
 	list, edits, files, subagents, json, full, reasoning, branches, help bool
-	usage, tools, projects                                               bool
+	usage, tools, projects, bytes                                        bool
 
 	tail, head, max, width, limit int
 	jobs                          int
@@ -83,6 +83,7 @@ func flagTables(o *options) (map[string]*bool, map[string]*int, map[string]*stri
 		"branches": &o.branches, "help": &o.help, "h": &o.help, "usage": &o.usage, "tools": &o.tools,
 		"projects": &o.projects, "user": &o.user, "count": &o.count, "brief": &o.brief,
 		"content": &o.content, "images": &o.images, "tree": &o.tree, "include-handbacks": &o.includeHandbacks,
+		"bytes": &o.bytes,
 	}
 	intFlags := map[string]*int{"tail": &o.tail, "head": &o.head, "max": &o.max, "width": &o.width, "limit": &o.limit, "n": &o.limit, "jobs": &o.jobs}
 	strFlags := map[string]*string{"kind": &o.kinds, "grep": &o.grep, "path": &o.path}

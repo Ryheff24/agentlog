@@ -93,26 +93,6 @@ commit that fixes it; that commit is the record.
   `b67ff331` with 29 mentions. 19 logs hold the branch name (6 top-level).
   Seen in 3 sessions on 5 to 7 November 2026.
 
-- **Control bytes reach agents raw through a pipe.** `internal/term` escapes
-  control characters only when stdout is a terminal, and an agent reads a
-  pipe. Reproduced on 10 November 2026 on a Claude session whose tool result
-  is a `python3` read of compiled binaries: 905 characters, 128 of them
-  control characters (4 ESC, 1 CR) and 53 U+FFFD. With stdout piped:
-  - `agentlog <session-id>#N` prints 1,548 bytes with 128 raw control bytes
-    and 53 U+FFFD. `--full` prints the same, and a 16-event range around it
-    16 KB with the same 128.
-  - `--json` and `--json --full` print 9,051 bytes with no raw control byte,
-    but the output field holds all 128 as escapes (126 `\u00NN`, 2 short)
-    beside the 53 U+FFFD. `encoding/json` writes DEL and C1 controls raw.
-  - `agentlog <session-id> --grep <word>` quotes two snippets of it: 6,747
-    bytes with 26 raw control bytes (2 ESC) and 9 U+FFFD.
-
-  Over this Mac's Claude and Codex logs, 651 distinct logged strings hold a
-  control character other than newline, tab, CR or ESC, or a U+FFFD; 34 of
-  them at 2% or more of their characters. Whether such bytes trip a safety
-  classifier is unverified: the one stop seen after them followed a one-off
-  `python3` read, not agentlog.
-
 ## Not acting on
 
 Reports that were read, checked, and deliberately left alone, with the reason.
