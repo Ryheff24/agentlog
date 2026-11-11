@@ -367,10 +367,14 @@ go run scripts/screens.go -html "$TMPDIR/screens.html"
 ```
 
 The second line writes one page with the four outputs side by side: the old
-screens from `origin/main` on the left and the new ones on the right. It holds the test world's
-made-up sessions and no real log, so it can be shared. On a pull request that
-changes a pinned file, `.github/workflows/screens.yml` posts the old and the
-new screen as a comment, with the same page to download. That workflow can
+screens from `origin/main` on the left and the new ones on the right. A line
+that is gone or new is marked with a sign in the margin and a tint, and each
+pane's label counts them and links to the first, so one changed line is not
+lost among eighty. It holds the test world's made-up sessions and no real
+log, so it can be shared. On a pull request that changes a pinned file,
+`.github/workflows/screens.yml` posts a comment with the lines that changed,
+each with its line number, then the old and the new screen whole, and the
+same page to download. That workflow can
 write to the pull request, so it never runs the pull request's code: it reads
 the pinned files as data, which is why the comment is only as true as the
 `test` jobs that check them.
