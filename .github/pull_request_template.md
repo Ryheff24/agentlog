@@ -14,4 +14,5 @@ checked it against the raw logs, and what it cost (calls, bytes, seconds). -->
 - [ ] Tests cover the new behaviour, including edge cases from real logs
 - [ ] `docs/reference.md` updated in the same change; `DESIGN.md` if a decision changed
 - [ ] A fix removes its ISSUES.md entry
+- [ ] If `agentlog` or `agentlog --help` prints something different, the pinned screens are updated (`go test ./internal/app -run TestScreens -update`) and the reason is above
 - [ ] No raw logs, real session ids or private paths in the diff

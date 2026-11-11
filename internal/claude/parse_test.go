@@ -885,3 +885,24 @@ func TestLoadDoesNotTakeOtherRecordsForAJournal(t *testing.T) {
 		t.Errorf("stand-in for a foreign launched = %+v, want the record's own fields", e)
 	}
 }
+
+// Claude Code 2.1.318 writes a session-owner record many times in a session. It names the signed-in account and organisation, so it adds no event.
+func TestLoadIgnoresAccountRecords(t *testing.T) {
+	path := filepath.Join(t.TempDir(), sessionID+".jsonl")
+	owner := map[string]any{"type": "session-owner", "accountUuid": "a1", "organizationUuid": "o1", "sessionId": sessionID}
+	suppressed := map[string]any{"type": "history-suppression", "cause": "restored_owner_mismatch", "vetoedAgainstAccountUuid": "a2", "sessionId": sessionID, "ts": "2026-11-06T02:05:35.516Z"}
+	writeJSONL(t, path, []map[string]any{owner, suppressed, user("check the build"), owner})
+	tr, err := (&Provider{}).Load(&transcript.Session{ID: sessionID, Files: []string{path}}, transcript.Load{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := kinds(tr); got != "user" {
+		t.Errorf("kinds = %q, want only the prompt", got)
+	}
+	if len(tr.Unknowns) != 0 {
+		t.Errorf("Unknowns = %v, want none", tr.Unknowns)
+	}
+	if tr.Ignored["session-owner"] != 2 || tr.Ignored["history-suppression"] != 1 {
+		t.Errorf("Ignored = %v, want session-owner twice and history-suppression once", tr.Ignored)
+	}
+}

@@ -139,7 +139,11 @@ other clue, the basename is scanned for over the raw bytes, and only the logs
 that contain it are parsed — 785 sessions and 2GB in about a second, with no
 index to build or keep fresh. A change outranks a mention, and a file found in
 another worktree is listed with the path that was actually touched. It works
-on a file that has since been deleted or renamed.
+on a file that has since been deleted or renamed. A word clue next to the file
+keeps only the candidates whose project, title, prompts or subagent names hold
+the word, so the answer then says so and gives the command without the words.
+Agents type `agentlog branch <name>`, and a branch name with a `/` is a file
+clue.
 
 `--tools` is the census: every tool the session called, how often, how often
 that failed, how much output it poured into the context, and the event range
@@ -188,7 +192,8 @@ reader's normalized representation rather than a raw JSON record.
 The calling agent's own session is left out unless it is named by id, using
 `CLAUDE_CODE_SESSION_ID` and `CODEX_THREAD_ID`. When it is the only session
 that matches, the output says "no sessions but your own" and gives the id that
-opens it. Wherever it is shown (opened, listed by id, `--tree`), it is marked
+opens it. With a word clue, it also gives the `--grep` command that searches
+what the other sessions said. Wherever it is shown (opened, listed by id, `--tree`), it is marked
 "(your own session)". Claude subagents can inherit the parent's id without
 an independent child-id environment signal; this known limitation is tracked
 in [ISSUES.md](../ISSUES.md). Name the parent explicitly to read it in that situation.
@@ -351,6 +356,25 @@ fails if the total or any package fell below the baseline. After adding tests,
 with tests of real behaviour: a line that no real case reaches is a candidate
 for deletion, not for a test written only to run it.
 
+A bare `agentlog` and `agentlog --help` are the first screens every agent
+reads, and the maintainer placed each line by hand. `TestScreens` pins both,
+as the test world prints them, in `internal/app/testdata/screens`. A change
+that alters either fails the test until the files are written again:
+
+```sh
+go test ./internal/app -run TestScreens -update
+go run scripts/screens.go -html "$TMPDIR/screens.html"
+```
+
+The second line writes one page with the four outputs side by side: the old
+screens from `origin/main` on the left and the new ones on the right. It holds the test world's
+made-up sessions and no real log, so it can be shared. On a pull request that
+changes a pinned file, `.github/workflows/screens.yml` posts the old and the
+new screen as a comment, with the same page to download. That workflow can
+write to the pull request, so it never runs the pull request's code: it reads
+the pinned files as data, which is why the comment is only as true as the
+`test` jobs that check them.
+
 ## Layout
 
 | Package | Purpose |
@@ -367,6 +391,7 @@ for deletion, not for a test written only to run it.
 | `internal/clip`, `internal/patch`, `internal/jsonl` | text shortening, edit normalisation, bounded JSONL reads |
 | `internal/monitor` | each run's record of its own time, phases and output |
 | `internal/usage` | `agentlog-usage`: agents' calls to agentlog, read from the harness logs |
+| `internal/screens` | a change to the home screen or `--help`, as a pull request comment and a page; used by `scripts/screens.go`, not by the binaries |
 
 `internal/engine` answers questions about events; `internal/render` turns an
 answer into text. Nothing in the engine may look at rendered output, so a
