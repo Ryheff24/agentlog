@@ -37,8 +37,9 @@ func main() {
 		CWD:       cwd,
 		Now:       time.Now(),
 	}
-	// Log text can carry terminal escape sequences; a person's terminal gets
-	// them made visible, an agent's pipe gets the bytes.
+	// Log text can carry terminal escape sequences. app.Run names every
+	// control character before it is written, on a pipe too; a person's
+	// terminal also gets them escaped here, even with --bytes.
 	out := &counter{w: term.Safe(os.Stdout, os.Stdout)}
 	errOut := &counter{w: term.Safe(os.Stderr, os.Stderr)}
 	code := app.Run(app.Env{Catalog: cat, Stdout: out, Stderr: errOut, Ctx: ctx}, os.Args[1:])

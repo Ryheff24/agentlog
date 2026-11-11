@@ -182,6 +182,61 @@ the subagents that actually did the work.
 no real case reaches is a candidate for deletion, not for a test written just
 to run it. See [CLAUDE.md](CLAUDE.md) for the loop.
 
+## Control bytes are named, binary is held back
+
+Logged text reaches an agent as text. A control character is printed as the
+character that names it (`␛`, `␀`, `␇`), and a field that is mostly binary is
+replaced by one line with its size, its counts, and the `--bytes` command
+that prints it as logged. This holds for a pipe as much as a terminal, and
+for JSON as much as text.
+
+**Why.** What agentlog prints lands in a model's context. A tool result that
+is a compiled file read as text is a run of control bytes and U+FFFD: nothing
+an agent can use, and close to the encoded data (base64, hex) that
+Anthropic's guidance for some models says can trip safety classifiers.
+Whether binary does is unverified; the one stop seen after such bytes came
+from a one-off script, not agentlog. `internal/term` only ever escaped them
+for a person's terminal, and agents read pipes.
+
+**How it is chosen.**
+
+- **One writer at the end.** Every byte written goes through `term.Visible`,
+  and JSON through `term.JSON`, so a path nobody thought of (a title, a
+  doctor sample, a plan step) is covered too. The stand-in is decided where
+  the field is known, so it can name the event.
+- **Pictures, not `\xNN`.** A control picture is one character and does not
+  read as hex; `\x1b[31m` repeated through a binary dump is exactly the dense
+  hex-like run to avoid. C1 controls have no pictures and print as `\u0085`;
+  they are rare in text.
+- **Escapes for a few, a stand-in for many.** Across one Mac's Claude and
+  Codex logs, 651 distinct strings held a control or U+FFFD character. Most
+  held one or a few in long text. Of the 34 at 2% or more, most were binary
+  reads with tens to thousands, of many kinds, but some were readable:
+  backspaced output (only backspaces), form-fed output and UTF-8 text decoded
+  as Latin-1 (only C1).
+  So the rule counts U+FFFD, NUL, DEL and the C0 controls that do not shape
+  text (not newline, tab, CR, ESC, backspace, form feed, vertical tab), and
+  needs 16 or more of at least three kinds, at 2% or more of the whole field
+  or of what the clip keeps. On that Mac 19 strings pass it, each with 3 to
+  27 kinds. The 8 a plainer count would also catch print with each character
+  named: the readable ones above, a record list separated by SOH, and two
+  texts of only U+FFFD (whether those were binary is unknown).
+- **Nothing becomes unreachable.** `--bytes` prints the text as logged,
+  and `--bytes --json` keeps every string's exact value as escapes. A
+  terminal still gets `term.Safe`'s escaping either way.
+
+**Rejected.**
+
+- **Escaping only.** It turns 128 control bytes into 128 escapes in the same
+  place: smaller harm, same noise.
+- **A stand-in only.** A coloured test log would lose its text over a few
+  escape codes.
+- **Stripping ANSI colour codes.** Cleaner, but it drops what was logged
+  where naming it costs one character each.
+- **Treating long hex and base64 as binary.** Commit hashes, checksums,
+  session ids and lockfile integrity lines are common and legitimate; see
+  [IDEAS.md](IDEAS.md).
+
 ## Small things that were decided
 
 - **Rate limits carry their time.** A percentage read four days ago is not the

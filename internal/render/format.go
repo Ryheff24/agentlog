@@ -16,6 +16,8 @@ import (
 	"time"
 
 	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/engine"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
@@ -27,6 +29,7 @@ type Options struct {
 	Width     int  // single-line preview width in runes
 	Max       int  // byte budget for one expanded block (message, output, diff)
 	Full      bool // disable truncation of expanded blocks
+	Bytes     bool // print logged text as logged, binary and control characters included
 	Reasoning bool // include reasoning in timelines
 	// Keep, when set, limits a range of events to the ones it accepts.
 	Keep func(transcript.Event) bool
@@ -41,6 +44,19 @@ func (o Options) max() int {
 		return 6000
 	}
 	return o.Max
+}
+
+// block is an expanded field as printed: clipped at max, or, when it is
+// mostly binary, a one-line stand-in with the command that prints it as
+// logged. Control characters in what is printed are made visible on the way
+// out (term.Visible); this decides only what is printed.
+func (o Options) block(s string, max int, ref string, index int) string {
+	if !o.Bytes {
+		if c, binary := engine.Opaque(s, max); binary {
+			return term.StandIn(c, engine.BytesGet(ref, index, max > 0 && len(s) > max, false))
+		}
+	}
+	return clip.Block(s, max)
 }
 
 func (o Options) width() int {

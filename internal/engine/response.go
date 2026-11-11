@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Ryheff24/agentlog/internal/clip"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
@@ -84,12 +85,7 @@ func (r *Response) ClipLongFields(maxBytes int) {
 	}
 	clipped, bytes := 0, 0
 	for i := range r.Events {
-		e := &r.Events[i]
-		fields := []*string{&e.Output, &e.Text, &e.Input}
-		for j := range e.Changes {
-			fields = append(fields, &e.Changes[j].Diff)
-		}
-		for _, f := range fields {
+		for _, f := range longFields(&r.Events[i]) {
 			if n := len(*f); n > maxBytes {
 				*f = clip.Block(*f, maxBytes)
 				bytes += n - len(*f)
@@ -105,6 +101,78 @@ func (r *Response) ClipLongFields(maxBytes int) {
 			Get:   ref(r, "%s#N --full"),
 		})
 	}
+}
+
+// longFields are the fields of an event that can hold a whole tool result,
+// message or diff.
+func longFields(e *transcript.Event) []*string {
+	fields := []*string{&e.Output, &e.Text, &e.Input}
+	for j := range e.Changes {
+		fields = append(fields, &e.Changes[j].Diff)
+	}
+	return fields
+}
+
+// HideBinary replaces each long event field that is mostly binary with a
+// one-line stand-in naming the command that returns it as logged, and says
+// how many it replaced. maxBytes is the clip that will follow, 0 for none.
+// Run it before ClipLongFields, so the judgement is made on the whole field.
+func (r *Response) HideBinary(maxBytes int) {
+	hidden, bytes := 0, 0
+	for i := range r.Events {
+		e := &r.Events[i]
+		for _, f := range longFields(e) {
+			c, binary := Opaque(*f, maxBytes)
+			if !binary {
+				continue
+			}
+			*f = term.StandIn(c, BytesGet(r.Ref, e.Index, maxBytes > 0 && len(*f) > maxBytes, true))
+			hidden++
+			bytes += c.Bytes
+		}
+	}
+	if hidden > 0 {
+		r.Truncated = append(r.Truncated, Cut{
+			What:  "binary fields not shown",
+			Count: hidden,
+			Bytes: bytes,
+			Get:   BytesGet(r.Ref, 0, false, true),
+		})
+	}
+}
+
+// Opaque measures a field and reports whether it is binary, judged on the
+// whole field and on what a clip at max keeps of it, so a binary head on a
+// long text does not slip through a clipped view.
+func Opaque(s string, max int) (term.Counts, bool) {
+	c := term.Count(s)
+	if c.Binary() {
+		return c, true
+	}
+	if max > 0 && len(s) > max && term.Count(clip.Block(s, max)).Binary() {
+		return c, true
+	}
+	return c, false
+}
+
+// BytesGet is the command that prints event index of ref as logged; index 0
+// stands for any event. long adds --full, for a field past the clip.
+func BytesGet(ref string, index int, long, json bool) string {
+	if ref == "" {
+		ref = "<ref>"
+	}
+	n := "N"
+	if index > 0 {
+		n = fmt.Sprint(index)
+	}
+	get := fmt.Sprintf("agentlog %s#%s --bytes", ref, n)
+	if long {
+		get += " --full"
+	}
+	if json {
+		get += " --json"
+	}
+	return get
 }
 
 func ref(r *Response, format string) string {

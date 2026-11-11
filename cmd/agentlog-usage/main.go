@@ -8,6 +8,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -16,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Ryheff24/agentlog/internal/monitor"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/usage"
 )
 
@@ -63,17 +65,23 @@ func main() {
 	}
 	runs := usage.LoadRuns(monitor.Paths())
 	usage.Join(calls, runs)
+	// Commands and session names come from the logs: control characters in
+	// them are named, as in agentlog's own output.
 	if asJSON {
-		enc := json.NewEncoder(os.Stdout)
+		var b bytes.Buffer
+		enc := json.NewEncoder(&b)
 		enc.SetIndent("", " ")
 		_ = enc.Encode(struct {
 			Since    time.Time       `json:"since"`
 			Calls    []usage.Call    `json:"calls"`
 			Sessions []usage.Session `json:"sessions"`
 		}{since, calls, sessions})
+		os.Stdout.Write(term.JSON(b.Bytes(), false))
 		return
 	}
-	usage.Report(os.Stdout, calls, sessions, runs, since, top)
+	out := &term.Shown{W: term.Safe(os.Stdout, os.Stdout)}
+	usage.Report(out, calls, sessions, runs, since, top)
+	out.Flush()
 }
 
 func fail(format string, a ...any) {

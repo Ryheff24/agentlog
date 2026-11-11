@@ -70,6 +70,7 @@ output:
   --brief              one line per event, at most 160 characters
   --json               typed JSON, never the raw log
   --max BYTES  --full  clip each expanded block at BYTES (default 6000), or never
+  --bytes              logged text as logged (default: control characters named, binary one line)
   --width N            clip one-line summaries at N characters (default 150)
   --flag=VALUE         for a value starting with -, e.g. --grep=--help
   --                   every argument after it is a clue

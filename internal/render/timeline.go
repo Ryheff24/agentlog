@@ -35,7 +35,7 @@ func Timeline(w io.Writer, sel engine.Selection, o Options) {
 			continue
 		}
 		for _, snip := range sel.Snippets[e.Index] {
-			fmt.Fprintln(w, "        … "+clip.Line(snip, 200))
+			fmt.Fprintln(w, "        … "+o.block(clip.Line(snip, 200), 0, Ref(s), e.Index))
 		}
 	}
 	if next := sel.Continuation(Ref(s)); next != "" {
@@ -95,7 +95,7 @@ func Events(w io.Writer, t *transcript.Transcript, from, to int, o Options) {
 			// A message between agents, such as a teammate's, was not a call
 			// and has no result to wait for.
 			fmt.Fprintf(w, "message: %s\n", e.Agent)
-			indent(w, clip.Block(e.Text, o.max()), "  ")
+			indent(w, o.block(e.Text, o.max(), Ref(&t.Session), e.Index), "  ")
 		case e.Kind == transcript.KindTool, e.Kind == transcript.KindEdit, e.Kind == transcript.KindAgent:
 			label := strings.TrimSpace(e.Tool + " " + e.Agent)
 			if e.AgentID != "" {
@@ -103,22 +103,22 @@ func Events(w io.Writer, t *transcript.Transcript, from, to int, o Options) {
 			}
 			fmt.Fprintf(w, "call: %s\n", label)
 			if e.Input != "" {
-				indent(w, clip.Block(e.Input, o.max()), "  ")
+				indent(w, o.block(e.Input, o.max(), Ref(&t.Session), e.Index), "  ")
 			}
 			if e.Text != "" {
 				fmt.Fprintln(w, "message:")
-				indent(w, clip.Block(e.Text, o.max()), "  ")
+				indent(w, o.block(e.Text, o.max(), Ref(&t.Session), e.Index), "  ")
 			}
 			for _, c := range e.Changes {
 				fmt.Fprintf(w, "diff %s %s (+%d -%d):\n", c.Op, relTo(c.Path, o.CWD), c.Added, c.Removed)
-				indent(w, clip.Block(c.Diff, o.max()), "  ")
+				indent(w, o.block(c.Diff, o.max(), Ref(&t.Session), e.Index), "  ")
 			}
 			fmt.Fprintf(w, "result%s:\n", resultNote(e))
 			if e.Output != "" {
 				if e.Handback && !o.Full {
 					fmt.Fprintf(w, "  [handback] %s; %d bytes (agentlog %s#%d --full)\n", e.Input, len(e.Output), Ref(&t.Session), e.Index)
 				} else {
-					indent(w, clip.Block(e.Output, o.max()), "  ")
+					indent(w, o.block(e.Output, o.max(), Ref(&t.Session), e.Index), "  ")
 				}
 			}
 		case e.Kind == transcript.KindPlan:
@@ -128,13 +128,13 @@ func Events(w io.Writer, t *transcript.Transcript, from, to int, o Options) {
 				}
 			}
 			if e.Text != "" {
-				indent(w, clip.Block(e.Text, o.max()), "  ")
+				indent(w, o.block(e.Text, o.max(), Ref(&t.Session), e.Index), "  ")
 			}
 		default:
 			if e.Tag != "" {
 				fmt.Fprintf(w, "[%s]\n", e.Tag)
 			}
-			indent(w, clip.Block(e.Text, o.max()), "  ")
+			indent(w, o.block(e.Text, o.max(), Ref(&t.Session), e.Index), "  ")
 		}
 	}
 	if o.Next != "" {
@@ -232,7 +232,7 @@ func Edits(w io.Writer, ts []*transcript.Transcript, pathRe *regexp.Regexp, file
 		if who := who(r.t); who != Ref(&r.t.Session) {
 			fmt.Fprintf(w, "   by %s\n", who)
 		}
-		indent(w, clip.Block(r.c.Diff, o.max()), "")
+		indent(w, o.block(r.c.Diff, o.max(), Ref(&r.t.Session), r.e.Index), "")
 	}
 }
 
