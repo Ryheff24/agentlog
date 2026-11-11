@@ -356,6 +356,25 @@ fails if the total or any package fell below the baseline. After adding tests,
 with tests of real behaviour: a line that no real case reaches is a candidate
 for deletion, not for a test written only to run it.
 
+A bare `agentlog` and `agentlog --help` are the first screens every agent
+reads, and the maintainer placed each line by hand. `TestScreens` pins both,
+as the test world prints them, in `internal/app/testdata/screens`. A change
+that alters either fails the test until the files are written again:
+
+```sh
+go test ./internal/app -run TestScreens -update
+go run scripts/screens.go -html "$TMPDIR/screens.html"
+```
+
+The second line writes one page with the four outputs side by side: the old
+screens from `origin/main` on the left and the new ones on the right. It holds the test world's
+made-up sessions and no real log, so it can be shared. On a pull request that
+changes a pinned file, `.github/workflows/screens.yml` posts the old and the
+new screen as a comment, with the same page to download. That workflow can
+write to the pull request, so it never runs the pull request's code: it reads
+the pinned files as data, which is why the comment is only as true as the
+`test` jobs that check them.
+
 ## Layout
 
 | Package | Purpose |
@@ -372,6 +391,7 @@ for deletion, not for a test written only to run it.
 | `internal/clip`, `internal/patch`, `internal/jsonl` | text shortening, edit normalisation, bounded JSONL reads |
 | `internal/monitor` | each run's record of its own time, phases and output |
 | `internal/usage` | `agentlog-usage`: agents' calls to agentlog, read from the harness logs |
+| `internal/screens` | a change to the home screen or `--help`, as a pull request comment and a page; used by `scripts/screens.go`, not by the binaries |
 
 `internal/engine` answers questions about events; `internal/render` turns an
 answer into text. Nothing in the engine may look at rendered output, so a

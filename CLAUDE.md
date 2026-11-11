@@ -75,6 +75,11 @@ drive the installed binary the way an agent would.
   its logs" in docs/reference.md (`doctor`, `internal/spec`, the shapes harvest).
 - **Output is bounded.** Every view is sized for an agent's context. More detail
   is reached by drilling down (`#N`, ranges, `--full`), never by default.
+- **The first screens are the maintainer's.** A bare `agentlog` and
+  `agentlog --help` were placed line by line, by hand, and a person reads them.
+  `TestScreens` pins both in `internal/app/testdata/screens`, and CI comments
+  on a pull request that changes one with the old and the new screen (see
+  "Tests and coverage" in docs/reference.md).
 - **No dependencies.** It's pure Go, with no database, daemon or index between it and
   the logs.
 - **No TUI plans.** The owner has their own ideas for a TUI, so don't plan it,

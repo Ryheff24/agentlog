@@ -56,6 +56,12 @@ Then:
 - **Update the docs in the same change.** [docs/reference.md](docs/reference.md)
   describes every behaviour; [DESIGN.md](DESIGN.md) changes when a decision
   does. A fix removes its ISSUES.md entry.
+- **Say so when a first screen changes.** If your change alters what a bare
+  `agentlog` or `agentlog --help` prints, `TestScreens` fails. Run
+  `go test ./internal/app -run TestScreens -update` and commit the files it
+  writes. The pull request then gets a comment with the old and the new
+  screen, and the maintainer reads it before merging. Give the reason for the
+  change in the pull request.
 - **One concern per commit.**
 
 ## What doesn't change
