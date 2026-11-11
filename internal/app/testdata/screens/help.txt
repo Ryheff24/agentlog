@@ -1,35 +1,3 @@
-harnesses:
-  claude   ~/claude/projects                             11 sessions in last 7d, latest just now
-  codex    ~/codex/sessions, ~/codex/archived_sessions   2 sessions in last 7d, latest 30m ago
-  copilot  ~/copilot/session-state                       1 session in last 7d, latest 4h ago
-
-recent sessions (running across projects first, then this dir and newest):
-  7e1e0000  claude  14:59  5.5KB  /work/shop  RUNNING
-            "Ship the rounding fix" · last prompt: commit the fix and open a PR
-  0a0b0000  claude  14:59  5.1KB  /work/api  +1 subagent  RUNNING
-            first prompt: finish the rename in the docs · last prompt: keep going while the docs agent works
-  5a1e0000  claude  14:14 (log touched 14:50)  10.5KB  /work/shop  +1 subagent  ended:done
-            "Fix checkout rounding" · last prompt: keep the decimals and make the test compare numbers
-  01a0dddd-0000  codex   14:30  3.1KB  /work/shop  ended:usage-limit
-            first prompt: make the checkout test compare numbers · last prompt: make the checkout test compare numbers
-  3c3c0000  claude  Sep 24 13:05 (log touched Sep 24 14:00)  2.2KB  /work/shop/.claude/worktrees/tax  ended:error
-            "Tax rounding in a worktree" · last prompt: try rounding per line item in a worktree
-  01a0eeee-0000  codex   13:12 (log touched 13:40)  3.8KB  /work/api  +1 subagent  ended:done
-            first prompt: audit the api docs for the old package name · last prompt: fix the stale link too
-  d4af0000  claude  12:07 (log touched 13:00)  3.1KB  /work/blog  ended:done
-            "Draft the launch post" · last prompt: draft the launch post
-  0a0a0000  claude  10:24 (log touched 12:00)  25.5KB  /work/api  ended:continued
-            "Rename the client package" · last prompt: rename pkg/client to pkg/apiclient everywhere
-  3007ed00  claude  11:00  1.7KB  /work/site  ended:done
-            first prompt: make a site for the shop · last prompt: add a pricing page
-  c0c0c0c0  copilot 10:04 (log touched 11:00)  958B  /work/ccr  ended:done
-            "Fix the tunnel reconnect" · last prompt: fix the tunnel reconnect
-  d7af0000  claude  08:15 (log touched 09:00)  6.5KB  /work/blog  ended:interrupted
-            "Tighten the launch post" · last prompt: one more pass on the title
-  0a0c0000  claude  Sep 23 13:09 (log touched Sep 23 14:00)  3.9KB  /work/api  ended:mid-tool
-            first prompt: pick up the retry work where it stopped · last prompt: run the whole suite
-  (left out 2 sessions with no prompt in them (opened and cleared, or a shell command alone): c1ea0000 0be40000)
-
 usage: agentlog [clues...] [flags]   (--help prints this same screen)
 clues (any order, all optional):
   claude | codex | copilot           harness
@@ -80,3 +48,35 @@ the tool itself:
   agentlog feedback add MESSAGE    leave a note about using agentlog
   agentlog feedback list [--json]  read the notes
   --version  --help, -h
+
+harnesses:
+  claude   ~/claude/projects                             11 sessions in last 7d, latest just now
+  codex    ~/codex/sessions, ~/codex/archived_sessions   2 sessions in last 7d, latest 30m ago
+  copilot  ~/copilot/session-state                       1 session in last 7d, latest 4h ago
+
+recent sessions (running across projects first, then this dir and newest):
+  7e1e0000  claude  14:59  5.5KB  /work/shop  RUNNING
+            "Ship the rounding fix" · last prompt: commit the fix and open a PR
+  0a0b0000  claude  14:59  5.1KB  /work/api  +1 subagent  RUNNING
+            first prompt: finish the rename in the docs · last prompt: keep going while the docs agent works
+  5a1e0000  claude  14:14 (log touched 14:50)  10.5KB  /work/shop  +1 subagent  ended:done
+            "Fix checkout rounding" · last prompt: keep the decimals and make the test compare numbers
+  01a0dddd-0000  codex   14:30  3.1KB  /work/shop  ended:usage-limit
+            first prompt: make the checkout test compare numbers · last prompt: make the checkout test compare numbers
+  3c3c0000  claude  Sep 24 13:05 (log touched Sep 24 14:00)  2.2KB  /work/shop/.claude/worktrees/tax  ended:error
+            "Tax rounding in a worktree" · last prompt: try rounding per line item in a worktree
+  01a0eeee-0000  codex   13:12 (log touched 13:40)  3.8KB  /work/api  +1 subagent  ended:done
+            first prompt: audit the api docs for the old package name · last prompt: fix the stale link too
+  d4af0000  claude  12:07 (log touched 13:00)  3.1KB  /work/blog  ended:done
+            "Draft the launch post" · last prompt: draft the launch post
+  0a0a0000  claude  10:24 (log touched 12:00)  25.5KB  /work/api  ended:continued
+            "Rename the client package" · last prompt: rename pkg/client to pkg/apiclient everywhere
+  3007ed00  claude  11:00  1.7KB  /work/site  ended:done
+            first prompt: make a site for the shop · last prompt: add a pricing page
+  c0c0c0c0  copilot 10:04 (log touched 11:00)  958B  /work/ccr  ended:done
+            "Fix the tunnel reconnect" · last prompt: fix the tunnel reconnect
+  d7af0000  claude  08:15 (log touched 09:00)  6.5KB  /work/blog  ended:interrupted
+            "Tighten the launch post" · last prompt: one more pass on the title
+  0a0c0000  claude  Sep 23 13:09 (log touched Sep 23 14:00)  3.9KB  /work/api  ended:mid-tool
+            first prompt: pick up the retry work where it stopped · last prompt: run the whole suite
+  (left out 2 sessions with no prompt in them (opened and cleared, or a shell command alone): c1ea0000 0be40000)
