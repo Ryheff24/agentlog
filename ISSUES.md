@@ -6,6 +6,14 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **Two small wrong labels on the screens page.** A pane for a screen that
+  is not pinned on one side says "0 characters, 0 bytes, 1 lines": it has no
+  lines. A pane for a screen too long to compare line by line (over 2,000
+  lines) says "no line gone" or "no line new", when it was not compared; the
+  comment says "too long to compare line by line". Found with a page for
+  each case, 2026-11-10. Neither can happen with today's screens of 82
+  lines, both pinned.
+
 - **The advisor's records show as generic events.** Claude Code 2.1.318 and
   later write `assistant:server_tool_use` for a call to the advisor tool and
   `assistant:advisor_tool_result` for its answer. `agentlog doctor` lists
