@@ -85,21 +85,6 @@ wrote their own scripts: 7 episodes in 38 days on one Mac, 24 of 25 calls
 scripts, median 69 s each. A view of totals by session, model and day over a
 time clue would cover those questions.
 
-## Usage first when `--help` is explicit
-
-From 2 to 9 November 2026, all 29 sessions that used agentlog for real work
-started with `--help`: 37 calls that ran only `--help`, 116 KB, about 29k
-tokens. `--help` prints the home screen first, and the usage starts at
-line 34. So `agentlog --help | head -30` shows no usage, and 18 sessions made
-a second call (`sed -n 30,80p`) to read it. The home screen also costs a
-catalog scan, which took 53 s to 1.4 min when the machine was busy.
-`agentlog <id> --help` ignores the id and prints the same screen. With usage
-first, or with usage alone on an explicit `--help`, the first call answers
-the question. This changes what every agent sees first, so it is a
-maintainer decision. It is not the same as "Skipping a home screen already
-printed" under "Not acting on" in ISSUES.md, which needs to know which calls
-share one command line.
-
 ## Who created a branch or a pull request
 
 The most common job in the week of 2 to 9 November 2026 was "who owns this
