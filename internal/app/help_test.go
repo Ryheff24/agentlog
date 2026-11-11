@@ -93,8 +93,8 @@ func TestEverySettingIsDocumented(t *testing.T) {
 	}
 }
 
-// --help and a bare call print the same screen, so an agent that runs both
-// pays twice for nothing, and one that runs either sees everything.
+// --help and a bare call print the same lines, so an agent that runs both pays twice for nothing, and one that runs either sees everything.
+// Only the order differs: --help puts the usage first.
 func TestHelpIsTheHomeScreen(t *testing.T) {
 	w := newWorld(t)
 	w.feedbackWorld()
@@ -104,11 +104,18 @@ func TestHelpIsTheHomeScreen(t *testing.T) {
 	}
 	for _, args := range [][]string{{"--help"}, {"-h"}, {"codex", "--help"}} {
 		got, code := w.run("/work/feedback", args...)
-		if code != 0 || got != bare {
-			t.Errorf("%v (code %d) differs from a bare call:\n%s\n--- bare:\n%s", args, code, got, bare)
+		if code != 0 || !strings.HasPrefix(got, render.Usage) || !sameLines(got, bare) {
+			t.Errorf("%v (code %d) is not a bare call's lines with the usage first:\n%s\n--- bare:\n%s", args, code, got, bare)
 		}
 	}
-	if !strings.Contains(bare, "recent sessions") || !strings.Contains(bare, render.Usage) {
+	if !strings.HasPrefix(bare, "harnesses:") || !strings.Contains(bare, "recent sessions") || !strings.Contains(bare, render.Usage) {
 		t.Errorf("the home screen lacks the sessions or the usage text:\n%s", bare)
 	}
+}
+
+func sameLines(a, b string) bool {
+	x, y := strings.Split(a, "\n"), strings.Split(b, "\n")
+	slices.Sort(x)
+	slices.Sort(y)
+	return slices.Equal(x, y)
 }
