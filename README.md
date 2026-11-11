@@ -55,9 +55,10 @@ passed through a session: secrets someone pasted or a command printed, and
 text from web pages, files and tool output that anyone could have written.
 agentlog prints that into whatever reads it. If an agent reads it, the agent
 should treat it as data, not instructions, and the output shouldn't go
-anywhere you wouldn't put the logs themselves. In a terminal, control
-characters are shown as `\x1b` and the like instead of being acted on; through
-a pipe, an agent gets the bytes as they are.
+anywhere you wouldn't put the logs themselves. Control characters are never
+printed as bytes, in a terminal or a pipe: each is shown as the character that
+names it (`␛`, `␀`), and a field that is mostly binary is replaced by one line
+that says how to print it as logged (`--bytes`).
 
 ## Install
 

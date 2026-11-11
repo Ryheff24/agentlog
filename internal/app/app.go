@@ -966,10 +966,10 @@ func writeJSON(w io.Writer, v any) error {
 	var b bytes.Buffer
 	enc := json.NewEncoder(&b)
 	enc.SetEscapeHTML(false)
-	if err := enc.Encode(v); err != nil {
-		return err
+	err := enc.Encode(v)
+	if _, werr := w.Write(term.JSON(b.Bytes(), o.Bytes)); err == nil {
+		err = werr
 	}
-	_, err := w.Write(term.JSON(b.Bytes(), o.Bytes))
 	return err
 }
 

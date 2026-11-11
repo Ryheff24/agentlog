@@ -20,6 +20,7 @@ import (
 	"github.com/Ryheff24/agentlog/internal/private"
 	"github.com/Ryheff24/agentlog/internal/render"
 	"github.com/Ryheff24/agentlog/internal/scan"
+	"github.com/Ryheff24/agentlog/internal/term"
 	"github.com/Ryheff24/agentlog/internal/transcript"
 )
 
@@ -171,9 +172,14 @@ func listFeedback(env Env, jsonOutput bool) error {
 		if entries == nil {
 			entries = []feedbackEntry{}
 		}
-		enc := json.NewEncoder(w)
+		var b bytes.Buffer
+		enc := json.NewEncoder(&b)
 		enc.SetEscapeHTML(false)
-		return enc.Encode(entries)
+		err := enc.Encode(entries)
+		if _, werr := w.Write(term.JSON(b.Bytes(), false)); err == nil {
+			err = werr
+		}
+		return err
 	}
 	for _, entry := range entries {
 		who := entry.Provider

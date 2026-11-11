@@ -99,7 +99,13 @@ func TestNoViewPrintsControlBytes(t *testing.T) {
 		{"bytes", "--grep", "firmware"}, {ref, "--grep", "ELF", "--count"}, {"firmware", "--content"},
 		{ref, "--edits"}, {ref, "--files"}, {ref, "--tools"}, {ref, "--usage"}, {ref, "--tree"},
 		{ref, "--subagents"}, {ref, "--reasoning"}, {"--projects"}, {"doctor"}, {"doctor", "claude", "all"},
-		{"/work/bytes/term.go"}, {"term.go"},
+		{"/work/bytes/term.go"}, {"term.go"}, {ref, "--images"}, {"feedback", "list"},
+	}
+	if out, code := w.run("/work/bytes", "feedback", "add", "the \x1b[1mgrep\x1b[0m view\x07 helped"); code != 0 {
+		t.Fatalf("feedback add: %d %s", code, out)
+	}
+	if out, _ := w.run("/work/bytes", "feedback", "list", "--json"); !strings.Contains(out, "the ␛[1mgrep␛[0m view␇ helped") {
+		t.Errorf("feedback list --json does not name the control characters:\n%s", out)
 	}
 	for _, args := range views {
 		for _, asJSON := range []bool{false, true} {
