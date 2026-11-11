@@ -1,0 +1,123 @@
+name: screens
+
+# A bare `agentlog` and `agentlog --help` are the first screens every agent
+# reads, and the maintainer placed each line by hand. TestScreens pins both as
+# files in internal/app/testdata/screens. When a pull request changes one of
+# those files, this posts a comment with the old and the new screen whole, so
+# the change is read before it merges.
+#
+# This job can write a comment, and it also runs for pull requests from forks.
+# So it never checks out, builds or runs anything from the pull request. This
+# event always runs the workflow of the default branch: the job checks that
+# branch out, reads the two pinned files of each side through the API as
+# data, and lets the default branch's own code build the comment.
+# The pinned files hold the test world's sessions, never a real log.
+#
+# There is no `paths` filter on purpose. With one, a pull request that stops
+# changing a screen would no longer start this job, and its earlier comment
+# would go on saying that it does. The job ends early when nothing changed
+# and there is no comment to correct.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+  # To run it by hand on one pull request.
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: screens-${{ github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: true
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # the comment
+    steps:
+      # Actions are pinned to full commit hashes; Dependabot proposes updates.
+      # With no ref, this event checks out the default branch, not the pull request.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: read the pinned screens of both sides
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+        run: |
+          case "$PR" in '' | *[!0-9]*) echo "not a pull request number"; exit 1 ;; esac
+          tip=$(gh api "repos/$REPO/pulls/$PR" --jq .head.sha)
+          base=$(gh api "repos/$REPO/pulls/$PR" --jq .base.sha)
+          # Where the pull request left the base branch: a screen changed on the
+          # base branch since then is not this pull request's change.
+          fork=$(gh api "repos/$REPO/compare/$base...$tip" --jq .merge_base_commit.sha)
+          for side in "before $fork" "after $tip"; do
+            set -- $side
+            mkdir -p "$RUNNER_TEMP/$1"
+            for name in bare help; do
+              file="$RUNNER_TEMP/$1/$name.txt"
+              # A side without the file is an empty screen; any other failure
+              # stops the job, so an outage never reads as "no screen". A screen
+              # is a few kilobytes, so anything past 64 KB is cut off here.
+              if ! gh api -H "Accept: application/vnd.github.raw" \
+                "repos/$REPO/contents/internal/app/testdata/screens/$name.txt?ref=$2" > "$file.all" 2> "$file.err"; then
+                if ! grep -q "HTTP 404" "$file.err"; then
+                  cat "$file.err"
+                  exit 1
+                fi
+                : > "$file.all"
+              fi
+              rm "$file.err"
+              head -c 65536 "$file.all" > "$file"
+              rm "$file.all"
+            done
+          done
+      - name: build the comment and the page
+        id: build
+        run: |
+          go run scripts/screens.go \
+            -before "$RUNNER_TEMP/before" -before-label "the base branch" \
+            -after "$RUNNER_TEMP/after" -after-label "this pull request" \
+            -md "$RUNNER_TEMP/comment.md" -html "$RUNNER_TEMP/screens.html" > "$RUNNER_TEMP/verdict"
+          echo "verdict=$(cat "$RUNNER_TEMP/verdict")" >> "$GITHUB_OUTPUT"
+      - name: keep the page
+        id: page
+        if: steps.build.outputs.verdict == 'changed'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: screens
+          path: ${{ runner.temp }}/screens.html
+      - name: comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          VERDICT: ${{ steps.build.outputs.verdict }}
+          PAGE: ${{ steps.page.outputs.artifact-url }}
+        run: |
+          # One comment, updated in place.
+          earlier=$(gh api --paginate "repos/$REPO/issues/$PR/comments" \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- agentlog-screens -->"))) | .id')
+          earlier=${earlier%%[!0-9]*} # the first one, if a rerun ever left two
+          if [ "$VERDICT" != changed ] && [ -z "$earlier" ]; then
+            echo "the screens are unchanged and there is no earlier comment"
+            exit 0
+          fi
+          if [ -n "$PAGE" ]; then
+            printf '\nAll four outputs side by side, as one page to download: %s\n' "$PAGE" >> "$RUNNER_TEMP/comment.md"
+          fi
+          if [ -n "$earlier" ]; then
+            gh api --method PATCH "repos/$REPO/issues/comments/$earlier" -F body=@"$RUNNER_TEMP/comment.md" --silent
+          else
+            gh api --method POST "repos/$REPO/issues/$PR/comments" -F body=@"$RUNNER_TEMP/comment.md" --silent
+          fi

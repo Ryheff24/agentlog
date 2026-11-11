@@ -59,6 +59,10 @@ func newWorld(t *testing.T) *world {
 	t.Setenv("AGENTLOG_FEEDBACK_FILE", filepath.Join(root, "feedback.jsonl"))
 	// Never the person's own types.json.
 	t.Setenv("AGENTLOG_CONFIG", filepath.Join(root, "config"))
+	// Worker claims live in the cache and temp folders, and real agentlog runs write claims there too.
+	t.Setenv("HOME", root)
+	t.Setenv("XDG_CACHE_HOME", filepath.Join(root, "cache"))
+	t.Setenv("TMPDIR", t.TempDir())
 	// The harness running these tests sets these for itself.
 	for _, v := range []string{"CLAUDE_CODE_SESSION_ID", "CODEX_THREAD_ID", "COPILOT_SESSION_ID", "AGENTLOG_JOBS"} {
 		t.Setenv(v, "")
