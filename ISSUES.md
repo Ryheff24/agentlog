@@ -6,6 +6,16 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **The advisor's records show as generic events.** Claude Code 2.1.318 and
+  later write `assistant:server_tool_use` for a call to the advisor tool and
+  `assistant:advisor_tool_result` for its answer. `agentlog doctor` lists
+  both as unread on a second machine, 30 to 35 of each in 16 sessions on 9
+  November 2026. The answer itself is encrypted: all 1,801 logs on that
+  machine that hold one use `advisor_redacted_result` with
+  `encrypted_content`. So agentlog can show only that the advisor was
+  called, which model answered, and the tokens it used. Today an agent reads
+  about 30 lines of record fields to learn that.
+
 - **New record types this build can't read yet.** Found by
   `TestTodaysLogsAreRead` on 2026-10-27, after the harnesses' latest releases:
   Codex 0.164.0 `response_item:additional_tools`; Copilot CLI 1.0.98
