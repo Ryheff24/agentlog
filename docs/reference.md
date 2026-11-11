@@ -405,7 +405,10 @@ lost among eighty. It holds the test world's made-up sessions and no real
 log, so it can be shared. On a pull request that changes a pinned file,
 `.github/workflows/screens.yml` posts a comment with the lines that changed,
 each with its line number, then the old and the new screen whole, and the
-same page to download. That workflow can
+same page to download. A block that moved without changing is one entry in
+that list, `~ 1-31 → 52-82:` and its first line, not its lines removed in one
+place and added in another; a blank line or a line that repeats counts as
+moved only next to a line that did. That workflow can
 write to the pull request, so it never runs the pull request's code: it reads
 the pinned files as data, which is why the comment is only as true as the
 `test` jobs that check them.

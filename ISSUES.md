@@ -6,13 +6,6 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
-- **A block that moved reads as removed in the screens comment.** Pull
-  request 14 prints the usage first on `--help`, which moves 32 lines to the
-  end of the screen unchanged. The comment's list showed lines 1 to 28 as
-  removed and then "(36 more changed lines; both screens are whole below)".
-  Its size limit cuts it before any added line, so the list never says the
-  block moved, and the table says "32 removed, 32 added".
-
 - **The advisor's records show as generic events.** Claude Code 2.1.318 and
   later write `assistant:server_tool_use` for a call to the advisor tool and
   `assistant:advisor_tool_result` for its answer. `agentlog doctor` lists

@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -85,7 +86,7 @@ func Comment(before, after Side) string {
 		if p.before == p.after {
 			now = "unchanged"
 		} else {
-			lines = changedCount(changes(p.before, p.after))
+			lines = changedCount(compare(p.before, p.after))
 		}
 		fmt.Fprintf(&b, "| `%s` | %s | %s | %s |\n", p.command, size(p.before), now, lines)
 	}
@@ -103,34 +104,48 @@ func Comment(before, after Side) string {
 	return b.String()
 }
 
-// changedCount says how many lines a change removed and added.
-func changedCount(gone, added []int, ok bool) string {
-	if !ok {
+// changedCount says how many lines a change removed, added and moved.
+func changedCount(d diff) string {
+	if !d.ok {
 		return "too long to compare line by line"
 	}
-	return fmt.Sprintf("%d removed, %d added", len(gone), len(added))
+	count := fmt.Sprintf("%d removed, %d added", len(d.gone), len(d.added))
+	if n := d.movedLines(); n > 0 {
+		count += fmt.Sprintf(", %d moved", n)
+	}
+	return count
 }
 
-// changedLines lists the lines a change removed and added, each with its
-// line number on its own side, so a reader does not have to find one changed
-// line among eighty. A screen that is new or gone on one side has no list:
-// every line of it changed.
+// changedLines lists what a change did to a screen, each entry with its line
+// number on its own side, so a reader does not have to find one changed line
+// among eighty: a line that is gone, a line that is new, and a block that
+// moved without changing, as one entry with where it was, where it is and its
+// first line. A screen that is new or gone on one side has no list: every
+// line of it changed.
 func changedLines(b *strings.Builder, p pane) {
-	gone, added, ok := changes(p.before, p.after)
-	if !ok || p.before == "" || p.after == "" {
+	d := compare(p.before, p.after)
+	if !d.ok || p.before == "" || p.after == "" {
 		return
 	}
 	old, now := splitLines(p.before), splitLines(p.after)
 	var list strings.Builder
-	shown, i, j := 0, 0, 0
-	for (i < len(gone) || j < len(added)) && shown < maxChangeLines {
-		// In the order a reader meets them going down the screen.
+	shown, covered, i, j, k := 0, 0, 0, 0, 0
+	for (i < len(d.gone) || j < len(d.added) || k < len(d.moved)) && shown < maxChangeLines {
+		// In the order a reader meets them going down the screen. A block
+		// that moved is listed where it was.
 		var line string
-		if j == len(added) || i < len(gone) && gone[i] <= added[j] {
-			line = fmt.Sprintf("- %d: %s\n", gone[i]+1, clip(clean(old[gone[i]])))
+		lines := 1
+		switch next := d.next(i, j, k); next {
+		case 'g':
+			line = fmt.Sprintf("- %d: %s\n", d.gone[i]+1, clip(clean(old[d.gone[i]])))
 			i++
-		} else {
-			line = fmt.Sprintf("+ %d: %s\n", added[j]+1, clip(clean(now[added[j]])))
+		case 'm':
+			m := d.moved[k]
+			line = fmt.Sprintf("~ %s → %s: %s\n", span(m.from, m.n), span(m.to, m.n), clip(clean(old[m.from])))
+			lines = m.n
+			k++
+		default:
+			line = fmt.Sprintf("+ %d: %s\n", d.added[j]+1, clip(clean(now[d.added[j]])))
 			j++
 		}
 		if list.Len()+len(line) > maxChangeBytes {
@@ -138,14 +153,28 @@ func changedLines(b *strings.Builder, p pane) {
 		}
 		list.WriteString(line)
 		shown++
+		covered += lines
 	}
-	if left := len(gone) + len(added) - shown; left > 0 {
+	if left := len(d.gone) + len(d.added) + d.movedLines() - covered; left > 0 {
 		fmt.Fprintf(&list, "(%d more changed lines; both screens are whole below)\n", left)
 	}
 	text := list.String()
 	f := fence(text)
-	fmt.Fprintf(b, "\nLines changed in `%s`: `-` is a line of %s that is gone, `+` a line that is new, each with its line number.\n\n%stext\n%s%s\n",
-		p.command, cell(p.beforeLabel), f, text, f)
+	legend := ""
+	if len(d.moved) > 0 {
+		legend = " `~` is a block that moved without changing: the lines it was on, the lines it is on now, and its first line."
+	}
+	fmt.Fprintf(b, "\nLines changed in `%s`: `-` is a line of %s that is gone, `+` a line that is new, each with its line number.%s\n\n%stext\n%s%s\n",
+		p.command, cell(p.beforeLabel), legend, f, text, f)
+}
+
+// span is the line numbers of a run of n lines starting at line first,
+// counted from zero: "5" for one line, "1-32" for a block.
+func span(first, n int) string {
+	if n == 1 {
+		return strconv.Itoa(first + 1)
+	}
+	return fmt.Sprintf("%d-%d", first+1, first+n)
 }
 
 // clip shortens one listed line to maxChangeWidth bytes, on a whole character.
@@ -213,6 +242,110 @@ func changes(before, after string) (gone, added []int, ok bool) {
 		added = append(added, j)
 	}
 	return gone, added, true
+}
+
+// move is a run of n lines that is gone from one place and new in another
+// with the same text. from and to are its first line on each side, counted
+// from zero.
+type move struct{ from, to, n int }
+
+// diff is what changed between two screens: the lines that are gone, the
+// lines that are new, and the blocks that only moved, which are in neither
+// list. ok is false when a side was too long to compare.
+type diff struct {
+	gone, added []int
+	moved       []move
+	ok          bool
+}
+
+// movedLines is how many lines the moved blocks hold, each counted once.
+func (d diff) movedLines() int {
+	n := 0
+	for _, m := range d.moved {
+		n += m.n
+	}
+	return n
+}
+
+// next says which entry comes first going down the screen: 'g' for the gone
+// line at i, 'm' for the moved block at k, 'a' for the added line at j. A gone
+// line and a moved block are placed by their line in the old screen, an added
+// line by its line in the new one, and the old screen goes first on a tie.
+func (d diff) next(i, j, k int) byte {
+	kind, at := byte('a'), -1
+	if i < len(d.gone) {
+		kind, at = 'g', d.gone[i]
+	}
+	if k < len(d.moved) && (at < 0 || d.moved[k].from < at) {
+		kind, at = 'm', d.moved[k].from
+	}
+	if j < len(d.added) && (at < 0 || d.added[j] < at) {
+		kind = 'a'
+	}
+	return kind
+}
+
+// compare is changes with the blocks that only moved taken out of the gone
+// and the new lines.
+func compare(before, after string) diff {
+	gone, added, ok := changes(before, after)
+	if !ok {
+		return diff{}
+	}
+	a, b := splitLines(before), splitLines(after)
+	// to[i] is the line of after that line i of before moved to, or -1.
+	to := make([]int, len(a))
+	for i := range to {
+		to[i] = -1
+	}
+	isGone, isAdded := make([]bool, len(a)), make([]bool, len(b))
+	goneTimes, addedTimes, addedAt := map[string]int{}, map[string]int{}, map[string]int{}
+	for _, i := range gone {
+		isGone[i] = true
+		goneTimes[a[i]]++
+	}
+	for _, j := range added {
+		isAdded[j] = true
+		addedTimes[b[j]]++
+		addedAt[b[j]] = j
+	}
+	// A line that is gone once and new once, with something on it, moved.
+	// A blank line or a repeated one says nothing about where it went.
+	for _, i := range gone {
+		if strings.TrimSpace(a[i]) != "" && goneTimes[a[i]] == 1 && addedTimes[a[i]] == 1 {
+			to[i] = addedAt[a[i]]
+			isAdded[to[i]] = false
+		}
+	}
+	// The blank and repeated lines next to a line that moved went with it.
+	for _, i := range gone {
+		if to[i] < 0 {
+			continue
+		}
+		for g, n := i-1, to[i]-1; g >= 0 && n >= 0 && isGone[g] && to[g] < 0 && isAdded[n] && a[g] == b[n]; g, n = g-1, n-1 {
+			to[g], isAdded[n] = n, false
+		}
+		for g, n := i+1, to[i]+1; g < len(a) && n < len(b) && isGone[g] && to[g] < 0 && isAdded[n] && a[g] == b[n]; g, n = g+1, n+1 {
+			to[g], isAdded[n] = n, false
+		}
+	}
+	d := diff{ok: true}
+	for _, i := range gone {
+		switch last := len(d.moved) - 1; {
+		case to[i] < 0:
+			d.gone = append(d.gone, i)
+		case last >= 0 && d.moved[last].from+d.moved[last].n == i && d.moved[last].to+d.moved[last].n == to[i]:
+			d.moved[last].n++
+		default:
+			d.moved = append(d.moved, move{i, to[i], 1})
+		}
+	}
+	for _, j := range added {
+		if isAdded[j] {
+			d.added = append(d.added, j)
+		}
+	}
+	return d
 }
 
 // block writes one screen in a fenced block that folds away.

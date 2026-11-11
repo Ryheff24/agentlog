@@ -37,10 +37,12 @@ func TestCommentShowsOnlyTheScreenThatChanged(t *testing.T) {
 		Marker + "\n### This pull request changes what an agent sees first",
 		"| screen | main | this pull request | lines changed |",
 		"| `agentlog` | 5 lines, 102 bytes | unchanged | none |",
-		"| `agentlog --help` | 5 lines, 102 bytes | 5 lines, 102 bytes | 3 removed, 3 added |",
-		// The lines that changed, before the whole screens, each with the
-		// line number on its own side.
-		"Lines changed in `agentlog --help`: `-` is a line of main that is gone, `+` a line that is new, each with its line number.\n\n```text\n- 1: harnesses:\n- 2:   claude   ~/claude/projects   2 sessions\n- 3: \n+ 3: \n+ 4: harnesses:\n+ 5:   claude   ~/claude/projects   2 sessions\n```\n",
+		"| `agentlog --help` | 5 lines, 102 bytes | 5 lines, 102 bytes | 1 removed, 1 added, 2 moved |",
+		// What changed, before the whole screens, each entry with the line
+		// number on its own side. The two harness lines moved as they are, so
+		// they are one entry. The blank line between the blocks is now above
+		// them, not below.
+		"Lines changed in `agentlog --help`: `-` is a line of main that is gone, `+` a line that is new, each with its line number. `~` is a block that moved without changing: the lines it was on, the lines it is on now, and its first line.\n\n```text\n~ 1-2 → 4-5: harnesses:\n- 3: \n+ 3: \n```\n",
 		"<details open><summary><code>agentlog --help</code>, this pull request (5 lines, 102 bytes)</summary>\n\n```text\nusage: agentlog [clues...] [flags]\n  --help, -h\n\nharnesses:\n  claude   ~/claude/projects   2 sessions\n```\n\n</details>",
 		"<details><summary><code>agentlog --help</code>, main (5 lines, 102 bytes)</summary>\n\n```text\nharnesses:",
 		"Before this change both commands printed the same screen. Now they differ.",
@@ -80,6 +82,10 @@ func TestCommentWhenBothScreensChangeTheSameWay(t *testing.T) {
 	}
 	if strings.Count(c, "```text\n+ 6: one more line\n```") != 2 {
 		t.Errorf("each screen wants its one new line listed with its number:\n%s", c)
+	}
+	// Nothing moved, so nothing explains the sign for a move.
+	if strings.Contains(c, " moved") || strings.Contains(c, "\n~ ") {
+		t.Errorf("a change that moved nothing talks about a move:\n%s", c)
 	}
 }
 
@@ -157,6 +163,22 @@ func TestCommentCannotBeWrittenByTheScreen(t *testing.T) {
 	}
 }
 
+// The first line of a block that moved is the pull request's text too.
+func TestAMovedLineCannotWriteTheComment(t *testing.T) {
+	kept := "one\ntwo\nthree\n"
+	hostile := "\x1b[2J</details> ```` " + strings.Repeat("é", 100) + "\n"
+	c := Comment(Side{Label: "main", Bare: home, Help: hostile + kept}, Side{Label: "this pull request", Bare: home, Help: kept + hostile})
+	list := c[strings.Index(c, "Lines changed in"):strings.Index(c, "<details")]
+	// 160 bytes hold the 27 before the first é and 66 whole ones of two bytes.
+	want := "`````text\n~ 1 → 4: \\u{001b}[2J</details> ```` " + strings.Repeat("é", 66) + "…\n`````\n"
+	if !strings.Contains(list, want) || strings.Count(list, "`````") != 2 {
+		t.Errorf("the moved line is not cleaned, cut and fenced:\n%s", list)
+	}
+	if !strings.Contains(c, "| 0 removed, 0 added, 1 moved |") {
+		t.Errorf("the table does not count the moved line:\n%s", c)
+	}
+}
+
 func TestCleanKeepsWhatAScreenReallyPrints(t *testing.T) {
 	// The marks agentlog prints itself, and a tab, pass through.
 	real := "last prompt: human attached ⏎ [image] · \"Fix\" … 1 more\n\tindented — ok\n"
@@ -221,6 +243,98 @@ func TestChangedLinesStopAtTheLineLimit(t *testing.T) {
 	// the 40 listed are the first 20 of each.
 	if !strings.Contains(c, "```text\n- 1: old 0\n+ 1: new 0\n- 2: old 1\n") || !strings.Contains(c, "- 20: old 19\n+ 20: new 19\n(20 more changed lines; both screens are whole below)\n") {
 		t.Errorf("the list does not stop at its 40 lines:\n%s", c)
+	}
+}
+
+// A block that moved is one entry, however long, and its lines count once in
+// what the list leaves out.
+func TestChangedLinesCountAMovedBlockOnce(t *testing.T) {
+	var old, now, kept strings.Builder
+	for i := 0; i < 50; i++ {
+		fmt.Fprintf(&kept, "kept %d\n", i)
+	}
+	for i := 0; i < 45; i++ {
+		fmt.Fprintf(&old, "old %d\n", i)
+		fmt.Fprintf(&now, "new %d\n", i)
+	}
+	block := "first\nsecond\nthird\n"
+	c := Comment(Side{Label: "main", Bare: home, Help: block + old.String() + kept.String()},
+		Side{Label: "this pull request", Bare: home, Help: now.String() + kept.String() + block})
+	// The block is listed where it was. Then come the 39 entries that fit: 3
+	// moved lines and 39 others are shown, of 3 moved, 45 gone and 45 new.
+	if !strings.Contains(c, "| 45 removed, 45 added, 3 moved |") ||
+		!strings.Contains(c, "```text\n~ 1-3 → 96-98: first\n+ 1: new 0\n+ 2: new 1\n+ 3: new 2\n- 4: old 0\n+ 4: new 3\n") ||
+		!strings.Contains(c, "\n(51 more changed lines; both screens are whole below)\n") {
+		t.Errorf("a moved block is not one entry counted once:\n%s", c[:2400])
+	}
+}
+
+// The two worst cases for finding moves that are still compared: every line
+// moved by itself, and every line the same as its neighbours.
+func TestMovesAtTheLineLimit(t *testing.T) {
+	var up, down strings.Builder
+	for i := 0; i < maxDiff; i++ {
+		fmt.Fprintf(&up, "line %d\n", i)
+		fmt.Fprintf(&down, "line %d\n", maxDiff-1-i)
+	}
+	c := Comment(Side{Label: "main", Bare: home, Help: up.String()}, Side{Label: "this pull request", Bare: home, Help: down.String()})
+	if n := utf8.RuneCountInString(c); n > 65536 {
+		t.Errorf("the comment is %d characters, over GitHub's 65,536", n)
+	}
+	// One line stays where the comparison keeps it; each of the others is a
+	// move of one line, and 40 of them are listed.
+	if !strings.Contains(c, "| 0 removed, 0 added, 1999 moved |") || !strings.Contains(c, "\n(1959 more changed lines; both screens are whole below)\n") {
+		t.Errorf("a screen turned upside down:\n%s", c[:1800])
+	}
+	if got := strings.Count(c[strings.Index(c, "Lines changed in"):strings.Index(c, "<details")], "\n~ "); got != maxChangeLines {
+		t.Errorf("%d moves are listed, want %d", got, maxChangeLines)
+	}
+
+	xs, ys := strings.Repeat("x\n", maxDiff/2), strings.Repeat("y\n", maxDiff/2)
+	c = Comment(Side{Label: "main", Bare: home, Help: xs + ys}, Side{Label: "this pull request", Bare: home, Help: ys + xs})
+	if !strings.Contains(c, "| 1000 removed, 1000 added |") || strings.Contains(c, "\n~ ") {
+		t.Errorf("a thousand lines that are all the same were paired as a move:\n%s", c[:1200])
+	}
+}
+
+func TestCompare(t *testing.T) {
+	for _, c := range []struct {
+		name, before, after string
+		gone, added         []int
+		moved               []move
+	}{
+		{"the same screen", "a\nb\n", "a\nb\n", nil, nil, nil},
+		{"a line added", "a\nc\n", "a\nb\nc\n", nil, []int{1}, nil},
+		{"a line reworded", "a\nb\nc\n", "a\nB\nc\n", []int{1}, []int{1}, nil},
+		{"one line moved down", "a\nk1\nk2\n", "k1\nk2\na\n", nil, nil, []move{{0, 2, 1}}},
+		{"one line moved up", "k1\nk2\na\n", "a\nk1\nk2\n", nil, nil, []move{{2, 0, 1}}},
+		// The blank line inside the block goes with it.
+		{"a block with a blank line in it", "p\n\nq\nk1\nk2\nk3\nk4\n", "k1\nk2\nk3\nk4\np\n\nq\n", nil, nil, []move{{0, 4, 3}}},
+		{"a block that starts on a blank line", "\np\nk1\nk2\nk3\n", "k1\nk2\nk3\n\np\n", nil, nil, []move{{0, 3, 2}}},
+		// So do lines that repeat, at either end of the block.
+		{"a block that ends on repeated lines", "p\nr\nr\nk1\nk2\nk3\n", "k1\nk2\nk3\np\nr\nr\n", nil, nil, []move{{0, 3, 3}}},
+		{"a block that starts on repeated lines", "r\nr\np\nk1\nk2\nk3\n", "k1\nk2\nk3\nr\nr\np\n", nil, nil, []move{{0, 3, 3}}},
+		// The blank line between two blocks that swap is below the first
+		// block before and above it after: it did not move with the block.
+		{"two blocks swap around a blank line", "u\nv\n\nh\n", "h\n\nu\nv\n", []int{2}, []int{1}, []move{{3, 0, 1}}},
+		{"a line edited inside a block that moved", "p1\np2\nold\np3\np4\nk1\nk2\nk3\nk4\nk5\nk6\n", "k1\nk2\nk3\nk4\nk5\nk6\np1\np2\nnew\np3\np4\n",
+			[]int{2}, []int{8}, []move{{0, 6, 2}, {3, 9, 2}}},
+		{"two blocks moved", "a1\na2\nb1\nb2\nc1\nc2\nc3\n", "c1\nc2\nc3\nb1\nb2\na1\na2\n", nil, nil, []move{{0, 5, 2}, {2, 3, 2}}},
+		// A blank line or a repeated one says nothing about where it went.
+		{"a blank line moved", "\na\nb\n", "a\nb\n\n", []int{0}, []int{2}, nil},
+		{"a line of spaces moved", "  \na\nb\n", "a\nb\n  \n", []int{0}, []int{2}, nil},
+		{"two lines that are the same moved", "x\nx\na\nb\nc\n", "a\nb\nc\nx\nx\n", []int{0, 1}, []int{3, 4}, nil},
+		{"a line gone once and new twice", "t\nk1\nk2\n", "k1\nk2\nt\nt\n", []int{0}, []int{2, 3}, nil},
+		{"nothing before", "", "a\nb\n", nil, []int{0, 1}, nil},
+		{"nothing after", "a\nb\n", "", []int{0, 1}, nil, nil},
+	} {
+		d := compare(c.before, c.after)
+		if !d.ok || fmt.Sprint(d.gone) != fmt.Sprint(c.gone) || fmt.Sprint(d.added) != fmt.Sprint(c.added) || fmt.Sprint(d.moved) != fmt.Sprint(c.moved) {
+			t.Errorf("%s: gone %v added %v moved %v ok %v, want gone %v added %v moved %v", c.name, d.gone, d.added, d.moved, d.ok, c.gone, c.added, c.moved)
+		}
+	}
+	if d := compare(strings.Repeat("x\n", maxDiff+1), "x\n"); d.ok || changedCount(d) != "too long to compare line by line" {
+		t.Error("a screen over the line limit was compared")
 	}
 }
 
