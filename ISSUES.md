@@ -93,14 +93,6 @@ commit that fixes it; that commit is the record.
   `b67ff331` with 29 mentions. 19 logs hold the branch name (6 top-level).
   Seen in 3 sessions on 5 to 7 November 2026.
 
-- **A word clue that matches only your own session does not offer
-  `--grep`.** `agentlog all <a TSV file name>` reports "no sessions but
-  your own" and stops. 16 logs hold the file name (`rg -l -F`). In `run`, the
-  `render.OnlyOwn` message returns before the hint that says words match
-  metadata and gives the `--grep` command. With no match at all, the hint
-  prints. Seen in 4 sessions from 2 to 9 November 2026. One of them then
-  read the JSONL by hand.
-
 ## Not acting on
 
 Reports that were read, checked, and deliberately left alone, with the reason.
