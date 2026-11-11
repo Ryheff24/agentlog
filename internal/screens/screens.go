@@ -445,26 +445,39 @@ func fence(text string) string {
 // Page is one HTML page with the four outputs in a grid: before on the left,
 // after on the right, `agentlog` in the top row and `--help` below it. Each
 // pane is the exact text, one row per line, nothing wrapped. A line that is
-// gone or new is marked by a sign in the margin and a tint, and each pane's
-// label counts them and links to the first, so one changed line is not lost
-// among eighty. The sign and the tint are not part of the text.
+// gone, new or moved is marked by a sign in the margin and a tint, and each
+// pane's label counts them and links to the first, so one changed line is not
+// lost among eighty. A line that moved says on hover which line it is on the
+// other side. The marks are the comment's: both come from compare. The sign
+// and the tint are not part of the text.
 func Page(before, after Side) string {
 	data, _ := json.Marshal(map[string]string{
 		"before-bare": before.Bare, "before-help": before.Help,
 		"after-bare": after.Bare, "after-help": after.Help,
 	})
 	marks := map[string][]int{}
+	// A pane's moved blocks: the first line here, how many lines, and the
+	// first line on the other side, all counted from zero.
+	went := map[string][][3]int{}
 	for id, p := range map[string]pane{"bare": panes(before, after)[0], "help": panes(before, after)[1]} {
-		gone, added, _ := changes(p.before, p.after)
-		marks["before-"+id], marks["after-"+id] = orNone(gone), orNone(added)
+		d := compare(p.before, p.after)
+		marks["before-"+id], marks["after-"+id] = orNone(d.gone), orNone(d.added)
+		from, to := [][3]int{}, [][3]int{}
+		for _, m := range d.moved {
+			from = append(from, [3]int{m.from, m.n, m.to})
+			to = append(to, [3]int{m.to, m.n, m.from})
+		}
+		went["before-"+id], went["after-"+id] = from, to
 	}
 	marked, _ := json.Marshal(marks)
+	moved, _ := json.Marshal(went)
 	r := strings.NewReplacer(
 		"BEFORE", html.EscapeString(before.Label),
 		"AFTER", html.EscapeString(after.Label),
 		// json.Marshal writes <, > and & as \u escapes, so the text cannot end the script.
 		"DATA", string(data),
 		"MARKS", string(marked),
+		"WENT", string(moved),
 	)
 	return r.Replace(page)
 }
@@ -489,9 +502,11 @@ pre{margin:0;padding:6px;background:#282a2e;white-space:pre;tab-size:8;font-fami
 .l.gone,.l.new{font-weight:700}
 .l.gone{background:rgba(255,176,0,.20)}
 .l.new{background:rgba(88,166,255,.24)}
-.l.gone::before,.l.new::before{display:inline-block;width:2ch;margin-left:-2ch}
+.l.moved{background:rgba(255,255,255,.10)}
+.l.gone::before,.l.new::before,.l.moved::before{display:inline-block;width:2ch;margin-left:-2ch}
 .l.gone::before{content:"\2212"}
 .l.new::before{content:"+"}
+.l.moved::before{content:"~"}
 </style></head><body>
 <div class="grid">
 <div><p class="label">before · <b>agentlog</b> · BEFORE · <span id="n-before-bare"></span></p><pre id="before-bare"></pre></div>
@@ -502,17 +517,27 @@ pre{margin:0;padding:6px;background:#282a2e;white-space:pre;tab-size:8;font-fami
 <script>
 const out = DATA;
 const marks = MARKS;
+const went = WENT;
 for (const [id, text] of Object.entries(out)) {
   const pre = document.getElementById(id);
   const lines = text.split("\n");
   if (text.endsWith("\n")) lines.pop();
+  const old = id.startsWith("before");
   const marked = new Set(marks[id]);
-  const kind = id.startsWith("before") ? "gone" : "new";
+  const kind = old ? "gone" : "new";
+  // A line of this pane that moved, and the line it is on in the other pane.
+  const other = new Map();
+  for (const [first, count, there] of went[id]) {
+    for (let k = 0; k < count; k++) other.set(first + k, there + k);
+  }
+  const firstMoved = Math.min(...other.keys());
   lines.forEach((line, i) => {
     const row = document.createElement("span");
-    row.className = marked.has(i) ? "l " + kind : "l";
+    row.className = marked.has(i) ? "l " + kind : other.has(i) ? "l moved" : "l";
     row.textContent = line;
+    if (other.has(i)) row.title = (old ? "now line " : "was line ") + (other.get(i) + 1);
     if (i === marks[id][0]) row.id = "first-" + id;
+    if (i === firstMoved) row.id = "moved-" + id;
     pre.append(row, "\n");
   });
   const n = document.getElementById("n-" + id);
@@ -524,6 +549,12 @@ for (const [id, text] of Object.entries(out)) {
     n.append(" \u00b7 ", a);
   } else {
     n.append(" \u00b7 no line " + (kind === "gone" ? "gone" : "new"));
+  }
+  if (other.size > 0) {
+    const a = document.createElement("a");
+    a.href = "#moved-" + id;
+    a.textContent = other.size + (other.size === 1 ? " line" : " lines") + " moved, first at line " + (firstMoved + 1);
+    n.append(" \u00b7 ", a);
   }
 }
 </script></body></html>

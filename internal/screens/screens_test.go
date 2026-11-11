@@ -425,21 +425,27 @@ func TestPageHoldsTheExactText(t *testing.T) {
 			t.Errorf("the page has no pane for %s", id)
 		}
 	}
-	// The lines that changed, counted from zero, for the page to mark: the
-	// flip's three gone and three new, the hostile line as one more new line,
+	// The lines that changed, counted from zero, for the page to mark, the
+	// same as the comment lists them: the blank line gone from under the
+	// harness block and new above it, the hostile line as one more new line,
 	// and empty lists (not null) for the bare screen, which did not change.
 	from := strings.Index(p, "const marks = ") + len("const marks = ")
 	var marks map[string][]int
 	if err := json.Unmarshal([]byte(p[from:from+strings.Index(p[from:], ";\n")]), &marks); err != nil {
 		t.Fatal(err)
 	}
-	if got, want := fmt.Sprint(marks), "map[after-bare:[] after-help:[2 3 4 5] before-bare:[] before-help:[0 1 2]]"; got != want {
+	if got, want := fmt.Sprint(marks), "map[after-bare:[] after-help:[2 5] before-bare:[] before-help:[2]]"; got != want {
 		t.Errorf("marks = %s, want %s", got, want)
 	}
 	if strings.Contains(p[from:from+200], "null") {
 		t.Error("a pane with no changed line has null where the page wants a list")
 	}
-	for _, want := range []string{`.l.gone::before{content:"\2212"}`, `.l.new::before{content:"+"}`, `row.textContent = line;`, `pre.append(row, "\n");`, `"first-" + id`} {
+	// The two harness lines moved as they are: a block on each side, with
+	// its first line, its length and its first line on the other side.
+	if got, want := fmt.Sprint(pageMoves(t, p)), "map[after-bare:[] after-help:[[3 2 0]] before-bare:[] before-help:[[0 2 3]]]"; got != want {
+		t.Errorf("moved blocks = %s, want %s", got, want)
+	}
+	for _, want := range []string{`.l.gone::before{content:"\2212"}`, `.l.new::before{content:"+"}`, `.l.moved::before{content:"~"}`, `row.textContent = line;`, `pre.append(row, "\n");`, `"first-" + id`, `"moved-" + id`} {
 		if !strings.Contains(p, want) {
 			t.Errorf("the page lacks %q", want)
 		}
@@ -457,5 +463,55 @@ func TestPageHoldsTheExactText(t *testing.T) {
 	}
 	if !strings.Contains(p, "grid-template-columns:max-content max-content") {
 		t.Error("the grid is not two columns, so before and after are not side by side")
+	}
+}
+
+// pageMoves is the moved blocks a page hands its script, read back.
+func pageMoves(t *testing.T, p string) map[string][][3]int {
+	t.Helper()
+	from := strings.Index(p, "const went = ") + len("const went = ")
+	text := p[from : from+strings.Index(p[from:], ";\n")]
+	if strings.Contains(text, "null") {
+		t.Errorf("a pane has null where the page's script wants a list: %s", text)
+	}
+	var went map[string][][3]int
+	if err := json.Unmarshal([]byte(text), &went); err != nil {
+		t.Fatalf("%v in %s", err, text)
+	}
+	return went
+}
+
+// The page's script loops over every pane's lists, so each pane has one even
+// when there is nothing to mark: one null would stop the script and leave all
+// four panes empty.
+func TestPageHasAListForEveryPane(t *testing.T) {
+	long := strings.Repeat("x\n", maxDiff+1)
+	for name, sides := range map[string][2]Side{
+		"nothing changed":              {{Label: "main", Bare: home, Help: home}, {Label: "this pull request", Bare: home, Help: home}},
+		"a screen with no before":      {{Label: "main"}, {Label: "this pull request", Bare: home, Help: home}},
+		"a screen with no after":       {{Label: "main", Bare: home, Help: home}, {Label: "this pull request"}},
+		"a screen too long to compare": {{Label: "main", Bare: home, Help: long}, {Label: "this pull request", Bare: home, Help: long + "y\n"}},
+	} {
+		p := Page(sides[0], sides[1])
+		went := pageMoves(t, p)
+		for _, id := range []string{"before-bare", "after-bare", "before-help", "after-help"} {
+			if list, ok := went[id]; !ok || len(list) != 0 {
+				t.Errorf("%s: pane %s has moved blocks %v, want an empty list", name, id, list)
+			}
+		}
+		from := strings.Index(p, "const marks = ") + len("const marks = ")
+		if marks := p[from : from+strings.Index(p[from:], ";\n")]; strings.Contains(marks, "null") || strings.Count(marks, "[") != 4 {
+			t.Errorf("%s: marks = %s, want a list for each of the four panes", name, marks)
+		}
+	}
+}
+
+// Each end of a move names the other, so a reader on one side can find it.
+func TestPagePairsTheTwoEndsOfEveryMove(t *testing.T) {
+	old := "a1\na2\nb1\nb2\nc1\nc2\nc3\n"
+	now := "c1\nc2\nc3\nb1\nb2\na1\na2\n"
+	went := pageMoves(t, Page(Side{Label: "main", Bare: home, Help: old}, Side{Label: "this pull request", Bare: home, Help: now}))
+	if got, want := fmt.Sprint(went["before-help"], went["after-help"]), "[[0 2 5] [2 2 3]] [[5 2 0] [3 2 2]]"; got != want {
+		t.Errorf("the two blocks that moved = %s, want %s", got, want)
 	}
 }
