@@ -122,3 +122,27 @@ compaction: a `DATABASE_URL`, a `terraform` command, a decision. agentlog
 leaves the caller's own session out unless the agent passes its id, and the
 agents did not know that id. A short way to search your own session, such as
 a `self` clue, would cover these reads.
+
+## Holding back long hex and base64 runs
+
+Asked for on 10 November 2026, with control bytes: Anthropic's guidance for
+some models names base64, hex and commit hashes among the encoded data that
+can trip safety classifiers. agentlog prints them as logged. A real Claude
+tool result that printed a file as base64 comes back from `agentlog
+<session-id>#N` as a 2,267-character run in 4.2 KB, the same with `--full`.
+
+A rule is not clearly safe, so none was built. Across one Mac's Claude and
+Codex logs (unique strings that hold a run):
+
+- Hex runs of exactly 64 characters: 300,274 (checksums, ids, hashes); of 40:
+  1,299 (commit hashes); 41 to 127: 4,869; 128 or more: 948. The ones longer
+  than 64 sit mostly in `data`, `content`, tool output and commands.
+- Base64-like runs of 100 characters or more, mixed case with digits:
+  109,571. Almost all are `signature` (89,065), `encrypted_content`
+  (14,856) and image `data` (5,197), which the readers already leave out.
+  About 340 are in tool output, commands and text.
+
+Session ids, commit hashes, lockfile integrity lines and checksums are what
+agents come to agentlog for, so a rule would have to tell a 2 KB base64
+payload from those, for example by length and the absence of separators,
+and leave a way to print it, as `--bytes` does for binary.
