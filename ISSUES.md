@@ -6,6 +6,12 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **The screens page marks a block that moved as gone and new.** The comment
+  on pull request 14 says "1 removed, 1 added, 31 moved". The page it links
+  marks the same 32 lines as gone on the left and 32 as new on the right,
+  because its marks come from the plain line comparison and not from the one
+  that finds moves.
+
 - **The advisor's records show as generic events.** Claude Code 2.1.318 and
   later write `assistant:server_tool_use` for a call to the advisor tool and
   `assistant:advisor_tool_result` for its answer. `agentlog doctor` lists
