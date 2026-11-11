@@ -45,8 +45,8 @@ parents with running subagents. Its default 12-row preview expands to include
 all of that running work, followed by completed sessions in the current
 directory and then elsewhere. An explicit `--limit N` still caps the output.
 Named lookups keep their relevance ranking; `.` explicitly scopes a lookup to
-the current directory. `--help` prints this same screen with the usage first,
-then the sessions. The usage names every flag and `--kind` the parser accepts (a
+the current directory. `--help` prints this same screen, sessions and usage
+together, and the usage names every flag and `--kind` the parser accepts (a
 test fails otherwise).
 
 The preview includes the following:

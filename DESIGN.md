@@ -40,11 +40,8 @@ search, so the tool should take all of it at once.
 
 **In practice.** Agents should almost never run it bare or start with
 `--help`. The snippet in the README exists so they don't have to. When one
-does, it isn't wasted: `--help` prints the same lines as a bare call, the
-running sessions and every flag, so it never needs both. `--help` puts the
-usage first, because agents read it through `head`: from 2 to 9 November
-2026, 18 of 29 sessions on a second machine needed a second call to reach
-usage that started at line 34. When several
+does, it isn't wasted: `--help` prints the same screen as a bare call, the
+running sessions and every flag, so it never needs both. When several
 sessions match a naming clue equally well, the answer is the list, not the
 newest one previewed as though it were the one meant.
 
