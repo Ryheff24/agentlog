@@ -3,7 +3,11 @@ claude/agent-setting/df660fdc                                    events=0  unrea
 claude/ai-title/4e56cca5                                         events=0  unread=0  ignored=0  hidden=0  sets title
 claude/api-request-blob/1b467ac7                                 events=0  unread=0  ignored=1  hidden=0  -
 claude/api-request-blob/37eeafe7                                 events=0  unread=0  ignored=1  hidden=0  -
+claude/api-request-blob/3c630f44                                 events=0  unread=0  ignored=1  hidden=0  -
+claude/api-request-blob/40f4068c                                 events=0  unread=0  ignored=1  hidden=0  -
 claude/api-request-blob/5bbe383d                                 events=0  unread=0  ignored=1  hidden=0  -
+claude/api-request-blob/92ca5e56                                 events=0  unread=0  ignored=1  hidden=0  -
+claude/api-request-blob/cd2971ba                                 events=0  unread=0  ignored=1  hidden=0  -
 claude/api-request-blob/f587be41                                 events=0  unread=0  ignored=1  hidden=0  -
 claude/api-request-shape/53d87a65                                events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request-shape/54ebcbbb                                events=0  unread=0  ignored=1  hidden=0  sets version
@@ -12,18 +16,30 @@ claude/api-request-shape/bc7f43f0                                events=0  unrea
 claude/api-request:adaptive/0856616f                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request:adaptive/29327209                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request:adaptive/3aa2417f                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/api-request:adaptive/61638166                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request:adaptive/8f96563e                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request:adaptive/98a57126                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/api-request:adaptive/b06d81a0                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/api-request:adaptive/da079c2b                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/artifact-autoreact-ledger/28f9e3a5                        events=0  unread=0  ignored=1  hidden=0  -
 claude/artifact-autoreact-ledger/522d163f                        events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-autoreact-ledger/84718f6f                        events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-autoreact-ledger/da4248eb                        events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-autoreact-ledger/ef9de5a5                        events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-comment-monitor/0bfe0e31                         events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-comment-monitor/1e86a93a                         events=0  unread=0  ignored=1  hidden=0  -
 claude/artifact-comment-monitor/d5d8fccd                         events=0  unread=0  ignored=1  hidden=0  -
 claude/artifact-comment-monitor/d91a179b                         events=0  unread=0  ignored=1  hidden=0  -
+claude/artifact-comment-monitor/f50de87b                         events=0  unread=0  ignored=1  hidden=0  -
 claude/assistant:message/076a1bd2                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/0b7522a1                                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/assistant:message/1a048ff7                                events=1  unread=0  ignored=0  hidden=0  sets model+version+usage
+claude/assistant:message/1f626d41                                events=0  unread=0  ignored=1  hidden=1  sets version
+claude/assistant:message/212e1ad9                                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/assistant:message/2337f805                                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/assistant:message/2ab49f1b                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message/48c9bfef                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message/5948aa11                                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/assistant:message/5aff0fdc                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message/5d6bdae0                                events=1  unread=0  ignored=0  hidden=0  sets model+version+usage
 claude/assistant:message/65bcbb1c                                events=0  unread=0  ignored=0  hidden=0  sets model+version+usage
@@ -36,6 +52,7 @@ claude/assistant:message/ceba01db                                events=1  unrea
 claude/assistant:message/dc3e7062                                events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message/e3b78fa0                                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/assistant:message:bug/5ccf3c68                            events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/assistant:message:bug/cdff1306                            events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message:bug/e23ffb5f                            events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message:refusal/bb757091                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/assistant:message:refusal/d2fc491d                        events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
@@ -56,7 +73,9 @@ claude/attachment:agent_listing_delta/0cb51f76                   events=0  unrea
 claude/attachment:agent_listing_delta/0cff4bdd                   events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:agent_listing_delta/252f602f                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:agent_listing_delta/33101ff9                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/3d38920d                   events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:agent_listing_delta/5716b8a1                   events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:agent_listing_delta/6f6dfa3f                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:agent_listing_delta/8e450cba                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:agent_listing_delta/9989cf3a                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:agent_listing_delta/a6674b4b                   events=0  unread=0  ignored=1  hidden=1  sets version
@@ -72,10 +91,12 @@ claude/attachment:auto_mode/3d05ecc4                             events=0  unrea
 claude/attachment:auto_mode/52a9544c                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/5f558f61                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/675bc13e                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:auto_mode/83ed456f                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:auto_mode/9f0e61ee                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:auto_mode/a688e831                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/aa9a4abc                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/b0673c4e                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:auto_mode/bc8c07fe                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/c69a2484                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/d85323b0                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:auto_mode/da0f7300                             events=0  unread=0  ignored=1  hidden=0  sets version
@@ -128,6 +149,7 @@ claude/attachment:credential_org/bb33e743                        events=0  unrea
 claude/attachment:credential_org/f57d01bc                        events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:date/0c972f12                                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:date/5a876a61                                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:date/608849ed                                  events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:date/6712088d                                  events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:date/698d553a                                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:date/7ff47a92                                  events=0  unread=0  ignored=1  hidden=0  sets version
@@ -147,8 +169,11 @@ claude/attachment:date_change/df03a4ff                           events=0  unrea
 claude/attachment:deferred_tools_delta/0420991d                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/2ad57b76                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/2d478477                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/3d2acb00                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/4a141aec                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/63164333                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_delta/63f69bad                  events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:deferred_tools_delta/6c77b815                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/7a8e5a3a                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/9979cfc0                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_delta/a628ea4f                  events=0  unread=0  ignored=1  hidden=0  sets version
@@ -167,6 +192,7 @@ claude/attachment:deferred_tools_record/57a81fff                 events=0  unrea
 claude/attachment:deferred_tools_record/71a7a44f                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_record/87a7450f                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:deferred_tools_record/924c762b                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:deferred_tools_record/944f2157                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_record/ce85c861                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:deferred_tools_record/d35aad70                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:deferred_tools_record/d5bcf47c                 events=0  unread=0  ignored=1  hidden=1  sets version
@@ -191,7 +217,9 @@ claude/attachment:edited_text_file/110d42bb                      events=0  unrea
 claude/attachment:edited_text_file/12719121                      events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:edited_text_file/1535bb3b                      events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:edited_text_file/447d8030                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/4a5563d2                      events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:edited_text_file/4aa450ca                      events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:edited_text_file/7c7ecd74                      events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:edited_text_file/8425989c                      events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:edited_text_file/911f735c                      events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:edited_text_file/92894940                      events=0  unread=0  ignored=1  hidden=0  sets version
@@ -225,7 +253,9 @@ claude/attachment:file:text/3af6f42f                             events=0  unrea
 claude/attachment:file:text/460c087c                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:file:text/9b220cb5                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:file:text/cb1d2df1                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/da11d923                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:file:text/e8358849                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:file:text/ff6951f1                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_additional_context/2483f05b               events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:hook_additional_context/33eca0c7               events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_additional_context/3621178b               events=0  unread=0  ignored=1  hidden=0  sets version
@@ -233,6 +263,7 @@ claude/attachment:hook_additional_context/5dfe78b3               events=0  unrea
 claude/attachment:hook_additional_context/76edf482               events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:hook_additional_context/ab171869               events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_additional_context/e061cb9c               events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_additional_context/f7bb6512               events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:hook_blocking_error/0a8299bd                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_blocking_error/a9ae64a8                   events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:hook_blocking_error/a9b5f31f                   events=0  unread=0  ignored=1  hidden=0  sets version
@@ -244,7 +275,9 @@ claude/attachment:hook_cancelled/b336a307                        events=0  unrea
 claude/attachment:hook_non_blocking_error/2814a49c               events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_non_blocking_error/31b702b8               events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_non_blocking_error/43dc0fe9               events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_non_blocking_error/cab74983               events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_non_blocking_error/fb03723c               events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:hook_success/19308de9                          events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:hook_success/a0a00397                          events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_success/d00ead0a                          events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:hook_success/e547d1dc                          events=0  unread=0  ignored=1  hidden=0  sets version
@@ -305,6 +338,7 @@ claude/attachment:nested_memory:Project/061ba143                 events=0  unrea
 claude/attachment:nested_memory:Project/198fffd5                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:nested_memory:Project/2199efae                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:nested_memory:Project/244ecf74                 events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:nested_memory:Project/496a7870                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:nested_memory:Project/5dd111cd                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:nested_memory:Project/6f2a6d7b                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:nested_memory:Project/83a7353c                 events=0  unread=0  ignored=1  hidden=0  sets version
@@ -314,6 +348,12 @@ claude/attachment:nested_memory:Project/b8d7fb00                 events=0  unrea
 claude/attachment:opened_file_in_ide/a0441710                    events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:opened_file_in_ide/b1e7119a                    events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:opened_file_in_ide/e35e5489                    events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style/12ff12db                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style/205716b9                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style/3f1c959f                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style/f1e2ea28                          events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style_instructions/29847477             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:output_style_instructions/acfaec89             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:pdf_reference/2d5ca1b1                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:plan_file_reference/246498a1                   events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:plan_file_reference/843c6964                   events=0  unread=0  ignored=1  hidden=0  sets version
@@ -348,12 +388,14 @@ claude/attachment:queued_command/4fa676c2                        events=1  unrea
 claude/attachment:queued_command/562162c1                        events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:queued_command/6374a02d                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/646a2930                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/65bdc420                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/67f1b7f2                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/682b555e                        events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:queued_command/87910c31                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/b6c5715e                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/ba7c4b3d                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/c9ea0343                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/attachment:queued_command/ca2ae35e                        events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:queued_command/daf317cf                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/e1c453e9                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/attachment:queued_command/ef3afabf                        events=1  unread=0  ignored=0  hidden=0  sets version+ending
@@ -361,6 +403,7 @@ claude/attachment:queued_command/fa17a6d7                        events=1  unrea
 claude/attachment:read_truncation_notice/5cb594e0                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:read_truncation_notice/61eb1af5                events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:read_truncation_notice/672a9c6f                events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:read_truncation_notice/b228e86f                events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:read_truncation_notice/c1f0a20a                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:read_truncation_notice/d6b68839                events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:read_truncation_notice/fb2c35b0                events=0  unread=0  ignored=1  hidden=0  sets version
@@ -375,6 +418,7 @@ claude/attachment:remote_session_change/c90ec25d                 events=0  unrea
 claude/attachment:remote_session_change/d174b032                 events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:remote_session_change/f25fe094                 events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:sandbox_instructions/0b3bb441                  events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:sandbox_instructions/0f75ba2c                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:sandbox_instructions/1bda212b                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:sandbox_instructions/264d9211                  events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:sandbox_instructions/2e785c6b                  events=0  unread=0  ignored=1  hidden=0  sets version
@@ -390,6 +434,7 @@ claude/attachment:session_context/1d6028c8                       events=0  unrea
 claude/attachment:session_context/1f4484ce                       events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_context/23602295                       events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_context/427ba8c3                       events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:session_context/42c31f66                       events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:session_context/5394d7e1                       events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:session_context/6ebfcc41                       events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:session_context/78944560                       events=0  unread=0  ignored=1  hidden=0  sets version
@@ -400,6 +445,7 @@ claude/attachment:session_context/c0986aa8                       events=0  unrea
 claude/attachment:session_context/c7d3a162                       events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_context/ca71f85d                       events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_context/ce30c12a                       events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:session_context/ec5fe6ce                       events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_cron_carry/84799e32                    events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:session_cron_carry/9dd133e1                    events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:silent_turn_reminder/25e17227                  events=0  unread=0  ignored=1  hidden=0  sets version
@@ -415,6 +461,7 @@ claude/attachment:skill_listing/0a57c321                         events=0  unrea
 claude/attachment:skill_listing/223f85a2                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:skill_listing/2354773c                         events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:skill_listing/28d4deed                         events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:skill_listing/2fd5b281                         events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:skill_listing/34a1d32b                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:skill_listing/35906cde                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:skill_listing/43eebf1f                         events=0  unread=0  ignored=1  hidden=0  sets version
@@ -452,9 +499,11 @@ claude/attachment:task_status/c274998f                           events=0  unrea
 claude/attachment:task_status/dd5ef428                           events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:task_status/f1b0d40d                           events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:team_context/9f765a7c                          events=0  unread=0  ignored=1  hidden=1  sets version
+claude/attachment:team_context/c1fb750e                          events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:thinking_drop/27b61666                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:thinking_drop/31db7298                         events=0  unread=0  ignored=1  hidden=1  sets version
 claude/attachment:thinking_drop/53f50ffa                         events=0  unread=0  ignored=1  hidden=0  sets version
+claude/attachment:thinking_drop/70485f22                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:thinking_drop/7f1206ee                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:thinking_drop/846e04a1                         events=0  unread=0  ignored=1  hidden=0  sets version
 claude/attachment:thinking_stripped/0c050b79                     events=0  unread=0  ignored=1  hidden=1  sets version
@@ -495,14 +544,17 @@ claude/cost-state/e2d68fc1                                       events=0  unrea
 claude/custom-title/e7226bab                                     events=0  unread=0  ignored=0  hidden=0  sets title
 claude/deferred_tools_delta/0f4c28fa                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_delta/52330587                             events=0  unread=0  ignored=1  hidden=0  sets version
+claude/deferred_tools_delta/6327c9bc                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/deferred_tools_delta/8123d9ab                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_delta/866bb3af                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_delta/8de878d2                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_delta/c6849aa3                             events=0  unread=0  ignored=1  hidden=1  sets version
+claude/deferred_tools_delta/fbc10bbb                             events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_record/020ccf4b                            events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_record/0e679058                            events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_record/4a8f83ab                            events=0  unread=0  ignored=1  hidden=0  sets version
 claude/deferred_tools_record/8fa4dbc7                            events=0  unread=0  ignored=1  hidden=0  sets version
+claude/deferred_tools_record/9f23d383                            events=0  unread=0  ignored=1  hidden=0  sets version
 claude/file-history-delta/fe189503                               events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/0efe36da                            events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/120d432a                            events=0  unread=0  ignored=1  hidden=0  -
@@ -515,14 +567,21 @@ claude/file-history-snapshot/7237a223                            events=0  unrea
 claude/file-history-snapshot/a739f2db                            events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/ba16084b                            events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/c9d3d218                            events=0  unread=0  ignored=1  hidden=0  -
+claude/file-history-snapshot/e727fa7d                            events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/eb280609                            events=0  unread=0  ignored=1  hidden=0  -
 claude/file-history-snapshot/fe20832b                            events=0  unread=0  ignored=1  hidden=0  -
+claude/fork-context-ref/5d05f589                                 events=0  unread=0  ignored=1  hidden=0  -
 claude/frame-link/cb995b88                                       events=0  unread=0  ignored=1  hidden=0  -
 claude/frame-link/fa1b8208                                       events=0  unread=0  ignored=1  hidden=0  -
+claude/history-suppression/7c3700e8                              events=0  unread=0  ignored=1  hidden=0  -
+claude/history-suppression/f6ba04be                              events=0  unread=0  ignored=1  hidden=0  -
 claude/last-prompt/4791eacf                                      events=0  unread=0  ignored=1  hidden=0  -
 claude/last-prompt/669c0395                                      events=0  unread=0  ignored=1  hidden=0  -
 claude/last-prompt/838e9d35                                      events=0  unread=0  ignored=1  hidden=0  -
 claude/launched/1303c06b                                         events=0  unread=0  ignored=1  hidden=0  -
+claude/message/18037618                                          events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/message/4b4e6250                                          events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
+claude/message/cf25deef                                          events=1  unread=0  ignored=0  hidden=0  sets model+version+ending+usage
 claude/mode/b4b85c41                                             events=0  unread=0  ignored=1  hidden=0  -
 claude/permission-mode/115f2e4e                                  events=0  unread=0  ignored=1  hidden=0  -
 claude/pr-link/2e98ee2f                                          events=1  unread=0  ignored=0  hidden=0  record
@@ -539,6 +598,7 @@ claude/result/1eccd345                                           events=1  unrea
 claude/result/a0c89a3f                                           events=1  unread=0  ignored=0  hidden=0  sets ending
 claude/result/e55c7ade                                           events=1  unread=0  ignored=0  hidden=0  sets ending
 claude/result/f63dc0b3                                           events=1  unread=0  ignored=0  hidden=0  sets ending
+claude/session-owner/bcf35522                                    events=0  unread=0  ignored=1  hidden=0  -
 claude/skill_listing/3aa178c8                                    events=0  unread=0  ignored=1  hidden=1  sets version
 claude/skill_listing/ad8bbab4                                    events=0  unread=0  ignored=1  hidden=0  sets version
 claude/started/165e8a60                                          events=1  unread=0  ignored=0  hidden=0  sets ending
@@ -562,11 +622,13 @@ claude/user/06a92237                                             events=1  unrea
 claude/user/26447ba1                                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user/40ff90f7                                             events=1  unread=0  ignored=0  hidden=0  sets version+ending
 claude/user/5ce2fd33                                             events=1  unread=0  ignored=0  hidden=0  sets version+ending
+claude/user/868b59e9                                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user/95cc7663                                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user/9e9c1f9b                                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user/a0a6aa13                                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user/a145ee8d                                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user/a8f6b98a                                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user/ae2a55c3                                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user/b8674d75                                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user/d413b4c0                                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user/d815320d                                             events=1  unread=0  ignored=0  hidden=0  sets version
@@ -581,9 +643,11 @@ claude/user:create/6d0e1bfb                                      events=1  unrea
 claude/user:create/7b64c923                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/88137681                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/8a7c50c5                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/9693d4e4                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/a57847e1                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/c7235a99                                      events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user:create/cb9b07b4                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:create/ed1bfa1a                                      events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user:create/f0bde345                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/f2abbc83                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:create/fd5456f5                                      events=1  unread=0  ignored=0  hidden=0  sets version
@@ -603,6 +667,7 @@ claude/user:image:image/png/71899164                             events=0  unrea
 claude/user:image:image/png/7fac42d6                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:image:image/png/815aed94                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:image:image/png/afbdfa27                             events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:image:image/png/bdafa1ac                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user:image:image/png/e0402024                             events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:image:image/png/f7dfec7c                             events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user:image:image/png/faac920c                             events=1  unread=0  ignored=0  hidden=0  sets version
@@ -614,6 +679,8 @@ claude/user:text/3759ff9d                                        events=0  unrea
 claude/user:text/442bfe2e                                        events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:text/4d282349                                        events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:text/4f08929d                                        events=0  unread=0  ignored=1  hidden=1  sets version
+claude/user:text/8a49696d                                        events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:text/8a5bf49f                                        events=0  unread=0  ignored=1  hidden=1  sets version
 claude/user:text/97dba562                                        events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:text/b112b100                                        events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:text/b245325e                                        events=1  unread=0  ignored=0  hidden=0  sets version
@@ -637,7 +704,9 @@ claude/user:update/94ce9551                                      events=1  unrea
 claude/user:update/9a1a6e99                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:update/afcc62b2                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:update/bab0e57e                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/cf9047da                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/user:update/d52fbf14                                      events=1  unread=0  ignored=0  hidden=0  sets version
+claude/user:update/da40de9b                                      events=1  unread=0  ignored=0  hidden=0  sets version
 claude/worktree-state/403d042d                                   events=0  unread=0  ignored=0  hidden=0  sets note
 claude/worktree-state/9cbfb7e5                                   events=0  unread=0  ignored=1  hidden=0  -
 codex/compacted/11695c0c                                         events=1  unread=0  ignored=1  hidden=0  notice
@@ -771,9 +840,11 @@ codex/session_meta/07754e16                                      events=0  unrea
 codex/session_meta/0b1ef1d3                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/1e502bac                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/23f6beb5                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/30b7a710                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/3192d25a                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/6557f983                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/69e2926d                                      events=0  unread=0  ignored=1  hidden=0  sets version
+codex/session_meta/7f47f2dd                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/8657b09c                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/92fbcf9f                                      events=0  unread=0  ignored=1  hidden=0  sets version
 codex/session_meta/996b1765                                      events=0  unread=0  ignored=1  hidden=0  sets version
@@ -804,13 +875,16 @@ codex/turn_context:managed:workspace-write/87306068              events=0  unrea
 codex/turn_context:managed:workspace-write/f27e75de              events=0  unread=0  ignored=1  hidden=0  sets model
 codex/turn_context:managed:workspace-write/f7c0fb76              events=0  unread=0  ignored=1  hidden=0  sets model
 codex/world_state/3c070011                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/4f9fdc7f                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/6a024cb7                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/825adc5f                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/867fcdc0                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/8bb34bf5                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/8f850375                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/93d227f9                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/a26eea14                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/a504bb8e                                       events=0  unread=0  ignored=2  hidden=0  -
+codex/world_state/aaadc2e1                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/b4ad8856                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/be6f6286                                       events=0  unread=0  ignored=2  hidden=0  -
 codex/world_state/c5aa5519                                       events=0  unread=0  ignored=2  hidden=0  -
