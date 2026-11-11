@@ -210,10 +210,17 @@ for a person's terminal, and agents read pipes.
   they are rare in text.
 - **Escapes for a few, a stand-in for many.** Across one Mac's Claude and
   Codex logs, 651 distinct strings held a control or U+FFFD character. Most
-  held one or a few in long text; the 34 at 2% or more were binary reads with
-  tens to thousands. The rule (16 or more, and 2% or more, of the whole field
-  or of what the clip keeps) splits them, and ignores CR and ESC, which are
-  line endings and colours in ordinary output.
+  held one or a few in long text. Of the 34 at 2% or more, most were binary
+  reads with tens to thousands, of many kinds, but some were readable:
+  backspaced output (only backspaces), form-fed output and UTF-8 text decoded
+  as Latin-1 (only C1).
+  So the rule counts U+FFFD, NUL, DEL and the C0 controls that do not shape
+  text (not newline, tab, CR, ESC, backspace, form feed, vertical tab), and
+  needs 16 or more of at least three kinds, at 2% or more of the whole field
+  or of what the clip keeps. On that Mac 19 strings pass it, each with 3 to
+  27 kinds. The 8 a plainer count would also catch print with each character
+  named: the readable ones above, a record list separated by SOH, and two
+  texts of only U+FFFD (whether those were binary is unknown).
 - **Nothing becomes unreachable.** `--bytes` prints the text as logged,
   and `--bytes --json` keeps every string's exact value as escapes. A
   terminal still gets `term.Safe`'s escaping either way.

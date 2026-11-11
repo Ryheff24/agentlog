@@ -191,6 +191,18 @@ func TestSparseControlsAreNamed(t *testing.T) {
 	}
 }
 
+// Control characters in text that is still readable — a NUL-separated list,
+// backspaced man-page output, form feeds — are named, not held back.
+func TestReadableControlTextIsShown(t *testing.T) {
+	w := newWorld(t)
+	id, _ := w.binaryWorld()
+	out, _ := w.run("/work/bytes", id[:8]+"#8")
+	want := "  " + strings.Repeat("./src/a.go␀", 30) + "\n  N␈NA␈AM␈ME␈E\n  ␌page two\n  caf\ufffd\n"
+	if !strings.Contains(out, want) || strings.Contains(out, "binary, not shown") {
+		t.Errorf("want %q in\n%q", want, out)
+	}
+}
+
 // Long hex and base64 runs are commit hashes, checksums and fixtures as often
 // as anything else; they are printed as logged.
 func TestHexAndBase64ArePrinted(t *testing.T) {

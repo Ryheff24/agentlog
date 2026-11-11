@@ -195,10 +195,13 @@ before a newline is dropped as a line ending. JSON strings decode to the same
 text rather than to `\u00NN` escapes. Everything else, any language, newlines
 and tabs, prints exactly as logged.
 
-A message, tool input, tool output or diff that is mostly binary — 16 or more
-control or U+FFFD characters, making up 2% or more of it (newlines, tabs, CR
-and ESC not counted), in the whole field or in what the clip keeps — is
-printed as one line instead:
+A message, tool input, tool output or diff that is mostly binary is printed
+as one line instead. Mostly binary means 16 or more U+FFFD, NUL, DEL or C0
+control characters (not newline, tab, CR, ESC, backspace, form feed or
+vertical tab), of at least three different kinds, making up 2% or more of the
+whole field or of what the clip keeps. A NUL-separated list, backspaced or
+form-fed output, and text decoded in the wrong encoding (all U+FFFD, or all
+C1) stay text, with each control character named. The line reads:
 
     [binary, not shown: 1012 bytes, 123 control and 53 U+FFFD characters; agentlog 3f9c2e1a#601 --bytes prints it as logged]
 
@@ -208,9 +211,9 @@ command. `--bytes` prints logged text as it was logged: every view, every
 field, binary and control bytes included, through the same `--max` and
 `--full` clipping. A person's terminal still has them escaped. With `--json`,
 `--bytes` keeps each string's value exactly, as escapes (`\u0001`, and
-`\u0085` for C1 and DEL, which `encoding/json` would write raw), so a JSON
-decoder recovers every character; a byte that was never UTF-8 in the log
-arrives as U+FFFD there, as JSON requires. Long hex and base64 runs are not
+`\u007f` and `\u0085` for DEL and C1, which `encoding/json` would write
+raw), so a JSON decoder recovers every character; a byte that was never
+UTF-8 in the log arrives as U+FFFD there, as JSON requires. Long hex and base64 runs are not
 treated as binary: commit hashes, checksums and ids are ordinary output.
 
 The calling agent's own session is left out unless it is named by id, using

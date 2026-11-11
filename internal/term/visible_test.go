@@ -62,7 +62,7 @@ func TestVisibleLeavesTextAlone(t *testing.T) {
 
 func TestCount(t *testing.T) {
 	c := Count("a\x00b\x1b[0m\r\n\x7f\u0085�\xff\t")
-	want := Counts{Bytes: 17, Runes: 14, Control: 3, Replaced: 2}
+	want := Counts{Bytes: 17, Runes: 14, Control: 3, Replaced: 2, Opaque: 4, Kinds: 3}
 	if c != want {
 		t.Fatalf("got %+v, want %+v", c, want)
 	}
@@ -70,6 +70,7 @@ func TestCount(t *testing.T) {
 
 func TestBinary(t *testing.T) {
 	binary := strings.Repeat("\x00\x01ELF\xff", 20)
+	several := "\x00\x01\x02" + strings.Repeat("\x03", 13)
 	for _, tt := range []struct {
 		name string
 		in   string
@@ -78,11 +79,17 @@ func TestBinary(t *testing.T) {
 		{"empty", "", false},
 		{"text", "go test ./...\nok\n", false},
 		{"all binary", binary, true},
-		{"binary decoded with replacement", strings.Repeat("�PNG��", 10), true},
-		{"a short burst under the minimum", strings.Repeat("\x01", 15), false},
-		{"sixteen in a short text", strings.Repeat("\x01", 16), true},
-		{"sparse in a long text", strings.Repeat("x", 2000) + strings.Repeat("\x01", 30), false},
-		{"colour codes are not binary", strings.Repeat("\x1b[31mred\x1b[0m\r\n", 50), false},
+		{"binary decoded with replacement", strings.Repeat("\ufffdPNG\x00\x1a\ufffd", 10), true},
+		{"sixteen of three kinds in a short text", several, true},
+		{"fifteen is under the minimum", several[:15], false},
+		{"one kind, however many: a NUL-separated list", strings.Repeat("src/a.go\x00", 40), false},
+		{"two kinds", strings.Repeat("\x01\ufffd", 20), false},
+		{"sparse in a long text", strings.Repeat("x", 2000) + several + several, false},
+		{"colour codes and line ends", strings.Repeat("\x1b[31mred\x1b[0m\r\n", 50), false},
+		{"backspaced output", strings.Repeat("N\bNA\bAM\bME\bE ", 30), false},
+		{"form feeds between pages", strings.Repeat("page\n\f", 40), false},
+		{"Latin-1 text decoded as UTF-8", strings.Repeat("caf\ufffd cr\ufffdme ", 40), false},
+		{"UTF-8 text decoded as Latin-1", strings.Repeat("it\u00e2\u0080\u0099s \u00e2\u0080\u009cquoted\u00e2\u0080\u009d ", 30), false},
 	} {
 		if got := Count(tt.in).Binary(); got != tt.want {
 			t.Errorf("%s: Binary = %v, want %v (%+v)", tt.name, got, tt.want, Count(tt.in))

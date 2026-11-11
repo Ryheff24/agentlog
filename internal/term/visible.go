@@ -66,18 +66,39 @@ type Counts struct {
 	// Replaced counts U+FFFD and bytes that are not UTF-8: what a reader
 	// leaves where it could not decode binary.
 	Replaced int
+	// Opaque counts what binary is made of and text is not: Replaced, NUL
+	// and the C0 controls other than newline, tab, CR, ESC, backspace, form
+	// feed and vertical tab, plus DEL. Kinds is how many different
+	// characters those were, U+FFFD and undecodable bytes counting as one.
+	// C1 is left out: in real logs it is mostly UTF-8 text decoded as
+	// Latin-1, which is still text.
+	Opaque, Kinds int
 }
 
 // Count measures s.
 func Count(s string) Counts {
 	c := Counts{Bytes: len(s)}
+	var seen [0x81]bool // C0 and DEL by value; 0x80 stands for U+FFFD
+	opaque := func(k rune) {
+		c.Opaque++
+		if !seen[k] {
+			seen[k] = true
+			c.Kinds++
+		}
+	}
 	for i := 0; i < len(s); {
 		r, size := utf8.DecodeRuneInString(s[i:])
 		c.Runes++
 		switch {
 		case r == utf8.RuneError:
 			c.Replaced++
-		case r < 0x20 && r != '\n' && r != '\t' && r != '\r' && r != 0x1b, r >= 0x7f && r <= 0x9f:
+			opaque(0x80)
+		case r < 0x20 && r != '\n' && r != '\t' && r != '\r' && r != 0x1b, r == 0x7f:
+			c.Control++
+			if r != '\b' && r != '\f' && r != '\v' {
+				opaque(r)
+			}
+		case r >= 0x80 && r <= 0x9f:
 			c.Control++
 		}
 		i += size
@@ -86,12 +107,13 @@ func Count(s string) Counts {
 }
 
 // Binary reports whether a text is mostly bytes no reader can use: at least
-// 16 control or replacement characters, making up at least 2% of it. Across
-// one machine's logs the texts that pass are binary read as text, with tens
-// to thousands of them; ordinary output with a stray one stays below.
+// 16 opaque characters of at least 3 kinds, making up at least 2% of it.
+// Across one machine's logs the texts that pass are binary read as text,
+// with tens to thousands of them in many kinds. Text with a stray few, a
+// NUL-separated list, backspaced or form-fed output, Latin-1 text decoded
+// as UTF-8 (all U+FFFD) and UTF-8 decoded as Latin-1 (all C1) stay below.
 func (c Counts) Binary() bool {
-	n := c.Control + c.Replaced
-	return n >= 16 && n*50 >= c.Runes
+	return c.Opaque >= 16 && c.Opaque*50 >= c.Runes && c.Kinds >= 3
 }
 
 // StandIn is the one line printed in place of a binary text: its size, what
