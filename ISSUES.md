@@ -6,6 +6,16 @@ commit that fixes it; that commit is the record.
 
 ## Open
 
+- **The advisor's records show as generic events.** Claude Code 2.1.318 and
+  later write `assistant:server_tool_use` for a call to the advisor tool and
+  `assistant:advisor_tool_result` for its answer. `agentlog doctor` lists
+  both as unread on a second machine, 30 to 35 of each in 16 sessions on 9
+  November 2026. The answer itself is encrypted: all 1,801 logs on that
+  machine that hold one use `advisor_redacted_result` with
+  `encrypted_content`. So agentlog can show only that the advisor was
+  called, which model answered, and the tokens it used. Today an agent reads
+  about 30 lines of record fields to learn that.
+
 - **New record types this build can't read yet.** Found by
   `TestTodaysLogsAreRead` on 2026-10-27, after the harnesses' latest releases:
   Codex 0.164.0 `response_item:additional_tools`; Copilot CLI 1.0.98
@@ -84,22 +94,6 @@ commit that fixes it; that commit is the record.
 
 - **`agentlog-usage all` prints the wrong start.** It prints "since Dec 31
   23:58", the zero time in local time, not the date of the oldest log.
-
-- **The word `branch` as a clue hides the sessions that worked on the
-  branch.** Agents type `agentlog branch <name>`. `branch` becomes a word
-  clue, and the search then looks only in sessions whose metadata holds that
-  word. `agentlog branch refactor/delete-dead-code --list` names 2 subagents
-  with 1 or 2 mentions. `agentlog refactor/delete-dead-code --list` names
-  `b67ff331` with 29 mentions. 19 logs hold the branch name (6 top-level).
-  Seen in 3 sessions on 5 to 7 November 2026.
-
-- **A word clue that matches only your own session does not offer
-  `--grep`.** `agentlog all <a TSV file name>` reports "no sessions but
-  your own" and stops. 16 logs hold the file name (`rg -l -F`). In `run`, the
-  `render.OnlyOwn` message returns before the hint that says words match
-  metadata and gives the `--grep` command. With no match at all, the hint
-  prints. Seen in 4 sessions from 2 to 9 November 2026. One of them then
-  read the JSONL by hand.
 
 ## Not acting on
 

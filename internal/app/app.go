@@ -162,26 +162,26 @@ func run(env Env, opts options, clueArgs []string) error {
 		}
 		if only := render.OnlyOwn(res, cat.Now); only != "" {
 			fmt.Fprintf(w, "%s, for %s\n", only, describe(clues))
-			return nil
-		}
-		fmt.Fprintf(w, "no session matches %s\n", describe(clues))
-		fmt.Fprintln(w, "harnesses searched:")
-		for _, h := range res.Harnesses {
-			// A harness the clues left out was not searched; "0 sessions"
-			// would say it was, and found nothing.
-			if len(clues.Providers) > 0 && !slices.Contains(clues.Providers, h.Name) {
-				continue
-			}
-			found := "not found"
-			if h.Present {
-				found = plural(h.Sessions, "session")
-			}
-			fmt.Fprintf(w, "  %-8s %s\n", h.Name, found)
-		}
-		if res.Since.IsZero() {
-			fmt.Fprintln(w, "all time was searched; try fewer clues or a broader dir")
 		} else {
-			fmt.Fprintln(w, "try fewer clues, a broader dir, or 'all' to search all time")
+			fmt.Fprintf(w, "no session matches %s\n", describe(clues))
+			fmt.Fprintln(w, "harnesses searched:")
+			for _, h := range res.Harnesses {
+				// agentlog did not search a harness that the clues left out.
+				// "0 sessions" would say that it searched it and found nothing.
+				if len(clues.Providers) > 0 && !slices.Contains(clues.Providers, h.Name) {
+					continue
+				}
+				found := "not found"
+				if h.Present {
+					found = plural(h.Sessions, "session")
+				}
+				fmt.Fprintf(w, "  %-8s %s\n", h.Name, found)
+			}
+			if res.Since.IsZero() {
+				fmt.Fprintln(w, "all time was searched; try fewer clues or a broader dir")
+			} else {
+				fmt.Fprintln(w, "try fewer clues, a broader dir, or 'all' to search all time")
+			}
 		}
 		// Agents reach for a word clue to find what was said, which is --grep.
 		if search != "" {
@@ -892,6 +892,13 @@ func describe(c catalog.Clues) string {
 // contentSearch is the command that looks for the words in what the
 // sessions said, keeping the other clues and the time they covered.
 func contentSearch(c catalog.Clues, now time.Time) string {
+	args := append(scope(c, now, "all"), "--grep", shellWord(regexp.QuoteMeta(strings.Join(c.Words, " "))))
+	return strings.Join(args, " ")
+}
+
+// scope is the start of a command that keeps the harness, dir and time clues, and leaves out the rest.
+// With no time clue, it adds dflt, if dflt is not empty.
+func scope(c catalog.Clues, now time.Time, dflt string) []string {
 	args := []string{"agentlog"}
 	args = append(args, c.Providers...)
 	for _, d := range c.Dirs {
@@ -902,11 +909,12 @@ func contentSearch(c catalog.Clues, now time.Time) string {
 		args = append(args, c.Since.Local().Format(time.DateOnly))
 	case !c.Since.IsZero() && !c.AllTime:
 		args = append(args, fmt.Sprintf("%dh", int(math.Ceil(now.Sub(c.Since).Hours()))))
-	default:
+	case c.AllTime:
 		args = append(args, "all")
+	case dflt != "":
+		args = append(args, dflt)
 	}
-	args = append(args, "--grep", shellWord(regexp.QuoteMeta(strings.Join(c.Words, " "))))
-	return strings.Join(args, " ")
+	return args
 }
 
 // shellWord quotes s for a POSIX shell when it needs it.

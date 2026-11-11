@@ -7,16 +7,20 @@ name: screens
 # the change is read before it merges.
 #
 # This job can write a comment, and it also runs for pull requests from forks.
-# So it never checks out, builds or runs anything from the pull request. It
-# checks out the base branch, reads the two pinned files of each side through
-# the API as data, and lets the base branch's own code build the comment.
+# So it never checks out, builds or runs anything from the pull request. This
+# event always runs the workflow of the default branch: the job checks that
+# branch out, reads the two pinned files of each side through the API as
+# data, and lets the default branch's own code build the comment.
 # The pinned files hold the test world's sessions, never a real log.
+#
+# There is no `paths` filter on purpose. With one, a pull request that stops
+# changing a screen would no longer start this job, and its earlier comment
+# would go on saying that it does. The job ends early when nothing changed
+# and there is no comment to correct.
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
-    paths: ["internal/app/testdata/screens/**"]
-  # To run it by hand on one pull request, which is also the only way to try a
-  # change to this file before a pull request needs it.
+  # To run it by hand on one pull request.
   workflow_dispatch:
     inputs:
       pr:
@@ -37,7 +41,7 @@ jobs:
       pull-requests: write # the comment
     steps:
       # Actions are pinned to full commit hashes; Dependabot proposes updates.
-      # With no ref, this event checks out the base branch, not the pull request.
+      # With no ref, this event checks out the default branch, not the pull request.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false

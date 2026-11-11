@@ -113,7 +113,12 @@ func TestOnlyOwnSessionIsSaid(t *testing.T) {
 			t.Errorf("agentlog %s does not say the only session is the caller's:\n%s", strings.Join(args, " "), out)
 		}
 	}
-	out, _ := w.run("/home/user", "doctor", "claude")
+	// A word clue looks in metadata, so the words may still be in what other sessions said.
+	out, _ := w.run("/home/user", "all", "webapp")
+	if !strings.Contains(out, "no sessions but your own") || !strings.Contains(out, "agentlog all --grep webapp") {
+		t.Errorf("a word clue that matched only the caller's session does not offer --grep:\n%s", out)
+	}
+	out, _ = w.run("/home/user", "doctor", "claude")
 	if !strings.Contains(out, "claude    2.1.281") && !strings.Contains(out, "no sessions but your own") {
 		t.Errorf("doctor reads the caller's session as no sessions at all:\n%s", out)
 	}
