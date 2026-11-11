@@ -1,8 +1,14 @@
 // Package term keeps log text from driving a person's terminal. Session logs
 // hold whatever a tool printed or a web page said, and an escape sequence in
 // there can rewrite the screen, set the window title or, in some terminals,
-// write the clipboard. An agent reading through a pipe gets the bytes as they
-// are; a person at a terminal gets them made visible.
+// write the clipboard. A person at a terminal gets them escaped by Safe.
+//
+// An agent reads through a pipe, and what reaches it is its context: a run of
+// control bytes is noise it cannot use, and binary read as text is the kind
+// of input safety classifiers are said to misread. So what agentlog prints is
+// passed through Visible (and JSON through JSON) before it reaches either: a
+// control character is named by its control picture, and a text that is
+// mostly binary is replaced by a stand-in that says how to print it as logged.
 package term
 
 import (
